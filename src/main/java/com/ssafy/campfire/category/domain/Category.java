@@ -1,5 +1,6 @@
 package com.ssafy.campfire.category.domain;
 
+import com.ssafy.campfire.bootcamp.domain.Bootcamp;
 import com.ssafy.campfire.category.domain.enums.CategoryType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -8,7 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AccessLevel;
@@ -28,8 +29,7 @@ public class Category {
     @Column(nullable = false)
     private CategoryType name;
 
-    // 부트캠프 id join 해야함.
-//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JoinColumn(name = "bootcamp_id")
-//    private Bootcamp bootcamp;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "bootcamp_id")
+    private Bootcamp bootcamp;
 }
