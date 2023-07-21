@@ -16,11 +16,9 @@ public class BootTrack {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bootcamp_id")
-    @Column(nullable = false)
     private Bootcamp bootcamp;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(nullable = false)
     private Track track;
 }

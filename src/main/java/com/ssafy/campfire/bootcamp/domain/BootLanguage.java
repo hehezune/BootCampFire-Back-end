@@ -16,11 +16,9 @@ public class BootLanguage {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bootcamp_id")
-    @Column(nullable = false)
-    private Bootcamp bootcampId;
+    private Bootcamp bootcamp;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(nullable = false)
     private Language lenguage;
 }
