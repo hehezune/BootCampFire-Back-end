@@ -5,13 +5,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Getter
 @NoArgsConstructor //기본 생성자 생성
 @Entity
 @Table(name = "bootcamp") // DB 이름과 동일하게
-public class BootCamp extends BaseEntity {
+public class Bootcamp extends BaseEntity {
     //field
     @Id //부트캠프 테이블의 PK
     @GeneratedValue(strategy = GenerationType.IDENTITY) //기본키 자동생성 - identity는 기본키 자동생성 방법을 데이터베이스에 위임함.
