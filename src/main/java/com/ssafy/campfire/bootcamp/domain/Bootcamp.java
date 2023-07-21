@@ -49,15 +49,15 @@ public class Bootcamp extends BaseEntity {
     private Integer algoCnt;
 
     @OneToMany(mappedBy = "bootcamp")
-    private List<Track> tracks = new ArrayList<>();
+    private List<BootTrack> tracks = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "bootcamp")
-    private List<Region> regions = new ArrayList<>();
+    private List<BootRegion> regions = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "bootcamp")
-    private List<Language> languages = new ArrayList<>();
+    private List<BootLanguage> languages = new ArrayList<>();
 
 
 
