@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @NoArgsConstructor //기본 생성자 생성
 @Entity
@@ -44,6 +47,31 @@ public class Bootcamp extends BaseEntity {
 
     @Column(name ="algo_cnt",nullable = false)
     private Integer algoCnt;
+
+    @OneToMany(mappedBy = "bootcamp")
+    private List<Track> tracks = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "bootcamp")
+    private List<Region> regions = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "bootcamp")
+    private List<Language> languages = new ArrayList<>();
+
+
+
+    public void updateReviewCnt(){
+        this.reviewCnt++;
+
+    }
+    public void updateTotalScore(double score){
+        this.totalScore += score;
+    }
+
+//    public void updateAlgoCnt(){
+//    }
+
 
 
 
