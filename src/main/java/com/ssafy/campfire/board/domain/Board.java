@@ -30,7 +30,7 @@ public class Board extends BaseEntity {
 //    private User user;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "main_category_id")
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @Column(nullable = false)
