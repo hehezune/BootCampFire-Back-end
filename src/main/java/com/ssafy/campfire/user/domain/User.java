@@ -1,5 +1,6 @@
 package com.ssafy.campfire.user.domain;
 
+import com.ssafy.campfire.bootcamp.domain.Bootcamp;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -11,11 +12,12 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+@Table(name = "user")
 public abstract class User{
 
     /*
      * id : pk
-     * bootcampId : 소속 부트 캠프 아이디 / 기본 값 = 0 (예비 부트캠퍼)
+     * bootcampId : 소속 부트 캠프 아이디 / 기본 값 = 0(미정) (예비 부트캠퍼) /fk
      * nickname : 사용자가 사용할 별명
      * bojId : 백준 아이디
      * email : 소셜 api를 통해 가입한 이메일
@@ -29,13 +31,16 @@ public abstract class User{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Long bootCampId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bootcamp_id")
+    @Column(nullable = false) // 처음에 예비 부트캠프 소속으로
+    private Bootcamp bootcamp;
 
     private String nickname;
 
     private String bojId;
 
+    @Column(nullable = false)
     private String email;
 
     private LocalDateTime createdAt;
@@ -44,5 +49,6 @@ public abstract class User{
 
     private int latestAlgoNum;
 
+    @Column(nullable = false)
     private String role;
 }
