@@ -1,20 +1,19 @@
 package com.ssafy.campfire.user.domain;
 
 import com.ssafy.campfire.bootcamp.domain.Bootcamp;
+import com.ssafy.campfire.utils.domain.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "user")
-public abstract class User{
+public class User extends BaseEntity {
 
     /*
      * id : pk
@@ -22,10 +21,10 @@ public abstract class User{
      * nickname : 사용자가 사용할 별명
      * bojId : 백준 아이디
      * email : 소셜 api를 통해 가입한 이메일
-     * createdDate : 가입 날짜
-     * updatedDate : 개인 정보 수정 날짜
      * latestAlgoNum : 마지막으로 푼 문제번호
      * role : user 인지 admin 인지 구분
+     * imgUrl : 소속인증 용 사진
+     * isPermision : 소속 인증 현황/ true : 인증 허가, false : 인증 미허가
      * */
 
     @Id
@@ -44,12 +43,13 @@ public abstract class User{
     @Column(nullable = false)
     private String email;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
     private int latestAlgoNum;
 
     @Column(nullable = false)
     private String role;
+
+    private String imgUrl;
+
+    @ColumnDefault("false")
+    private Boolean isPermision;
 }
