@@ -22,7 +22,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
 
     @Override
     public List<Board> getLatestFiveBoard(Long categoryId) {
-        return queryFactory.select(board)
+        List<Board> fivePosts = queryFactory.select(board)
                 .from(board)
                 .leftJoin(board.category, category)
                 .fetchJoin()
@@ -30,11 +30,12 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .orderBy(board.createdDate.desc())
                 .limit(5)
                 .fetch();
+        return fivePosts;
     }
 
     @Override
     public Page<Board> getBoardByNewest(Long categoryId, Pageable pageable) {
-        return (Page<Board>) queryFactory.select(board)
+        List<Board> newestPosts = queryFactory.select(board)
                 .from(board)
                 .leftJoin(board.category, category)
                 .fetchJoin()
@@ -43,6 +44,20 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
+        return (Page<Board>) newestPosts;
+//        JPAQuery<Long> countQuery = queryFactory.select(board.count())
+//                     .from(board)
+//                     .leftJoin(board.user, member)
+//                    .where(
+//                      isShareEq(condition.isShare()),
+//                    mainCategoryEq(condition.mainCategory()),
+//                     midCategoryEq(condition.midCategory()),
+//                     subCategoryEq(condition.subCategory()),
+//                    post.id.in(reportedPostIds).not()
+//                            );
+//
+//             return PageableExecutionUtils.getPage(posts, pageable, countQuery::fetchOne);
+//        return newestPosts;
     }
 
     @Override
@@ -70,5 +85,4 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .limit(pageable.getPageSize())
                 .fetch();
     }
-    
 }
