@@ -3,22 +3,22 @@ package com.ssafy.campfire.user.domain;
 import com.ssafy.campfire.bootcamp.domain.Bootcamp;
 import com.ssafy.campfire.utils.domain.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
-@NoArgsConstructor
+@Entity
 @AllArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor
 public class User extends BaseEntity {
 
     /*
      * id : pk
      * bootcampId : 소속 부트 캠프 아이디 / 기본 값 = 0(미정) (예비 부트캠퍼) /fk
-     * nickname : 사용자가 사용할 별명
+     * nickname : 사용자가 사용할 별명 / 기본 값 = 회원이 사용한 소셜 로그인 사이트의 이메일
      * bojId : 백준 아이디
      * email : 소셜 api를 통해 가입한 이메일
      * latestAlgoNum : 마지막으로 푼 문제번호
@@ -33,7 +33,6 @@ public class User extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bootcamp_id")
-    @Column(nullable = false) // 처음에 예비 부트캠프 소속으로
     private Bootcamp bootcamp;
 
     private String nickname;
