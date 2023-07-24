@@ -1,4 +1,4 @@
-package com.ssafy.campfire.category.dto.response;
+package com.ssafy.campfire.board.dto.response;
 
 public record BoardReadResponse(
         Long id,
@@ -9,7 +9,8 @@ public record BoardReadResponse(
         Boolean anonymous,
         Integer commentCnt,
         Integer likeCnt,
-        Integer view
+        Integer view,
+        Boolean isLike
 ) {
     public static BoardReadResponse from(
             Long id,
@@ -20,7 +21,8 @@ public record BoardReadResponse(
             Boolean anonymous,
             Integer commentCnt,
             Integer likeCnt,
-            Integer view
+            Integer view,
+            Boolean isLike
     ){
         return new BoardReadResponse(
                 id,
@@ -31,7 +33,8 @@ public record BoardReadResponse(
                 anonymous,
                 commentCnt,
                 likeCnt,
-                view
+                view,
+                isLike
         );
     }
 }
