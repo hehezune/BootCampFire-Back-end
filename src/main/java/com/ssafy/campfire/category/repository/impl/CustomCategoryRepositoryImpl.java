@@ -1,11 +1,9 @@
 package com.ssafy.campfire.category.repository.impl;
 
-import com.querydsl.core.types.Path;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.campfire.board.domain.Board;
 import com.ssafy.campfire.category.repository.CustomCategoryRepository;
-import com.ssafy.campfire.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,7 +35,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .orderBy(board.createdDate.desc())
                 .limit(5)
                 .fetch();
-        
+
         return boards;
     }
 
