@@ -49,6 +49,10 @@ public class Board extends BaseEntity {
 
     private Integer view;
 
+    public void writeBy(User user) {
+        this.user = user;
+    }
+
     public Board(String title, String content, Boolean anonymous){
         this.title = title;
         this.content = content;

@@ -20,12 +20,12 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
 
     private final JPAQueryFactory queryFactory;
 
-//    //user, likes, comment join 필요
     @Override
     public List<Board> getLatestFiveBoard(Long categoryId) {
         return queryFactory.select(board)
                 .from(board)
                 .leftJoin(board.category, category)
+                .fetchJoin()
                 .where(board.category.id.eq(categoryId))
                 .orderBy(board.createdDate.desc())
                 .limit(5)
