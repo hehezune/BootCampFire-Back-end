@@ -21,11 +21,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Board extends BaseEntity {
 
+    /*
+     * id : pk
+     * user : 글쓴이
+     * category : 글 카테고리
+     * title : 글 제목
+     * content : 글 내용
+     * anonymous : 익명
+     * commentCnt : 댓글 수
+     * likeCnt : 좋아요 수
+     * views : 조회수
+     * */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // user join 필요
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
