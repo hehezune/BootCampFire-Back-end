@@ -1,16 +1,17 @@
 package com.ssafy.campfire.category.domain;
 
+import com.ssafy.campfire.bootcamp.domain.Bootcamp;
 import com.ssafy.campfire.category.domain.enums.CategoryType;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Category {
 
+    /*
+     * id : pk
+     * name : 카테고리 이름
+     * bootcamp : 카테고리가 bootcamp 시에 부트캠프 id
+     * */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,8 +35,7 @@ public class Category {
     @Column(nullable = false)
     private CategoryType name;
 
-    // 부트캠프 id join 해야함.
-//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JoinColumn(name = "bootcamp_id")
-//    private Bootcamp bootcamp;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "bootcamp_id")
+    private Bootcamp bootcamp;
 }
