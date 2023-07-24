@@ -1,4 +1,4 @@
-package com.ssafy.campfire.config;
+package com.ssafy.campfire.utils.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.context.annotation.Bean;
