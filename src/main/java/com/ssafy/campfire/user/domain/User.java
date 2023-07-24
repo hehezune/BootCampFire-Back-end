@@ -2,7 +2,7 @@ package com.ssafy.campfire.user.domain;
 
 import com.ssafy.campfire.bootcamp.domain.Bootcamp;
 import com.ssafy.campfire.utils.domain.BaseEntity;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
