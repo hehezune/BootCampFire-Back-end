@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.ssafy.campfire.board.domain.QBoard.board;
@@ -21,6 +22,27 @@ import static com.ssafy.campfire.user.domain.QUser.user;
 public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
 
     private final JPAQueryFactory queryFactory;
+
+    @Override
+    public List<Board> getHotFiveBoard(Long categoryId) {
+
+        List<Board> boards = queryFactory.select(board)
+                .from(board)
+                .leftJoin(board.category, category)
+                .fetchJoin()
+                .leftJoin(board.user, user)
+                .fetchJoin()
+                .where(
+                        board.category.id.eq(categoryId),
+                        board.createdDate.in(LocalDateTime.now().minusDays(3))
+                        )
+                .orderBy(board.createdDate.desc())
+                .orderBy(board.likeCnt.desc())
+                .limit(10)
+                .fetch();
+
+        return boards;
+    }
 
     @Override
     public List<Board> getLatestFiveBoard(Long categoryId) {
