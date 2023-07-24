@@ -5,6 +5,7 @@ import javax.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,14 @@ public class Bootcamp extends BaseEntity {
     @Column(name = "has_codingtest")
     private Boolean hasCodingtest;
 
+    private String on_off;
+
+    @Column(name = "start_date")
+    private LocalDateTime startDate;
+
+    @Column(name = "end_date")
+    private LocalDateTime endDate;
+
     @Column(name ="review_cnt", nullable = false)
     private Integer reviewCnt;
 
@@ -47,6 +56,7 @@ public class Bootcamp extends BaseEntity {
 
     @Column(name ="algo_cnt",nullable = false)
     private Integer algoCnt;
+
 
     @OneToMany(mappedBy = "bootcamp")
     private List<BootTrack> tracks = new ArrayList<>();
@@ -58,7 +68,6 @@ public class Bootcamp extends BaseEntity {
 
     @OneToMany(mappedBy = "bootcamp")
     private List<BootLanguage> languages = new ArrayList<>();
-
 
 
     public void updateReviewCnt(){
