@@ -1,12 +1,14 @@
 package com.ssafy.campfire.board.dto.response;
 
+import com.ssafy.campfire.bootcamp.domain.QBootcamp;
+
 public record BoardReadResponse(
         Long id,
-        Long userId,
-        Long categoryId,
         String title,
         String content,
-        Boolean anonymous,
+        String bootcamp,
+        String writer,
+        Boolean isWriter,
         Integer commentCnt,
         Integer likeCnt,
         Integer view,
@@ -14,11 +16,11 @@ public record BoardReadResponse(
 ) {
     public static BoardReadResponse from(
             Long id,
-            Long userId,
-            Long categoryId,
             String title,
             String content,
-            Boolean anonymous,
+            String bootcamp,
+            String writer,
+            Boolean isWriter,
             Integer commentCnt,
             Integer likeCnt,
             Integer view,
@@ -26,11 +28,11 @@ public record BoardReadResponse(
     ){
         return new BoardReadResponse(
                 id,
-                userId,
-                categoryId,
                 title,
                 content,
-                anonymous,
+                bootcamp,
+                writer,
+                isWriter,
                 commentCnt,
                 likeCnt,
                 view,
