@@ -1,4 +1,4 @@
-package com.ssafy.campfire.utils.exception.enums;
+package com.ssafy.campfire.utils.error.enums;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;

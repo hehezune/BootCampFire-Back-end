@@ -1,4 +1,4 @@
-package com.ssafy.campfire.utils.exception.dto;
+package com.ssafy.campfire.utils.error.dto;
 
 public record ErrorResponseDto(int code, String phrase) {
     public static ErrorResponseDto of(int code,String phrase){
