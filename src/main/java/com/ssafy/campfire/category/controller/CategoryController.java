@@ -35,8 +35,7 @@ public class CategoryController {
      * 카테고리 별 게시글 목록 보기
      */
     @GetMapping("/{categoryId}")
-    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getNewestList(@PathVariable Long categoryId, Pageable pageable,
-                                                                                   @AuthenticationPrincipal User user) {
+    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getNewestList(@PathVariable Long categoryId, Pageable pageable, @AuthenticationPrincipal User user) {
         return BaseResponseDto.ok(categoryService.getNewestList(user.getId(), categoryId, pageable));
     }
 
