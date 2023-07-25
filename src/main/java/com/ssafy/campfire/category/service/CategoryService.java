@@ -91,4 +91,28 @@ public class CategoryService {
 
         return GlobalPageResponseDto.of(page);
     }
+
+    @Transactional(readOnly = true)
+    public GlobalPageResponseDto<BoardListResponse> getViewOrderList(Long userId, Long categoryId, Pageable pageable){
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
+
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.CATEGORY_NOT_FOUND));
+
+        if(category.getName().getMessage().equals("부트캠프")){
+            Page<BoardListResponse> page = categoryRepository
+                    .getBootBoardByView(categoryId, user.getBootcamp().getId(), pageable)
+                    .map(BoardListResponse::of);
+
+            return GlobalPageResponseDto.of(page);
+        }
+
+        Page<BoardListResponse> page = categoryRepository
+                .getBoardByView(categoryId, pageable)
+                .map(BoardListResponse::of);
+
+        return GlobalPageResponseDto.of(page);
+    }
 }
