@@ -206,3 +206,7 @@ gradle-app.setting
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,java,gradle,macos
 /src/main/resources/static/docs/
+
+### 서버 설정 파일 ###
+/src/main/resources/application-jwt.yml
+/src/main/resources/application-oauth.yml
