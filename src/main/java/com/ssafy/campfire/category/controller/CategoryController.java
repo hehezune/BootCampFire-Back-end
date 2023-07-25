@@ -1,5 +1,6 @@
 package com.ssafy.campfire.category.controller;
 
+import com.ssafy.campfire.category.dto.BoardHotResponse;
 import com.ssafy.campfire.category.dto.BoardListResponse;
 import com.ssafy.campfire.category.dto.BoardMainResponse;
 import com.ssafy.campfire.category.service.CategoryService;
@@ -24,7 +25,15 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     /**
-     * 카테고리 별 메인 게시글 목록 보기
+     * 메인화면 용도 : 인기 게시글 목록 보기
+     */
+    @GetMapping("/hots")
+    public BaseResponseDto<List<BoardHotResponse>> getHotList() {
+        return BaseResponseDto.ok(categoryService.getHotList());
+    }
+
+    /**
+     * 메인화면 용도 : 카테고리 별 메인 게시글 목록 보기
      */
     @GetMapping("/{categoryId}/main")
     public BaseResponseDto<List<BoardMainResponse>> getMainList(@PathVariable Long categoryId) {

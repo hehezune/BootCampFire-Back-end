@@ -1,6 +1,7 @@
 package com.ssafy.campfire.category.service;
 
 import com.ssafy.campfire.category.domain.Category;
+import com.ssafy.campfire.category.dto.BoardHotResponse;
 import com.ssafy.campfire.category.dto.BoardListResponse;
 import com.ssafy.campfire.category.dto.BoardMainResponse;
 import com.ssafy.campfire.category.repository.CategoryRepository;
@@ -32,6 +33,15 @@ public class CategoryService {
                 .stream()
                 .map(BoardMainResponse::of);
         return boardMainResponses;
+    }
+
+    @Transactional(readOnly = true)
+    public List<BoardHotResponse> getHotList(){
+        List<BoardHotResponse> boardHotResponses = (List<BoardHotResponse>) categoryRepository
+                .getHotFiveBoard()
+                .stream()
+                .map(BoardHotResponse::of);
+        return boardHotResponses;
     }
 
     @Transactional(readOnly = true)
