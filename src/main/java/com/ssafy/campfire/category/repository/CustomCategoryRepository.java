@@ -15,4 +15,5 @@ public interface CustomCategoryRepository {
     Page<Board> getBootBoardByLike(Long categoryId, Long bootcampId, Pageable pageable);
     Page<Board> getBoardByView(Long categoryId, Pageable pageable);
     Page<Board> getBootBoardByView(Long categoryId, Long bootcampId, Pageable pageable);
+    Page<Board> getMainSearchByTitleContent(String keyword, Pageable pageable);
 }
