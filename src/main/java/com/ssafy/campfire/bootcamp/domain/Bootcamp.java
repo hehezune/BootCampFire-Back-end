@@ -2,6 +2,8 @@ package com.ssafy.campfire.bootcamp.domain;
 
 import com.ssafy.campfire.utils.domain.BaseEntity;
 import javax.persistence.*;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -62,5 +64,12 @@ public class Bootcamp extends BaseEntity {
     }
     public void updateTotalScore(double score){
         this.totalScore += score;
+    }
+
+    @Builder
+    public Bootcamp(String name){
+        this.name = name;
+        this.algoCnt = 0;
+        this.reviewCnt = 0;
     }
 }
