@@ -1,7 +1,5 @@
 package com.ssafy.campfire.board.dto.response;
 
-import com.ssafy.campfire.bootcamp.domain.QBootcamp;
-
 public record BoardReadResponse(
         Long id,
         String title,
