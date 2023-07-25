@@ -43,14 +43,29 @@ public class CategoryController {
     /**
      * 카테고리 별 게시글 목록 보기 : 최신순(디폴트)
      */
+
+//    //로그인 연결하면
+//    @GetMapping("/{categoryId}")
+//    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getNewestList(@PathVariable Long categoryId, Pageable pageable, @AuthenticationPrincipal User user) {
+//        return BaseResponseDto.ok(categoryService.getNewestList(user.getId(), categoryId, pageable));
+//    }
+
+    // swagger test용
     @GetMapping("/{categoryId}")
-    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getNewestList(@PathVariable Long categoryId, Pageable pageable, @AuthenticationPrincipal User user) {
-        return BaseResponseDto.ok(categoryService.getNewestList(user.getId(), categoryId, pageable));
+    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getNewestList(@PathVariable Long categoryId, Pageable pageable, Long userId) {
+        return BaseResponseDto.ok(categoryService.getNewestList(userId, categoryId, pageable));
     }
 
     /**
      * 카테고리 별 게시글 목록 보기 : 추천순
      */
+
+//    //로그인 연결하면
+//    @GetMapping("/{categoryId}/likes")
+//    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getLikeOrderList(@PathVariable Long categoryId, Pageable pageable, @AuthenticationPrincipal User user) {
+//        return BaseResponseDto.ok(categoryService.getLikeOrderList(user.getId(), categoryId, pageable));
+//    }
+    // swagger test용
     @GetMapping("/{categoryId}/likes")
     public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getLikeOrderList(@PathVariable Long categoryId, Pageable pageable, @AuthenticationPrincipal User user) {
         return BaseResponseDto.ok(categoryService.getLikeOrderList(user.getId(), categoryId, pageable));
@@ -59,9 +74,16 @@ public class CategoryController {
     /**
      * 카테고리 별 게시글 목록 보기 : 조회순
      */
+
+//    // 로그인 연결하면
+//    @GetMapping("/{categoryId}/views")
+//    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getViewOrderList(@PathVariable Long categoryId, Pageable pageable, @AuthenticationPrincipal User user) {
+//        return BaseResponseDto.ok(categoryService.getViewOrderList(user.getId(), categoryId, pageable));
+//    }
+    // swagger test용
     @GetMapping("/{categoryId}/views")
-    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getViewOrderList(@PathVariable Long categoryId, Pageable pageable, @AuthenticationPrincipal User user) {
-        return BaseResponseDto.ok(categoryService.getViewOrderList(user.getId(), categoryId, pageable));
+    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getViewOrderList(@PathVariable Long categoryId, Pageable pageable, Long userId) {
+        return BaseResponseDto.ok(categoryService.getViewOrderList(userId, categoryId, pageable));
     }
 
 }
