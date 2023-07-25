@@ -146,7 +146,7 @@ public class CategoryService {
                 .orElseThrow(() -> new BusinessException(ErrorMessage.CATEGORY_NOT_FOUND));
 
         Page<BoardListResponse> page = categoryRepository
-                .getMainSearchByTitleContent(keyword, pageable)
+                .getSearchByTitleContent(categoryId, keyword, pageable)
                 .map(BoardListResponse::of);
 
         return GlobalPageResponseDto.of(page);
@@ -162,7 +162,7 @@ public class CategoryService {
                 .orElseThrow(() -> new BusinessException(ErrorMessage.CATEGORY_NOT_FOUND));
 
         Page<BoardListResponse> page = categoryRepository
-                .getMainSearchByNickname(nickname, pageable)
+                .getSearchByNickname(categoryId, nickname, pageable)
                 .map(BoardListResponse::of);
 
         return GlobalPageResponseDto.of(page);
