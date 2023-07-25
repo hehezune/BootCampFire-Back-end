@@ -49,49 +49,73 @@ public class CategoryController {
         return BaseResponseDto.ok(categoryService.getMainSearchNicknameList(nickname, pageable));
     }
 
+    /**
+     * @AuthenticationPrincipal 설정 후
+     */
+//    @ApiOperation(value ="카테고리 별 내용 + 제목 검색 결과")
+//    @GetMapping("/{categoryId}/keywords/{keyword}")
+//    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getSearchTitleContentList(@PathVariable Long categoryId, @PathVariable String keyword, Pageable pageable,
+//                                                                                               @AuthenticationPrincipal User user) {
+//        return BaseResponseDto.ok(categoryService.getSearchByTitleContent(user.getId(), categoryId, keyword, pageable));
+//    }
+//
+//    @ApiOperation(value ="카테고리 별 닉네임으로 검색 결과")
+//    @GetMapping("/{categoryId}/nickname/{nickname}")
+//    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getSearchNicknameList(@PathVariable Long categoryId, @PathVariable String nickname, Pageable pageable,
+//                                                                                           @AuthenticationPrincipal User user) {
+//        return BaseResponseDto.ok(categoryService.getSearchByNickname(user.getId(), categoryId, nickname, pageable));
+//    }
+//
+//    @ApiOperation(value ="카테고리 별 게시글 : 최신순")
+//    @GetMapping("/{categoryId}")
+//    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getNewestList(@PathVariable Long categoryId, Pageable pageable,
+//                                                                                   @AuthenticationPrincipal User user) {
+//        return BaseResponseDto.ok(categoryService.getNewestList(user.getId(), categoryId, pageable));
+//    }
+//
+//    @ApiOperation(value ="카테고리 별 게시글 : 추천순")
+//    @GetMapping("/{categoryId}/likes")
+//    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getLikeOrderList(@PathVariable Long categoryId, Pageable pageable,
+//                                                                                      @AuthenticationPrincipal User user) {
+//        return BaseResponseDto.ok(categoryService.getLikeOrderList(user.getId(), categoryId, pageable));
+//    }
+//
+//    @ApiOperation(value ="카테고리 별 게시글 : 조회순")
+//    @GetMapping("/{categoryId}/views")
+//    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getViewOrderList(@PathVariable Long categoryId, Pageable pageable,
+//                                                                                      @AuthenticationPrincipal User user) {
+//        return BaseResponseDto.ok(categoryService.getViewOrderList(user.getId(), categoryId, pageable));
+//    }
+
+    /**
+     * swagger 테스트용
+     */
     @ApiOperation(value ="카테고리 별 내용 + 제목 검색 결과")
     @GetMapping("/{categoryId}/keywords/{keyword}")
-    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getSearchTitleContentList(@PathVariable Long categoryId, @PathVariable String keyword, Pageable pageable) {
-        return BaseResponseDto.ok(categoryService.getSearchByTitleContent(categoryId, keyword, pageable));
+    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getSearchTitleContentList(@PathVariable Long categoryId, @PathVariable String keyword, Pageable pageable,
+                                                                                               Long userId) {
+        return BaseResponseDto.ok(categoryService.getSearchByTitleContent(userId, categoryId, keyword, pageable));
     }
 
     @ApiOperation(value ="카테고리 별 닉네임으로 검색 결과")
     @GetMapping("/{categoryId}/nickname/{nickname}")
-    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getSearchNicknameList(@PathVariable Long categoryId, @PathVariable String nickname, Pageable pageable) {
-        return BaseResponseDto.ok(categoryService.getSearchByNickname(categoryId, nickname, pageable));
+    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getSearchNicknameList(@PathVariable Long categoryId, @PathVariable String nickname, Pageable pageable,
+                                                                                           Long userId) {
+        return BaseResponseDto.ok(categoryService.getSearchByNickname(userId, categoryId, nickname, pageable));
     }
 
-//    //로그인 연결하면
-//    @GetMapping("/{categoryId}")
-//    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getNewestList(@PathVariable Long categoryId, Pageable pageable, @AuthenticationPrincipal User user) {
-//        return BaseResponseDto.ok(categoryService.getNewestList(user.getId(), categoryId, pageable));
-//    }
-
-    // swagger test용
     @ApiOperation(value ="카테고리 별 게시글 : 최신순")
     @GetMapping("/{categoryId}")
     public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getNewestList(@PathVariable Long categoryId, Pageable pageable, Long userId) {
         return BaseResponseDto.ok(categoryService.getNewestList(userId, categoryId, pageable));
     }
 
-//    //로그인 연결하면
-//    @GetMapping("/{categoryId}/likes")
-//    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getLikeOrderList(@PathVariable Long categoryId, Pageable pageable, @AuthenticationPrincipal User user) {
-//        return BaseResponseDto.ok(categoryService.getLikeOrderList(user.getId(), categoryId, pageable));
-//    }
-    // swagger test용
     @ApiOperation(value ="카테고리 별 게시글 : 추천순")
     @GetMapping("/{categoryId}/likes")
-    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getLikeOrderList(@PathVariable Long categoryId, Pageable pageable, @AuthenticationPrincipal User user) {
-        return BaseResponseDto.ok(categoryService.getLikeOrderList(user.getId(), categoryId, pageable));
+    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getLikeOrderList(@PathVariable Long categoryId, Pageable pageable, Long userId) {
+        return BaseResponseDto.ok(categoryService.getLikeOrderList(userId, categoryId, pageable));
     }
 
-//    // 로그인 연결하면
-//    @GetMapping("/{categoryId}/views")
-//    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getViewOrderList(@PathVariable Long categoryId, Pageable pageable, @AuthenticationPrincipal User user) {
-//        return BaseResponseDto.ok(categoryService.getViewOrderList(user.getId(), categoryId, pageable));
-//    }
-    // swagger test용
     @ApiOperation(value ="카테고리 별 게시글 : 조회순")
     @GetMapping("/{categoryId}/views")
     public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getViewOrderList(@PathVariable Long categoryId, Pageable pageable, Long userId) {

@@ -137,7 +137,13 @@ public class CategoryService {
     }
 
     @Transactional(readOnly = true)
-    public GlobalPageResponseDto<BoardListResponse> getSearchByTitleContent(Long categoryId, String keyword, Pageable pageable){
+    public GlobalPageResponseDto<BoardListResponse> getSearchByTitleContent(Long userId, Long categoryId, String keyword, Pageable pageable){
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
+
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.CATEGORY_NOT_FOUND));
 
         Page<BoardListResponse> page = categoryRepository
                 .getMainSearchByTitleContent(keyword, pageable)
@@ -147,7 +153,13 @@ public class CategoryService {
     }
 
     @Transactional(readOnly = true)
-    public GlobalPageResponseDto<BoardListResponse> getSearchByNickname(Long categoryId, String nickname, Pageable pageable){
+    public GlobalPageResponseDto<BoardListResponse> getSearchByNickname(Long userId, Long categoryId, String nickname, Pageable pageable){
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
+
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.CATEGORY_NOT_FOUND));
 
         Page<BoardListResponse> page = categoryRepository
                 .getMainSearchByNickname(nickname, pageable)
