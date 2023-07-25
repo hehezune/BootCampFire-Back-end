@@ -16,6 +16,7 @@ import java.util.List;
 import static com.ssafy.campfire.board.domain.QBoard.board;
 import static com.ssafy.campfire.bootcamp.domain.QBootcamp.bootcamp;
 import static com.ssafy.campfire.category.domain.QCategory.category;
+import static com.ssafy.campfire.category.domain.enums.CategoryType.BOOTCAMP;
 import static com.ssafy.campfire.user.domain.QUser.user;
 
 @Repository
@@ -25,7 +26,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Board> getHotFiveBoard(Long categoryId) {
+    public List<Board> getHotFiveBoard() {
 
         List<Board> boards = queryFactory.select(board)
                 .from(board)
@@ -34,7 +35,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .leftJoin(board.user, user)
                 .fetchJoin()
                 .where(
-                        board.category.id.eq(categoryId),
+                        board.category.name.ne(BOOTCAMP),
                         board.createdDate.in(LocalDateTime.now().minusDays(3))
                         )
                 .orderBy(board.createdDate.desc())
