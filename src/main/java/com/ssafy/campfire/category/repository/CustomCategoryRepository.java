@@ -1,6 +1,7 @@
 package com.ssafy.campfire.category.repository;
 
 import com.ssafy.campfire.board.domain.Board;
+import com.ssafy.campfire.category.dto.BoardMainResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
