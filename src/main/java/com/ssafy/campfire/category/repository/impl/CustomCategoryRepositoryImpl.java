@@ -274,4 +274,29 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
 
         return PageableExecutionUtils.getPage(boards, pageable, countQuery::fetchOne);
     }
+
+    @Override
+    public Page<Board> getMainSearchByNickName(String nickname, Pageable pageable) {
+        List<Board> boards = queryFactory.select(board)
+                .from(board)
+                .leftJoin(board.category, category)
+                .fetchJoin()
+                .leftJoin(board.user, user)
+                .fetchJoin()
+                .where(board.user.nickname.contains(nickname))
+                .orderBy(board.createdDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory.select(board.count())
+                .from(board)
+                .leftJoin(board.category, category)
+                .fetchJoin()
+                .leftJoin(board.user, user)
+                .fetchJoin()
+                .where(board.user.nickname.contains(nickname));
+
+        return PageableExecutionUtils.getPage(boards, pageable, countQuery::fetchOne);
+    }
 }
