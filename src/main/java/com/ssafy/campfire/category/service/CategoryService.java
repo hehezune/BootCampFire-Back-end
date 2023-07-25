@@ -145,6 +145,14 @@ public class CategoryService {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.CATEGORY_NOT_FOUND));
 
+        if(category.getName().getMessage().equals("부트캠프")){
+            Page<BoardListResponse> page = categoryRepository
+                    .getBootSearchByTitleContent(categoryId, user.getBootcamp().getId(), keyword, pageable)
+                    .map(BoardListResponse::of);
+
+            return GlobalPageResponseDto.of(page);
+        }
+
         Page<BoardListResponse> page = categoryRepository
                 .getSearchByTitleContent(categoryId, keyword, pageable)
                 .map(BoardListResponse::of);
@@ -160,6 +168,14 @@ public class CategoryService {
 
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.CATEGORY_NOT_FOUND));
+
+        if(category.getName().getMessage().equals("부트캠프")){
+            Page<BoardListResponse> page = categoryRepository
+                    .getBootSearchByNickname(categoryId, user.getBootcamp().getId(), nickname, pageable)
+                    .map(BoardListResponse::of);
+
+            return GlobalPageResponseDto.of(page);
+        }
 
         Page<BoardListResponse> page = categoryRepository
                 .getSearchByNickname(categoryId, nickname, pageable)
