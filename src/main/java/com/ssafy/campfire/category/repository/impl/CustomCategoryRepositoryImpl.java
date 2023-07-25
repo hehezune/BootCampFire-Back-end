@@ -152,6 +152,42 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
     }
 
     @Override
+    public Page<Board> getBootBoardByLike(Long categoryId, Long bootcampId, Pageable pageable) {
+
+        List<Board> boards = queryFactory.select(board)
+                .from(board)
+                .leftJoin(board.category, category)
+                .fetchJoin()
+                .leftJoin(board.user, user)
+                .fetchJoin()
+                .leftJoin(board.category.bootcamp, bootcamp)
+                .fetchJoin()
+                .where(
+                        board.category.bootcamp.id.eq(bootcampId),
+                        board.category.id.eq(categoryId)
+                )
+                .orderBy(board.likeCnt.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory.select(board.count())
+                .from(board)
+                .leftJoin(board.category, category)
+                .fetchJoin()
+                .leftJoin(board.user, user)
+                .fetchJoin()
+                .leftJoin(board.category.bootcamp, bootcamp)
+                .fetchJoin()
+                .where(
+                        board.category.bootcamp.id.eq(bootcampId),
+                        board.category.id.eq(categoryId)
+                );
+
+        return PageableExecutionUtils.getPage(boards, pageable, countQuery::fetchOne);
+    }
+
+    @Override
     public Page<Board> getBoardByView(Long categoryId, Pageable pageable) {
 
         List<Board> boards =  queryFactory.select(board)
@@ -173,6 +209,42 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .leftJoin(board.user, user)
                 .fetchJoin()
                 .where(board.category.id.eq(categoryId));
+
+        return PageableExecutionUtils.getPage(boards, pageable, countQuery::fetchOne);
+    }
+
+    @Override
+    public Page<Board> getBootBoardByView(Long categoryId, Long bootcampId, Pageable pageable) {
+
+        List<Board> boards = queryFactory.select(board)
+                .from(board)
+                .leftJoin(board.category, category)
+                .fetchJoin()
+                .leftJoin(board.user, user)
+                .fetchJoin()
+                .leftJoin(board.category.bootcamp, bootcamp)
+                .fetchJoin()
+                .where(
+                        board.category.bootcamp.id.eq(bootcampId),
+                        board.category.id.eq(categoryId)
+                )
+                .orderBy(board.view.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory.select(board.count())
+                .from(board)
+                .leftJoin(board.category, category)
+                .fetchJoin()
+                .leftJoin(board.user, user)
+                .fetchJoin()
+                .leftJoin(board.category.bootcamp, bootcamp)
+                .fetchJoin()
+                .where(
+                        board.category.bootcamp.id.eq(bootcampId),
+                        board.category.id.eq(categoryId)
+                );
 
         return PageableExecutionUtils.getPage(boards, pageable, countQuery::fetchOne);
     }
