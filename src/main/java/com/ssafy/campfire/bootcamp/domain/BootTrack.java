@@ -20,5 +20,6 @@ public class BootTrack {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "track_id")
     private Track track;
 }
