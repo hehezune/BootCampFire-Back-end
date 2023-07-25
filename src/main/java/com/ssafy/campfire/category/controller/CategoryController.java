@@ -49,6 +49,18 @@ public class CategoryController {
         return BaseResponseDto.ok(categoryService.getMainSearchNicknameList(nickname, pageable));
     }
 
+    @ApiOperation(value ="카테고리 별 내용 + 제목 검색 결과")
+    @GetMapping("/{categoryId}/keywords/{keyword}")
+    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getSearchTitleContentList(@PathVariable Long categoryId, @PathVariable String keyword, Pageable pageable) {
+        return BaseResponseDto.ok(categoryService.getSearchByTitleContent(categoryId, keyword, pageable));
+    }
+
+    @ApiOperation(value ="카테고리 별 닉네임으로 검색 결과")
+    @GetMapping("/{categoryId}/nickname/{nickname}")
+    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getSearchNicknameList(@PathVariable Long categoryId, @PathVariable String nickname, Pageable pageable) {
+        return BaseResponseDto.ok(categoryService.getSearchByNickname(categoryId, nickname, pageable));
+    }
+
 //    //로그인 연결하면
 //    @GetMapping("/{categoryId}")
 //    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getNewestList(@PathVariable Long categoryId, Pageable pageable, @AuthenticationPrincipal User user) {

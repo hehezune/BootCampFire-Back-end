@@ -135,4 +135,24 @@ public class CategoryService {
 
         return GlobalPageResponseDto.of(page);
     }
+
+    @Transactional(readOnly = true)
+    public GlobalPageResponseDto<BoardListResponse> getSearchByTitleContent(Long categoryId, String keyword, Pageable pageable){
+
+        Page<BoardListResponse> page = categoryRepository
+                .getMainSearchByTitleContent(keyword, pageable)
+                .map(BoardListResponse::of);
+
+        return GlobalPageResponseDto.of(page);
+    }
+
+    @Transactional(readOnly = true)
+    public GlobalPageResponseDto<BoardListResponse> getSearchByNickname(Long categoryId, String nickname, Pageable pageable){
+
+        Page<BoardListResponse> page = categoryRepository
+                .getMainSearchByNickname(nickname, pageable)
+                .map(BoardListResponse::of);
+
+        return GlobalPageResponseDto.of(page);
+    }
 }
