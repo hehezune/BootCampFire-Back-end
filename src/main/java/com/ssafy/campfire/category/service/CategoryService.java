@@ -115,4 +115,72 @@ public class CategoryService {
 
         return GlobalPageResponseDto.of(page);
     }
+
+    @Transactional(readOnly = true)
+    public GlobalPageResponseDto<BoardListResponse> getMainSearchTitleContentList(String keyword, Pageable pageable){
+
+        Page<BoardListResponse> page = categoryRepository
+                .getMainSearchByTitleContent(keyword, pageable)
+                .map(BoardListResponse::of);
+
+        return GlobalPageResponseDto.of(page);
+    }
+
+    @Transactional(readOnly = true)
+    public GlobalPageResponseDto<BoardListResponse> getMainSearchNicknameList(String nickname, Pageable pageable){
+
+        Page<BoardListResponse> page = categoryRepository
+                .getMainSearchByNickname(nickname, pageable)
+                .map(BoardListResponse::of);
+
+        return GlobalPageResponseDto.of(page);
+    }
+
+    @Transactional(readOnly = true)
+    public GlobalPageResponseDto<BoardListResponse> getSearchByTitleContent(Long userId, Long categoryId, String keyword, Pageable pageable){
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
+
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.CATEGORY_NOT_FOUND));
+
+        if(category.getName().getMessage().equals("부트캠프")){
+            Page<BoardListResponse> page = categoryRepository
+                    .getBootSearchByTitleContent(categoryId, user.getBootcamp().getId(), keyword, pageable)
+                    .map(BoardListResponse::of);
+
+            return GlobalPageResponseDto.of(page);
+        }
+
+        Page<BoardListResponse> page = categoryRepository
+                .getSearchByTitleContent(categoryId, keyword, pageable)
+                .map(BoardListResponse::of);
+
+        return GlobalPageResponseDto.of(page);
+    }
+
+    @Transactional(readOnly = true)
+    public GlobalPageResponseDto<BoardListResponse> getSearchByNickname(Long userId, Long categoryId, String nickname, Pageable pageable){
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
+
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.CATEGORY_NOT_FOUND));
+
+        if(category.getName().getMessage().equals("부트캠프")){
+            Page<BoardListResponse> page = categoryRepository
+                    .getBootSearchByNickname(categoryId, user.getBootcamp().getId(), nickname, pageable)
+                    .map(BoardListResponse::of);
+
+            return GlobalPageResponseDto.of(page);
+        }
+
+        Page<BoardListResponse> page = categoryRepository
+                .getSearchByNickname(categoryId, nickname, pageable)
+                .map(BoardListResponse::of);
+
+        return GlobalPageResponseDto.of(page);
+    }
 }

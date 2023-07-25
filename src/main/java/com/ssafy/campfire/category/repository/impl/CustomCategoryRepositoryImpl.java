@@ -248,4 +248,191 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
 
         return PageableExecutionUtils.getPage(boards, pageable, countQuery::fetchOne);
     }
+
+    @Override
+    public Page<Board> getMainSearchByTitleContent(String keyword, Pageable pageable) {
+
+        List<Board> boards = queryFactory.select(board)
+                .from(board)
+                .leftJoin(board.category, category)
+                .fetchJoin()
+                .leftJoin(board.user, user)
+                .fetchJoin()
+                .where((board.title.contains(keyword)).or(board.content.contains(keyword)))
+                .orderBy(board.createdDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory.select(board.count())
+                .from(board)
+                .leftJoin(board.category, category)
+                .fetchJoin()
+                .leftJoin(board.user, user)
+                .fetchJoin()
+                .where((board.title.contains(keyword)).or(board.content.contains(keyword)));
+
+        return PageableExecutionUtils.getPage(boards, pageable, countQuery::fetchOne);
+    }
+
+    @Override
+    public Page<Board> getMainSearchByNickname(String nickname, Pageable pageable) {
+        List<Board> boards = queryFactory.select(board)
+                .from(board)
+                .leftJoin(board.category, category)
+                .fetchJoin()
+                .leftJoin(board.user, user)
+                .fetchJoin()
+                .where(board.user.nickname.contains(nickname))
+                .orderBy(board.createdDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory.select(board.count())
+                .from(board)
+                .leftJoin(board.category, category)
+                .fetchJoin()
+                .leftJoin(board.user, user)
+                .fetchJoin()
+                .where(board.user.nickname.contains(nickname));
+
+        return PageableExecutionUtils.getPage(boards, pageable, countQuery::fetchOne);
+    }
+
+    @Override
+    public Page<Board> getSearchByTitleContent(Long categoryId, String keyword, Pageable pageable) {
+        List<Board> boards = queryFactory.select(board)
+                .from(board)
+                .leftJoin(board.category, category)
+                .fetchJoin()
+                .leftJoin(board.user, user)
+                .fetchJoin()
+                .where(
+                        (board.title.contains(keyword)).or(board.content.contains(keyword)),
+                        board.category.id.eq(categoryId)
+                )
+                .orderBy(board.createdDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory.select(board.count())
+                .from(board)
+                .leftJoin(board.category, category)
+                .fetchJoin()
+                .leftJoin(board.user, user)
+                .fetchJoin()
+                .where(
+                        (board.title.contains(keyword)).or(board.content.contains(keyword)),
+                        board.category.id.eq(categoryId)
+                );
+
+        return PageableExecutionUtils.getPage(boards, pageable, countQuery::fetchOne);
+    }
+
+    @Override
+    public Page<Board> getSearchByNickname(Long categoryId, String nickname, Pageable pageable) {
+        List<Board> boards = queryFactory.select(board)
+                .from(board)
+                .leftJoin(board.category, category)
+                .fetchJoin()
+                .leftJoin(board.user, user)
+                .fetchJoin()
+                .where(
+                        board.user.nickname.contains(nickname),
+                        board.category.id.eq(categoryId)
+                )
+                .orderBy(board.createdDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory.select(board.count())
+                .from(board)
+                .leftJoin(board.category, category)
+                .fetchJoin()
+                .leftJoin(board.user, user)
+                .fetchJoin()
+                .where(
+                        board.user.nickname.contains(nickname),
+                        board.category.id.eq(categoryId)
+                );
+
+        return PageableExecutionUtils.getPage(boards, pageable, countQuery::fetchOne);
+    }
+
+    @Override
+    public Page<Board> getBootSearchByTitleContent(Long categoryId, Long bootcampId, String keyword, Pageable pageable) {
+        List<Board> boards = queryFactory.select(board)
+                .from(board)
+                .leftJoin(board.category, category)
+                .fetchJoin()
+                .leftJoin(board.user, user)
+                .fetchJoin()
+                .leftJoin(board.category.bootcamp, bootcamp)
+                .fetchJoin()
+                .where(
+                        board.category.bootcamp.id.eq(bootcampId),
+                        (board.title.contains(keyword)).or(board.content.contains(keyword)),
+                        board.category.id.eq(categoryId)
+                )
+                .orderBy(board.createdDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory.select(board.count())
+                .from(board)
+                .leftJoin(board.category, category)
+                .fetchJoin()
+                .leftJoin(board.user, user)
+                .fetchJoin()
+                .leftJoin(board.category.bootcamp, bootcamp)
+                .fetchJoin()
+                .where(
+                        board.category.bootcamp.id.eq(bootcampId),
+                        (board.title.contains(keyword)).or(board.content.contains(keyword)),
+                        board.category.id.eq(categoryId)
+                );
+
+        return PageableExecutionUtils.getPage(boards, pageable, countQuery::fetchOne);
+    }
+
+    @Override
+    public Page<Board> getBootSearchByNickname(Long categoryId, Long bootcampId, String nickname, Pageable pageable) {
+        List<Board> boards = queryFactory.select(board)
+                .from(board)
+                .leftJoin(board.category, category)
+                .fetchJoin()
+                .leftJoin(board.user, user)
+                .fetchJoin()
+                .leftJoin(board.category.bootcamp, bootcamp)
+                .fetchJoin()
+                .where(
+                        board.category.bootcamp.id.eq(bootcampId),
+                        board.user.nickname.contains(nickname),
+                        board.category.id.eq(categoryId)
+                )
+                .orderBy(board.createdDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory.select(board.count())
+                .from(board)
+                .leftJoin(board.category, category)
+                .fetchJoin()
+                .leftJoin(board.user, user)
+                .fetchJoin()
+                .leftJoin(board.category.bootcamp, bootcamp)
+                .fetchJoin()
+                .where(
+                        board.category.bootcamp.id.eq(bootcampId),
+                        board.user.nickname.contains(nickname),
+                        board.category.id.eq(categoryId)
+                );
+
+        return PageableExecutionUtils.getPage(boards, pageable, countQuery::fetchOne);
+    }
 }
