@@ -41,12 +41,19 @@ public class CategoryController {
     }
 
     /**
-     * 카테고리 별 게시글 목록 보기
+     * 카테고리 별 게시글 목록 보기 : 최신순(디폴트)
      */
     @GetMapping("/{categoryId}")
     public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getNewestList(@PathVariable Long categoryId, Pageable pageable, @AuthenticationPrincipal User user) {
         return BaseResponseDto.ok(categoryService.getNewestList(user.getId(), categoryId, pageable));
     }
 
+    /**
+     * 카테고리 별 게시글 목록 보기 : 인기순
+     */
+    @GetMapping("/{categoryId}/likes")
+    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getLikeOrderList(@PathVariable Long categoryId, Pageable pageable, @AuthenticationPrincipal User user) {
+        return BaseResponseDto.ok(categoryService.getLikeOrderList(user.getId(), categoryId, pageable));
+    }
 
 }
