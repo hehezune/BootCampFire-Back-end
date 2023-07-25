@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor //기본 생성자 생성
@@ -25,7 +23,7 @@ public class Bootcamp extends BaseEntity {
     @Column(name = "site_url")
     private String siteUrl;
 
-    private String procedure;
+    private String process;
 
     private String schedule;
 
@@ -58,18 +56,6 @@ public class Bootcamp extends BaseEntity {
     private Integer algoCnt;
 
 
-    @OneToMany(mappedBy = "bootcamp")
-    private List<BootTrack> tracks = new ArrayList<>();
-
-
-    @OneToMany(mappedBy = "bootcamp")
-    private List<BootRegion> regions = new ArrayList<>();
-
-
-    @OneToMany(mappedBy = "bootcamp")
-    private List<BootLanguage> languages = new ArrayList<>();
-
-
     public void updateReviewCnt(){
         this.reviewCnt++;
 
@@ -77,11 +63,4 @@ public class Bootcamp extends BaseEntity {
     public void updateTotalScore(double score){
         this.totalScore += score;
     }
-
-//    public void updateAlgoCnt(){
-//    }
-
-
-
-
 }
