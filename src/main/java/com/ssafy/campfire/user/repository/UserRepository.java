@@ -10,8 +10,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByKakaoEmail(String kakaoEmail);
     Optional<User> findByGoogleEmail(String googleEmail);
-    Optional<User> findByNaverEmail(String NaverEmail);
+    Optional<User> findByNaverEmail(String naverEmail);
 
+    Optional<User> findByUserId(String userId);
     Optional<User> findByNickname(String nickname);
 
     Optional<User> findByRefreshToken(String refreshToken);

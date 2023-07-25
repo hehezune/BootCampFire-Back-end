@@ -5,6 +5,7 @@ import com.ssafy.campfire.user.domain.Role;
 import com.ssafy.campfire.user.dto.UserSignUpDto;
 import com.ssafy.campfire.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -15,48 +16,27 @@ import javax.transaction.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-
+    private final PasswordEncoder passwordEncoder;
     public void signUp(UserSignUpDto userSignUpDto) throws Exception {
 
-        String provider = userSignUpDto.getProvider();
-
-        if(provider.equals("kakao")){
-            if (userRepository.findByKakaoEmail(userSignUpDto.getEmail()).isPresent()) {
-                throw new Exception("이미 존재하는 이메일입니다.");
-            }
-        } else if (provider.equals("google")) {
-            if (userRepository.findByGoogleEmail(userSignUpDto.getEmail()).isPresent()) {
-                throw new Exception("이미 존재하는 이메일입니다.");
-            }
-        } else if (provider.equals("naver")) {
-            if (userRepository.findByNaverEmail(userSignUpDto.getEmail()).isPresent()) {
-                throw new Exception("이미 존재하는 이메일입니다.");
-            }
+        if (userRepository.findByUserId(userSignUpDto.getUserId()).isPresent()) {
+            throw new Exception("이미 존재하는 아이디입니다.");
+        }
+        if (userRepository.findByNickname(userSignUpDto.getNickname()).isPresent()) {
+            throw new Exception("이미 존재하는 닉네임입니다.");
         }
 
         User user = null;
 
-        if(provider.equals("kakao")){
-            user = User.builder()
-                    .kakaoEmail(userSignUpDto.getEmail())
-                    .nickname(userSignUpDto.getNickname())
-                    .role(Role.USER)
-                    .build();
-        } else if (provider.equals("google")) {
-            user = User.builder()
-                    .googleEmail(userSignUpDto.getEmail())
-                    .nickname(userSignUpDto.getNickname())
-                    .role(Role.USER)
-                    .build();
-        } else if (provider.equals("naver")) {
-            user = User.builder()
-                    .naverEmail(userSignUpDto.getEmail())
-                    .nickname(userSignUpDto.getNickname())
-                    .role(Role.USER)
-                    .build();
-        }
+        user = User.builder()
+                .userId(userSignUpDto.getUserId())
+                .password(userSignUpDto.getPassword())
+                .nickname(userSignUpDto.getNickname())
+                .role(Role.USER)
+                .build();
 
 
+        user.passwordEncode(passwordEncoder);
         userRepository.save(user);
     }
 }

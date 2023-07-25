@@ -12,7 +12,7 @@ public class UserSignUpDto {
     * email : 소셜의 이메일
     * */
 
-    private String provider;
-    private String email;
+    private String userId;
+    private String password;
     private String nickname;
 }
