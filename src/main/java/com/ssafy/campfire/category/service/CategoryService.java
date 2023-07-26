@@ -1,9 +1,9 @@
 package com.ssafy.campfire.category.service;
 
 import com.ssafy.campfire.category.domain.Category;
-import com.ssafy.campfire.category.dto.BoardHotResponse;
-import com.ssafy.campfire.category.dto.BoardListResponse;
-import com.ssafy.campfire.category.dto.BoardMainResponse;
+import com.ssafy.campfire.category.dto.response.BoardHotResponse;
+import com.ssafy.campfire.category.dto.response.BoardListResponse;
+import com.ssafy.campfire.category.dto.response.BoardMainResponse;
 import com.ssafy.campfire.category.repository.CategoryRepository;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.user.repository.UserRepository;
