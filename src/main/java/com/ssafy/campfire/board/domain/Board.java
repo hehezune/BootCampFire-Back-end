@@ -1,5 +1,6 @@
 package com.ssafy.campfire.board.domain;
 
+import com.ssafy.campfire.board.domain.dto.BoardUpdate;
 import com.ssafy.campfire.bootcamp.domain.Bootcamp;
 import com.ssafy.campfire.category.domain.Category;
 import com.ssafy.campfire.user.domain.User;
@@ -81,5 +82,12 @@ public class Board extends BaseEntity {
 
     public void writeBy(User user){
         this.user = user;
+    }
+
+    public void update(BoardUpdate boardUpdate) {
+        this.title = boardUpdate.title();
+        this.content = boardUpdate.content();
+        this.anonymous = boardUpdate.anonymous();
+
     }
 }

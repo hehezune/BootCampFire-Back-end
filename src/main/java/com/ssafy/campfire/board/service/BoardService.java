@@ -2,7 +2,9 @@ package com.ssafy.campfire.board.service;
 
 import com.ssafy.campfire.board.domain.Board;
 import com.ssafy.campfire.board.dto.request.BoardCreateRequest;
+import com.ssafy.campfire.board.dto.request.BoardUpdateRequest;
 import com.ssafy.campfire.board.dto.response.BoardCreateResponse;
+import com.ssafy.campfire.board.dto.response.BoardUpdateResponse;
 import com.ssafy.campfire.board.repository.BoardRepository;
 import com.ssafy.campfire.category.domain.Category;
 import com.ssafy.campfire.category.repository.CategoryRepository;
@@ -36,6 +38,24 @@ public class BoardService {
         Board savedPost = boardRepository.save(board);
 
         return BoardCreateResponse.from(savedPost);
+    }
+
+    public BoardUpdateResponse update(Long boardId,
+                                      BoardUpdateRequest request) {
+
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.BOARD_NOT_FOUND));
+
+        board.update(request.toDto());
+
+        return new BoardUpdateResponse(
+                board.getId(),
+                board.getCategory().getName().getMessage(),
+                board.getUser().getNickname(),
+                board.getTitle(),
+                board.getContent(),
+                board.getAnonymous()
+        );
     }
 
 }
