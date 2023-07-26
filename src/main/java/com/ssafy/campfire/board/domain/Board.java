@@ -18,6 +18,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -73,6 +75,7 @@ public class Board extends BaseEntity {
         this.commentCnt = 0;
         this.likeCnt = 0;
         this.view = 0;
+        this.createdDate = LocalDateTime.now();
     }
 
     public void setCategory(User user, Category category) {
@@ -88,6 +91,6 @@ public class Board extends BaseEntity {
         this.title = boardUpdate.title();
         this.content = boardUpdate.content();
         this.anonymous = boardUpdate.anonymous();
-
+        this.updatedDate = LocalDateTime.now();
     }
 }
