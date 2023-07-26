@@ -1,5 +1,6 @@
 package com.ssafy.campfire.board.domain;
 
+import com.ssafy.campfire.bootcamp.domain.Bootcamp;
 import com.ssafy.campfire.category.domain.Category;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.utils.domain.BaseEntity;
@@ -45,6 +46,10 @@ public class Board extends BaseEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bootcamp_id")
+    private Bootcamp bootcamp;
+
     @Column(nullable = false)
     private String title;
 
@@ -60,18 +65,18 @@ public class Board extends BaseEntity {
 
     private Integer view;
 
-    public void writeBy(User user) {
+    public Board(User user, String title, String content, Boolean anonymous){
         this.user = user;
-    }
-
-    public Board(String title, String content, Boolean anonymous){
         this.title = title;
         this.content = content;
         this.anonymous = anonymous;
+        this.commentCnt = 0;
+        this.likeCnt = 0;
+        this.view = 0;
     }
 
-    public void setCategory(Category category){
+    public void setCategory(User user, Category category) {
         this.category = category;
+        this.bootcamp = user.getBootcamp();
     }
-
 }
