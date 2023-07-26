@@ -8,6 +8,8 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Entity
 @Builder
@@ -33,8 +35,6 @@ public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String userId;
-    private String password;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bootcamp_id")
@@ -49,14 +49,9 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(nullable = false)
-    private String kakaoEmail;
+    private String email;
 
-    @Column(nullable = false)
-    private String googleEmail;
-
-    @Column(nullable = false)
-    private String naverEmail;
+    private String provider;
 
     private String imgUrl;
 
@@ -65,24 +60,26 @@ public class User extends BaseEntity {
 
     private String refreshToken; // 리프레시 토큰
 
+    public User(String email, String provider) {
+        this.nickname = email;
+        
+        this.email = email;
+        this.provider = provider;
+        this.role = Role.USER;
+        this.createdDate = LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now();
+    }
+
     // 유저 권한 설정 메소드
     public void authorizeUser() {
         this.role = Role.USER;
     }
 
+    public void updatedUpdatedate(){this.updatedDate = LocalDateTime.now();}
+
     //== 유저 필드 업데이트 ==//
     public void updateNickname(String updateNickname) {
         this.nickname = updateNickname;
-    }
-
-    public void updateRefreshToken(String updateRefreshToken) {
-        this.refreshToken = updateRefreshToken;
-    }
-    // 비밀번호 암호화 메소드
-    public void passwordEncode(PasswordEncoder passwordEncoder) {
-        this.password = passwordEncoder.encode(this.password);
-    }
-    public void updatePassword(String updatePassword, PasswordEncoder passwordEncoder) {
-        this.password = passwordEncoder.encode(updatePassword);
+        updatedUpdatedate();
     }
 }
