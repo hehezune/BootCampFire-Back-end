@@ -29,6 +29,12 @@ public class BoardController {
         return BaseResponseDto.ok(boardService.update(boardId, request));
     }
 
+    @ApiOperation(value ="게시글 삭제")
+    @DeleteMapping("/{boardId}")
+    public BaseResponseDto<Long> deletePost(@PathVariable Long boardId) {
+        return BaseResponseDto.ok(boardService.delete(boardId));
+    }
+
     /**
      * @AuthenticationPrincipal 설정 후
      */

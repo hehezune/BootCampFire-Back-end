@@ -58,4 +58,11 @@ public class BoardService {
         );
     }
 
+    public Long delete(Long boardId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.BOARD_NOT_FOUND));
+        boardRepository.delete(board);
+        return board.getId();
+    }
+
 }
