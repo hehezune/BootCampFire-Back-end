@@ -1,5 +1,7 @@
 package com.ssafy.campfire.board.dto.response;
 
+import java.time.LocalDateTime;
+
 public record BoardReadResponse(
         Long id,
         String title,
@@ -10,7 +12,8 @@ public record BoardReadResponse(
         Integer commentCnt,
         Integer likeCnt,
         Integer view,
-        Boolean isLike
+        Boolean isLike,
+        LocalDateTime createdDate
 ) {
     public static BoardReadResponse from(
             Long id,
@@ -22,7 +25,8 @@ public record BoardReadResponse(
             Integer commentCnt,
             Integer likeCnt,
             Integer view,
-            Boolean isLike
+            Boolean isLike,
+            LocalDateTime createdDate
     ){
         return new BoardReadResponse(
                 id,
@@ -34,7 +38,8 @@ public record BoardReadResponse(
                 commentCnt,
                 likeCnt,
                 view,
-                isLike
+                isLike,
+                createdDate
         );
     }
 }

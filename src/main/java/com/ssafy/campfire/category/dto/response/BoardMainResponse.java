@@ -1,4 +1,4 @@
-package com.ssafy.campfire.category.dto;
+package com.ssafy.campfire.category.dto.response;
 
 import com.ssafy.campfire.board.domain.Board;
 
