@@ -1,13 +1,11 @@
 package com.ssafy.campfire.board.dto.response;
 
 import com.ssafy.campfire.board.domain.Board;
-import com.ssafy.campfire.category.domain.Category;
-import com.ssafy.campfire.user.domain.User;
 
 public record BoardCreateResponse(
     Long id,
-    Category category,
-    User user,
+    String category,
+    String user,
     String title,
     String content,
     Boolean anonymous
@@ -15,8 +13,8 @@ public record BoardCreateResponse(
     public static BoardCreateResponse from(Board board){
         return new BoardCreateResponse(
                 board.getId(),
-                board.getCategory(),
-                board.getUser(),
+                board.getCategory().getName().getMessage(),
+                board.getUser().getNickname(),
                 board.getTitle(),
                 board.getContent(),
                 board.getAnonymous()

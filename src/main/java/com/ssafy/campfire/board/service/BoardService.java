@@ -27,13 +27,14 @@ public class BoardService {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
-        Category category = categoryRepository.findById(request.category().getId())
+        Category category = categoryRepository.findById(request.categoryId())
                 .orElseThrow(() -> new BusinessException(ErrorMessage.CATEGORY_NOT_FOUND));
 
         Board board = request.toEntity();
         board.setCategory(user, category);
+        board.writeBy(user);
         Board savedPost = boardRepository.save(board);
-        
+
         return BoardCreateResponse.from(savedPost);
     }
 

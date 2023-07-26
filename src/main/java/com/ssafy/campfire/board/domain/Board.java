@@ -65,8 +65,7 @@ public class Board extends BaseEntity {
 
     private Integer view;
 
-    public Board(User user, String title, String content, Boolean anonymous){
-        this.user = user;
+    public Board(String title, String content, Boolean anonymous){
         this.title = title;
         this.content = content;
         this.anonymous = anonymous;
@@ -78,5 +77,9 @@ public class Board extends BaseEntity {
     public void setCategory(User user, Category category) {
         this.category = category;
         this.bootcamp = user.getBootcamp();
+    }
+
+    public void writeBy(User user){
+        this.user = user;
     }
 }
