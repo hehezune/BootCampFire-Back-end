@@ -1,17 +1,20 @@
 package com.ssafy.campfire.user.controller;
 
+import com.ssafy.campfire.board.dto.response.BoardUpdateResponse;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.user.dto.UserSignUpDto;
 import com.ssafy.campfire.user.service.UserService;
+import com.ssafy.campfire.utils.dto.response.BaseResponseDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -22,13 +25,19 @@ public class UserController {
         return "login";
     }
 
-    @GetMapping("/info")
-    //@PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @GetMapping("")
     public String userInfo(Model model, Authentication auth) {
-
         User loginUser = userService.getLoginUserByNickname(auth.getName());
         model.addAttribute("user", loginUser);
         System.out.println(loginUser.toString());
         return "info";
+    }
+    @GetMapping("/info")
+    public BaseResponseDto<User> userInfomation(Model model, Authentication auth) {
+
+        System.out.println(auth.getName());
+        User loginUser = userService.getLoginUserByNickname(auth.getName());
+        model.addAttribute("user", loginUser);
+        return BaseResponseDto.ok(userService.getLoginUserByNickname(auth.getName()));
     }
 }
