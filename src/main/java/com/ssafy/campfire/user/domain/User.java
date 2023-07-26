@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDateTime;
 
 @Getter
+@ToString
 @Entity
 @Builder
 @AllArgsConstructor
@@ -60,9 +61,8 @@ public class User extends BaseEntity {
 
     private String refreshToken; // 리프레시 토큰
 
-    public User(String email, String provider) {
-        this.nickname = email;
-        
+    public User(String nickname, String email, String provider) {
+        this.nickname = nickname;
         this.email = email;
         this.provider = provider;
         this.role = Role.USER;

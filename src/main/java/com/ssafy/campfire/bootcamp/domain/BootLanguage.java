@@ -20,5 +20,6 @@ public class BootLanguage {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lenguage_id")
     private Language lenguage;
 }

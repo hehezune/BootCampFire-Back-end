@@ -46,18 +46,21 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         }
 
         String email = oAuth2UserInfo.getEmail();
+        int index = email.indexOf("@");
+        String userId = email.substring(0,index);
+        String nickname = userId+"_"+provider;
 
         Optional<User> optionalUser = userRepository.findByEmail(email);
 
         User user = null;
         if(optionalUser.isEmpty()) {
-            user = new User(email, provider);
+            user = new User(nickname, email, provider);
             userRepository.save(user);
         } else {
             if(userRepository.findDeatailByEmail(email).getProvider().equals(provider)){
                 user = optionalUser.get();
             } else{
-                user = new User(email, provider);
+                user = new User(nickname ,email, provider);
                 userRepository.save(user);
             }
         }

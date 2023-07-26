@@ -19,6 +19,8 @@ public class BootRegion {
     private Bootcamp bootcamp;
 
 
+
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "region_id")
     private Region region;
 }

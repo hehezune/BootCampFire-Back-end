@@ -3,6 +3,7 @@ package com.ssafy.campfire.user.controller;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.user.dto.UserSignUpDto;
 import com.ssafy.campfire.user.service.UserService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
@@ -15,17 +16,19 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/sign-up")
-    public String signUp(@RequestBody UserSignUpDto userSignUpDto) throws Exception {
-        userService.signUp(userSignUpDto);
-        return "회원가입 성공";
-    }
+    @ApiOperation(value ="로그인")
     @GetMapping("/login")
-    public String loginPage(Model model) {
+    public String loginPage() {
         return "login";
     }
-    @GetMapping("/jwt-test")
-    public String jwtTest() {
-        return "jwtTest 요청 성공";
+
+    @GetMapping("/info")
+    //@PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    public String userInfo(Model model, Authentication auth) {
+
+        User loginUser = userService.getLoginUserByNickname(auth.getName());
+        model.addAttribute("user", loginUser);
+        System.out.println(loginUser.toString());
+        return "info";
     }
 }

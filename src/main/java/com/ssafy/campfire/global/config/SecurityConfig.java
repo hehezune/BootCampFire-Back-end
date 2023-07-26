@@ -24,15 +24,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 인가
                 .antMatchers("/user/admin/**").hasAuthority(Role.ADMIN.name())
                 .anyRequest().permitAll()
-                .and()
-                .logout()
-                .logoutUrl("/user/logout")
-                .invalidateHttpSession(true).deleteCookies("JSESSIONID")
                 // OAuth 로그인
                 .and()
                 .oauth2Login()
                 .loginPage("/user/login")
-                .defaultSuccessUrl("/user")
+                .defaultSuccessUrl("/")
                 .userInfoEndpoint()
                 .userService(principalOauth2UserService)
         ;
