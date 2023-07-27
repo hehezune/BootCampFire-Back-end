@@ -4,6 +4,7 @@ import com.ssafy.campfire.board.domain.Board;
 import com.ssafy.campfire.board.dto.request.BoardCreateRequest;
 import com.ssafy.campfire.board.dto.request.BoardUpdateRequest;
 import com.ssafy.campfire.board.dto.response.BoardCreateResponse;
+import com.ssafy.campfire.board.dto.response.BoardReadResponse;
 import com.ssafy.campfire.board.dto.response.BoardUpdateResponse;
 import com.ssafy.campfire.board.repository.BoardRepository;
 import com.ssafy.campfire.category.domain.Category;
@@ -38,6 +39,33 @@ public class BoardService {
         Board savedPost = boardRepository.save(board);
 
         return BoardCreateResponse.from(savedPost);
+    }
+
+    @Transactional(readOnly = true)
+    public BoardReadResponse get(Long boardId, Long userId){
+        Board board = boardRepository.getByIdFetchJoin(boardId)
+                .orElseThrow(() -> new BusinessException((ErrorMessage.BOARD_NOT_FOUND)));
+
+        Boolean hasLike = false;
+
+        // 좋아요 로직 구현 후 적용용
+//        if(uerId != null){
+//
+//        }
+
+        return BoardReadResponse.from(
+                board.getId(),
+                board.getTitle(),
+                board.getContent(),
+                board.getBootcamp().getName(),
+                board.getUser().getNickname(),
+                board.getAnonymous(),
+                board.getCommentCnt(),
+                board.getLikeCnt(),
+                board.getView(),
+                hasLike,
+                board.getCreatedDate()
+        );
     }
 
     public BoardUpdateResponse update(Long boardId,

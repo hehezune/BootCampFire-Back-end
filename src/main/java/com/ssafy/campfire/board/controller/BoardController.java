@@ -4,6 +4,7 @@ import com.ssafy.campfire.board.domain.dto.BoardUpdate;
 import com.ssafy.campfire.board.dto.request.BoardCreateRequest;
 import com.ssafy.campfire.board.dto.request.BoardUpdateRequest;
 import com.ssafy.campfire.board.dto.response.BoardCreateResponse;
+import com.ssafy.campfire.board.dto.response.BoardReadResponse;
 import com.ssafy.campfire.board.dto.response.BoardUpdateResponse;
 import com.ssafy.campfire.board.service.BoardService;
 import com.ssafy.campfire.user.domain.User;
@@ -44,6 +45,13 @@ public class BoardController {
 //                                                           @AuthenticationPrincipal User user) {
 //        return BaseResponseDto.ok(boardService.save(user.getId(), request));
 //    }
+//
+//    @ApiOperation(value ="게시글 상세조회")
+//    @GetMapping("/{boardId}")
+//    public BaseResponseDto<BoardReadResponse> getBoard(@PathVariable Long boardId,
+//                                                       @AuthenticationPrincipal User user) {
+//        return BaseResponseDto.ok(boardService.get(boardId, user.getId()));
+//    }
 
     /**
      * swagger test
@@ -53,6 +61,13 @@ public class BoardController {
     public BaseResponseDto<BoardCreateResponse> createBoard(@RequestBody @Valid BoardCreateRequest request,
                                                            Long userId) {
         return BaseResponseDto.ok(boardService.save(userId, request));
+    }
+
+    @ApiOperation(value ="게시글 상세조회")
+    @GetMapping("/{boardId}")
+    public BaseResponseDto<BoardReadResponse> getBoard(@PathVariable Long boardId,
+                                                       Long userId) {
+        return BaseResponseDto.ok(boardService.get(boardId, userId));
     }
 
 }
