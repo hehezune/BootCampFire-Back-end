@@ -2,6 +2,7 @@ package com.ssafy.campfire.user.controller;
 
 import com.ssafy.campfire.board.dto.request.BoardUpdateRequest;
 import com.ssafy.campfire.board.dto.response.BoardUpdateResponse;
+import com.ssafy.campfire.global.login.PrincipalDetails;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.user.dto.request.UserUpdateRequest;
 import com.ssafy.campfire.user.dto.response.UserReadResponse;
@@ -26,14 +27,14 @@ public class UserController {
     private final UserService userService;
     @ApiOperation(value ="개인 정보 조회")
     @GetMapping("")
-    public BaseResponseDto<UserReadResponse> userInfo(Authentication auth) {
-        return BaseResponseDto.ok(userService.read(auth.getName()));
+    public BaseResponseDto<UserReadResponse> userInfo(@AuthenticationPrincipal PrincipalDetails user) {
+        return BaseResponseDto.ok(userService.read(user.getName()));
     }
 
     @ApiOperation(value = "개인 정보 수정")
     @PutMapping("")
-    public BaseResponseDto<UserUpdateResponse> update(Authentication auth, @RequestBody @Valid UserUpdateRequest request){
-        return BaseResponseDto.ok(userService.update(auth.getName(), request));
+    public BaseResponseDto<UserUpdateResponse> update(@AuthenticationPrincipal PrincipalDetails user, @RequestBody @Valid UserUpdateRequest request){
+        return BaseResponseDto.ok(userService.update(user.getName(), request));
     }
 
     @ApiOperation("닉네임 중복 검사")
@@ -43,7 +44,7 @@ public class UserController {
     }
     @ApiOperation("소속 인증 확인 요청")
     @PostMapping("/confirm")
-    public BaseResponseDto<Boolean> confirm(Authentication auth){
-        return BaseResponseDto.ok(userService.confirmRequest(auth.getName()));
+    public BaseResponseDto<Boolean> confirm(@AuthenticationPrincipal PrincipalDetails user){
+        return BaseResponseDto.ok(userService.confirmRequest(user.getName()));
     }
 }
