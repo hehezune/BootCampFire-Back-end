@@ -10,6 +10,7 @@ import com.ssafy.campfire.board.repository.BoardRepository;
 import com.ssafy.campfire.category.domain.Category;
 import com.ssafy.campfire.category.dto.response.BoardListResponse;
 import com.ssafy.campfire.category.repository.CategoryRepository;
+import com.ssafy.campfire.likes.repository.LikesRepository;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.user.repository.UserRepository;
 import com.ssafy.campfire.utils.dto.response.GlobalPageResponseDto;
@@ -29,6 +30,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
+    private final LikesRepository likesRepository;
 
     public BoardCreateResponse save(Long userId, BoardCreateRequest request) {
 
@@ -62,10 +64,9 @@ public class BoardService {
 
         Boolean hasLike = false;
 
-        // 좋아요 로직 구현 후 적용용
-//        if(uerId != null){
-//
-//        }
+        if(userId != null){
+            hasLike = likesRepository.hasLikeByUserId(boardId, userId);
+        }
 
         return BoardReadResponse.from(
                 board.getId(),
