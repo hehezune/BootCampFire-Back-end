@@ -76,7 +76,7 @@ public class BoardController {
     @GetMapping("/{boardId}")
     public BaseResponseDto<BoardReadResponse> getBoard(@PathVariable Long boardId,
                                                        Long userId) {
-        return BaseResponseDto.ok(boardService.get(boardId, userId));
+        return BaseResponseDto.ok(boardService.getBoard(boardId, userId));
     }
 
     @ApiOperation(value ="사용자 게시글 조회")

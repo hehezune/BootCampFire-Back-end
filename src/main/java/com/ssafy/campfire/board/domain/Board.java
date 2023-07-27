@@ -91,6 +91,10 @@ public class Board extends BaseEntity {
         this.likes.remove(likes);
     }
 
+    public void addView() {
+        this.view++;
+    }
+
     public void addLikeCnt() {
         this.likeCnt++;
     }
