@@ -47,13 +47,13 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public GlobalPageResponseDto<BoardListResponse> getNewestList(Long userId, Long categoryId, Pageable pageable){
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
-
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.CATEGORY_NOT_FOUND));
 
-        if(category.getName().getMessage().equals("부트캠프")){
+        if( userId != null && category.getName().getMessage().equals("부트캠프")){
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
+
             Page<BoardListResponse> page = categoryRepository
                     .getBootBoardByNewest(categoryId, user.getBootcamp().getId(), pageable)
                     .map(BoardListResponse::of);
@@ -71,13 +71,13 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public GlobalPageResponseDto<BoardListResponse> getLikeOrderList(Long userId, Long categoryId, Pageable pageable){
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
-
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.CATEGORY_NOT_FOUND));
 
-        if(category.getName().getMessage().equals("부트캠프")){
+        if(userId != null && category.getName().getMessage().equals("부트캠프")){
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
+
             Page<BoardListResponse> page = categoryRepository
                     .getBootBoardByLike(categoryId, user.getBootcamp().getId(), pageable)
                     .map(BoardListResponse::of);
@@ -95,13 +95,13 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public GlobalPageResponseDto<BoardListResponse> getViewOrderList(Long userId, Long categoryId, Pageable pageable){
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
-
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.CATEGORY_NOT_FOUND));
 
-        if(category.getName().getMessage().equals("부트캠프")){
+        if( userId != null && category.getName().getMessage().equals("부트캠프")){
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
+
             Page<BoardListResponse> page = categoryRepository
                     .getBootBoardByView(categoryId, user.getBootcamp().getId(), pageable)
                     .map(BoardListResponse::of);
@@ -139,13 +139,13 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public GlobalPageResponseDto<BoardListResponse> getSearchByTitleContent(Long userId, Long categoryId, String keyword, Pageable pageable){
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
-
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.CATEGORY_NOT_FOUND));
 
-        if(category.getName().getMessage().equals("부트캠프")){
+        if( userId != null && category.getName().getMessage().equals("부트캠프")){
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
+
             Page<BoardListResponse> page = categoryRepository
                     .getBootSearchByTitleContent(categoryId, user.getBootcamp().getId(), keyword, pageable)
                     .map(BoardListResponse::of);
@@ -163,13 +163,13 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public GlobalPageResponseDto<BoardListResponse> getSearchByNickname(Long userId, Long categoryId, String nickname, Pageable pageable){
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
-
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.CATEGORY_NOT_FOUND));
 
-        if(category.getName().getMessage().equals("부트캠프")){
+        if( userId != null && category.getName().getMessage().equals("부트캠프")){
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
+
             Page<BoardListResponse> page = categoryRepository
                     .getBootSearchByNickname(categoryId, user.getBootcamp().getId(), nickname, pageable)
                     .map(BoardListResponse::of);
