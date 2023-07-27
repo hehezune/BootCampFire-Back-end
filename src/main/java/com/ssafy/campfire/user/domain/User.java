@@ -1,6 +1,7 @@
 package com.ssafy.campfire.user.domain;
 
 import com.ssafy.campfire.bootcamp.domain.Bootcamp;
+import com.ssafy.campfire.user.domain.dto.UserUpdate;
 import com.ssafy.campfire.utils.domain.BaseEntity;
 import javax.persistence.*;
 
@@ -80,6 +81,18 @@ public class User extends BaseEntity {
     //== 유저 필드 업데이트 ==//
     public void updateNickname(String updateNickname) {
         this.nickname = updateNickname;
+        updatedUpdatedate();
+    }
+
+    public void update(UserUpdate userUpdate){
+        this.nickname = userUpdate.nickname();
+        this.imgUrl = userUpdate.imgUrl();
+        this.bojId = userUpdate.bojId();
+        updatedUpdatedate();
+    }
+
+    public void updatePermision(boolean isPermision){
+        this.isPermision = isPermision;
         updatedUpdatedate();
     }
 }
