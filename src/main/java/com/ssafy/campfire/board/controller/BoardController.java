@@ -7,10 +7,13 @@ import com.ssafy.campfire.board.dto.response.BoardCreateResponse;
 import com.ssafy.campfire.board.dto.response.BoardReadResponse;
 import com.ssafy.campfire.board.dto.response.BoardUpdateResponse;
 import com.ssafy.campfire.board.service.BoardService;
+import com.ssafy.campfire.category.dto.response.BoardListResponse;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.utils.dto.response.BaseResponseDto;
+import com.ssafy.campfire.utils.dto.response.GlobalPageResponseDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,6 +55,12 @@ public class BoardController {
 //                                                       @AuthenticationPrincipal User user) {
 //        return BaseResponseDto.ok(boardService.get(boardId, user.getId()));
 //    }
+//    @ApiOperation(value ="사용자 게시글 조회")
+//    @GetMapping("/users")
+//    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getUserBoard(Pageable pageable,
+//                                                                                  @AuthenticationPrincipal User user) {
+//        return BaseResponseDto.ok(boardService.getUserBoard(user.getId(), pageable));
+//    }
 
     /**
      * swagger test
@@ -68,6 +77,12 @@ public class BoardController {
     public BaseResponseDto<BoardReadResponse> getBoard(@PathVariable Long boardId,
                                                        Long userId) {
         return BaseResponseDto.ok(boardService.get(boardId, userId));
+    }
+
+    @ApiOperation(value ="사용자 게시글 조회")
+    @GetMapping("/users")
+    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getNewestList(Pageable pageable, Long userId) {
+        return BaseResponseDto.ok(boardService.getUserBoard(userId, pageable));
     }
 
 }
