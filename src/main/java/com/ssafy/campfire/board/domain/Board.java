@@ -3,22 +3,19 @@ package com.ssafy.campfire.board.domain;
 import com.ssafy.campfire.board.domain.dto.BoardUpdate;
 import com.ssafy.campfire.bootcamp.domain.Bootcamp;
 import com.ssafy.campfire.category.domain.Category;
+import com.ssafy.campfire.likes.domain.Likes;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.utils.domain.BaseEntity;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Column;
+
+import javax.persistence.*;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Entity
@@ -68,6 +65,9 @@ public class Board extends BaseEntity {
 
     private Integer view;
 
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Likes> likes = new HashSet<>();
+
     public Board(String title, String content, Boolean anonymous){
         this.title = title;
         this.content = content;
@@ -85,6 +85,22 @@ public class Board extends BaseEntity {
 
     public void writeBy(User user){
         this.user = user;
+    }
+
+    public void minusLikes(Likes likes) {
+        this.likes.remove(likes);
+    }
+
+    public void addView() {
+        this.view++;
+    }
+
+    public void addLikeCnt() {
+        this.likeCnt++;
+    }
+
+    public void minusLikeCnt() {
+        this.likeCnt--;
     }
 
     public void update(BoardUpdate boardUpdate) {
