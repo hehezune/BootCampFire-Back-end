@@ -8,6 +8,7 @@ import com.ssafy.campfire.board.dto.response.BoardReadResponse;
 import com.ssafy.campfire.board.dto.response.BoardUpdateResponse;
 import com.ssafy.campfire.board.service.BoardService;
 import com.ssafy.campfire.category.dto.response.BoardListResponse;
+import com.ssafy.campfire.global.login.PrincipalDetails;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.utils.dto.response.BaseResponseDto;
 import com.ssafy.campfire.utils.dto.response.GlobalPageResponseDto;
@@ -45,20 +46,20 @@ public class BoardController {
 //    @ApiOperation(value ="게시글 저장")
 //    @PostMapping
 //    public BaseResponseDto<BoardCreateResponse> createBoard(@RequestBody @Valid BoardCreateRequest request,
-//                                                           @AuthenticationPrincipal User user) {
+//                                                           @AuthenticationPrincipal PrincipalDetails user) {
 //        return BaseResponseDto.ok(boardService.save(user.getId(), request));
 //    }
 //
 //    @ApiOperation(value ="게시글 상세조회")
 //    @GetMapping("/{boardId}")
 //    public BaseResponseDto<BoardReadResponse> getBoard(@PathVariable Long boardId,
-//                                                       @AuthenticationPrincipal User user) {
+//                                                       @AuthenticationPrincipal PrincipalDetails user) {
 //        return BaseResponseDto.ok(boardService.getBoard(boardId, user.getId()));
 //    }
 //    @ApiOperation(value ="사용자 게시글 조회")
 //    @GetMapping("/users")
 //    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getUserBoard(Pageable pageable,
-//                                                                                  @AuthenticationPrincipal User user) {
+//                                                                                  @AuthenticationPrincipal PrincipalDetails user) {
 //        return BaseResponseDto.ok(boardService.getUserBoard(user.getId(), pageable));
 //    }
 
