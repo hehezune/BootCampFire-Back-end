@@ -50,6 +50,8 @@ public class UserService {
                 user.getNickname(),
                 user.getBojId(),
                 user.getImgUrl(),
+                user.getBootcamp().getId(),
+                user.getBootcamp().getName(),
                 user.getEmail()
         );
     }
