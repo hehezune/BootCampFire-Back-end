@@ -62,7 +62,8 @@ public class User extends BaseEntity {
 
     private String refreshToken; // 리프레시 토큰
 
-    public User(String nickname, String email, String provider) {
+    public User(String nickname, String email, String provider, Bootcamp bootcamp) {
+        this.bootcamp = bootcamp;
         this.nickname = nickname;
         this.email = email;
         this.provider = provider;
