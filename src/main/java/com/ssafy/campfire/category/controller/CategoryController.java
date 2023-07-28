@@ -54,35 +54,35 @@ public class CategoryController {
 //    @ApiOperation(value ="카테고리 별 내용 + 제목 검색 결과")
 //    @GetMapping("/{categoryId}/keywords/{keyword}")
 //    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getSearchTitleContentList(@PathVariable Long categoryId, @PathVariable String keyword, Pageable pageable,
-//                                                                                               @AuthenticationPrincipal User user) {
+//                                                                                               @AuthenticationPrincipal PrincipalDetails user) {
 //        return BaseResponseDto.ok(categoryService.getSearchByTitleContent(user.getId(), categoryId, keyword, pageable));
 //    }
 //
 //    @ApiOperation(value ="카테고리 별 닉네임으로 검색 결과")
 //    @GetMapping("/{categoryId}/nickname/{nickname}")
 //    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getSearchNicknameList(@PathVariable Long categoryId, @PathVariable String nickname, Pageable pageable,
-//                                                                                           @AuthenticationPrincipal User user) {
+//                                                                                           @AuthenticationPrincipal PrincipalDetails user) {
 //        return BaseResponseDto.ok(categoryService.getSearchByNickname(user.getId(), categoryId, nickname, pageable));
 //    }
 //
 //    @ApiOperation(value ="카테고리 별 게시글 : 최신순")
 //    @GetMapping("/{categoryId}")
 //    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getNewestList(@PathVariable Long categoryId, Pageable pageable,
-//                                                                                   @AuthenticationPrincipal User user) {
+//                                                                                   @AuthenticationPrincipal PrincipalDetails user) {
 //        return BaseResponseDto.ok(categoryService.getNewestList(user.getId(), categoryId, pageable));
 //    }
 //
 //    @ApiOperation(value ="카테고리 별 게시글 : 추천순")
 //    @GetMapping("/{categoryId}/likes")
 //    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getLikeOrderList(@PathVariable Long categoryId, Pageable pageable,
-//                                                                                      @AuthenticationPrincipal User user) {
+//                                                                                      @AuthenticationPrincipal PrincipalDetails user) {
 //        return BaseResponseDto.ok(categoryService.getLikeOrderList(user.getId(), categoryId, pageable));
 //    }
 //
 //    @ApiOperation(value ="카테고리 별 게시글 : 조회순")
 //    @GetMapping("/{categoryId}/views")
 //    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getViewOrderList(@PathVariable Long categoryId, Pageable pageable,
-//                                                                                      @AuthenticationPrincipal User user) {
+//                                                                                      @AuthenticationPrincipal PrincipalDetails user) {
 //        return BaseResponseDto.ok(categoryService.getViewOrderList(user.getId(), categoryId, pageable));
 //    }
 
