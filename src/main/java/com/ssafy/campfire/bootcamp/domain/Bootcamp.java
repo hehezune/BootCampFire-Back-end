@@ -2,10 +2,14 @@ package com.ssafy.campfire.bootcamp.domain;
 
 import com.ssafy.campfire.utils.domain.BaseEntity;
 import javax.persistence.*;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor //기본 생성자 생성
@@ -56,11 +60,39 @@ public class Bootcamp extends BaseEntity {
     private Integer algoCnt;
 
 
-    public void updateReviewCnt(){
-        this.reviewCnt++;
-
-    }
     public void updateTotalScore(double score){
         this.totalScore += score;
+        this.reviewCnt++;
     }
+
+    @Builder
+    public Bootcamp(String name){
+        this.name = name;
+        this.algoCnt = 0;
+        this.reviewCnt = 0;
+    }
+
+    @Builder
+    public Bootcamp(String name, String siteUrl, String process,
+                    String schedule, String description, Double cost, Boolean card, Boolean support,
+                    Boolean hasCodingtest, String on_off, LocalDateTime startDate, LocalDateTime endDate){
+
+        this.name = name;
+        this.siteUrl = siteUrl;
+        this.process = process;
+        this.schedule = schedule;
+        this.description = description;
+        this.cost = cost;
+        this.card = card;
+        this.support = support;
+        this.hasCodingtest = hasCodingtest;
+        this.on_off = on_off;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.algoCnt = 0;
+        this.reviewCnt = 5;
+        this.totalScore = 5.0;
+//        this.createdDate = LocalDateTime.now();
+    }
+
 }
