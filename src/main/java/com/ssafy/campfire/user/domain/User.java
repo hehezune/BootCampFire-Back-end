@@ -6,6 +6,7 @@ import com.ssafy.campfire.utils.domain.BaseEntity;
 import javax.persistence.*;
 
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -38,7 +39,7 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "bootcamp_id")
     private Bootcamp bootcamp;
 
@@ -57,7 +58,7 @@ public class User extends BaseEntity {
 
     private String imgUrl;
 
-    @ColumnDefault("false")
+    @ColumnDefault("true")
     private Boolean isPermision;
 
     private String refreshToken; // 리프레시 토큰
@@ -68,9 +69,11 @@ public class User extends BaseEntity {
         this.email = email;
         this.provider = provider;
         this.role = Role.USER;
+        this.isPermision = true;
         this.createdDate = LocalDateTime.now();
         this.updatedDate = LocalDateTime.now();
     }
+
 
     // 유저 권한 설정 메소드
     public void authorizeUser() {
@@ -82,6 +85,10 @@ public class User extends BaseEntity {
     //== 유저 필드 업데이트 ==//
     public void updateNickname(String updateNickname) {
         this.nickname = updateNickname;
+        updatedUpdatedate();
+    }
+    public void updateBootcamp(Bootcamp bootcamp) {
+        this.bootcamp = bootcamp;
         updatedUpdatedate();
     }
 

@@ -1,20 +1,21 @@
 package com.ssafy.campfire.user.service;
 
-import com.ssafy.campfire.board.domain.Board;
-import com.ssafy.campfire.board.dto.request.BoardUpdateRequest;
-import com.ssafy.campfire.board.dto.response.BoardUpdateResponse;
+import com.ssafy.campfire.bootcamp.domain.Bootcamp;
+import com.ssafy.campfire.bootcamp.repository.BootcampRepository;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.user.dto.request.UserUpdateRequest;
+import com.ssafy.campfire.user.dto.response.UserConfirmResponse;
 import com.ssafy.campfire.user.dto.response.UserReadResponse;
 import com.ssafy.campfire.user.dto.response.UserUpdateResponse;
+import com.ssafy.campfire.user.repository.CustomUserRepository;
 import com.ssafy.campfire.user.repository.UserRepository;
 import com.ssafy.campfire.utils.error.enums.ErrorMessage;
 import com.ssafy.campfire.utils.error.exception.custom.BusinessException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +25,8 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final CustomUserRepository customUserRepository;
+    private final BootcampRepository bootcampRepository;
 
     public User getLoginUserById(Long userId) {
         if(userId == null) return null;
@@ -82,23 +85,61 @@ public class UserService {
         return true;
     }
 
-    public boolean confirmRequest(String nickname){
-        User user = userRepository.findByNickname(nickname)
+    // 소속 인증 요청하기
+    public boolean confirmRequest(Long userId){
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
-
+        System.out.println(user.getIsPermision());
         if(user == null){
             return false;
         }
 
-        if(!user.getIsPermision()){
-            user.updatePermision(true);
+        if(user.getIsPermision()){
+            user.updatePermision(false);
         }
+        System.out.println(user.getIsPermision());
         return true;
     }
 
-//    public List<User> needPermissionUserList(){
-//        List<Optional<User>> optionalUserList = userRepository.findNeedPermissionUserList();
-//    }
+    // 소속 인증을 요청한 사용자 목록 불러오기
+    public List<UserConfirmResponse> needPermissionUserList(){
+        Optional<List<User>> optionalUserList = customUserRepository.findNeedPermissionUserList();
+
+        if(optionalUserList.isEmpty()){
+            return null;
+        }
+
+        List<User> userList = optionalUserList.get();
+        List<UserConfirmResponse> userConfirmResponseList = new ArrayList<>();
+
+        for (User user:userList) {
+            userConfirmResponseList.add(UserConfirmResponse.from(user.getId(), user.getNickname(), user.getImgUrl()));
+        }
+
+
+        return userConfirmResponseList;
+    }
+
+    // 소속 인증 허가
+    public User permission(Long userId, Long bootcampId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
+        Bootcamp bootcamp = bootcampRepository.findById(bootcampId)
+                .orElseThrow(()-> new BusinessException(ErrorMessage.BOOTCAMP_NOT_FOUND));
+        
+        user.updateBootcamp(bootcamp);
+        return user;
+    }
+
+    // 소속 인증 반려
+    public String notPermission(Long userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
+
+        user.updatePermision(true);
+
+        return "소속 인증이 반려 되었습니다.";
+    }
 }
 
 
