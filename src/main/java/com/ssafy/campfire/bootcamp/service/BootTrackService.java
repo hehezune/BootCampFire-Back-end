@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -30,4 +31,22 @@ public class BootTrackService {
         return trackList;
     }
 
+    public List<Track> getTrackListByBootcamp(Long bootcampId) {
+        List<BootTrack> bootTrackList = bootTrackRepository.findByBootcamp(bootcamp);
+    }
+
+
+//    public List<Track> getTrackListByBootcamp(Optional<Bootcamp> bootcamp) {
+//        System.out.println("부트트랙서비스 ---------------------");
+////        List<BootTrack> bootTrackList = bootTrackRepository.findByBootcamp(bootcamp);
+//        List<BootTrack> bootTrackList = bootTrackRepository.findBootTracksByBootcamp(bootcamp);
+//        List<Track> trackList = new ArrayList<>();
+//        System.out.println(bootTrackList.size());
+//        for (BootTrack bootTrack: bootTrackList) {
+//            System.out.println(bootTrack.toString());
+//            System.out.println(bootTrack.getTrack().toString());
+//            trackList.add(bootTrack.getTrack());
+//        }
+//        return trackList;
+//    }
 }
