@@ -1,27 +1,50 @@
 package com.ssafy.campfire.user.controller;
 
-import com.ssafy.campfire.user.dto.UserSignUpDto;
+import com.ssafy.campfire.board.dto.request.BoardUpdateRequest;
+import com.ssafy.campfire.board.dto.response.BoardUpdateResponse;
+import com.ssafy.campfire.global.login.PrincipalDetails;
+import com.ssafy.campfire.user.domain.User;
+import com.ssafy.campfire.user.dto.request.UserUpdateRequest;
+import com.ssafy.campfire.user.dto.response.UserReadResponse;
+import com.ssafy.campfire.user.dto.response.UserUpdateResponse;
 import com.ssafy.campfire.user.service.UserService;
+import com.ssafy.campfire.utils.dto.response.BaseResponseDto;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
-
-    @PostMapping("/sign-up")
-    public String signUp(@RequestBody UserSignUpDto userSignUpDto) throws Exception {
-        userService.signUp(userSignUpDto);
-        return "회원가입 성공";
+    @ApiOperation(value ="개인 정보 조회")
+    @GetMapping("")
+    public BaseResponseDto<UserReadResponse> userInfo(@AuthenticationPrincipal PrincipalDetails user) {
+        return BaseResponseDto.ok(userService.read(user.getName()));
     }
 
-    @GetMapping("/jwt-test")
-    public String jwtTest() {
-        return "jwtTest 요청 성공";
+    @ApiOperation(value = "개인 정보 수정")
+    @PutMapping("")
+    public BaseResponseDto<UserUpdateResponse> update(@AuthenticationPrincipal PrincipalDetails user, @RequestBody @Valid UserUpdateRequest request){
+        return BaseResponseDto.ok(userService.update(user.getName(), request));
+    }
+
+    @ApiOperation("닉네임 중복 검사")
+    @PostMapping("/duplication")
+    public BaseResponseDto<Boolean> duplicationCheck(@RequestBody @Valid String nickname){
+        return BaseResponseDto.ok(userService.nickanameDuplicationCheck(nickname));
+    }
+    @ApiOperation("소속 인증 확인 요청")
+    @PostMapping("/confirm")
+    public BaseResponseDto<Boolean> confirm(@AuthenticationPrincipal PrincipalDetails user){
+        return BaseResponseDto.ok(userService.confirmRequest(user.getName()));
     }
 }

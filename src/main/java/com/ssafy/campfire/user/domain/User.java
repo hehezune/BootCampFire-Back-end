@@ -1,6 +1,7 @@
 package com.ssafy.campfire.user.domain;
 
 import com.ssafy.campfire.bootcamp.domain.Bootcamp;
+import com.ssafy.campfire.user.domain.dto.UserUpdate;
 import com.ssafy.campfire.utils.domain.BaseEntity;
 import javax.persistence.*;
 
@@ -8,7 +9,10 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDateTime;
+
 @Getter
+@ToString
 @Entity
 @Builder
 @AllArgsConstructor
@@ -47,14 +51,9 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(nullable = false)
-    private String kakaoEmail;
+    private String email;
 
-    @Column(nullable = false)
-    private String googleEmail;
-
-    @Column(nullable = false)
-    private String naverEmail;
+    private String provider;
 
     private String imgUrl;
 
@@ -63,17 +62,37 @@ public class User extends BaseEntity {
 
     private String refreshToken; // 리프레시 토큰
 
+    public User(String nickname, String email, String provider) {
+        this.nickname = nickname;
+        this.email = email;
+        this.provider = provider;
+        this.role = Role.USER;
+        this.createdDate = LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now();
+    }
+
     // 유저 권한 설정 메소드
     public void authorizeUser() {
         this.role = Role.USER;
     }
 
+    public void updatedUpdatedate(){this.updatedDate = LocalDateTime.now();}
+
     //== 유저 필드 업데이트 ==//
     public void updateNickname(String updateNickname) {
         this.nickname = updateNickname;
+        updatedUpdatedate();
     }
 
-    public void updateRefreshToken(String updateRefreshToken) {
-        this.refreshToken = updateRefreshToken;
+    public void update(UserUpdate userUpdate){
+        this.nickname = userUpdate.nickname();
+        this.imgUrl = userUpdate.imgUrl();
+        this.bojId = userUpdate.bojId();
+        updatedUpdatedate();
+    }
+
+    public void updatePermision(boolean isPermision){
+        this.isPermision = isPermision;
+        updatedUpdatedate();
     }
 }

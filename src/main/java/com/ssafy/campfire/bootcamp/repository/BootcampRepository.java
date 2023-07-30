@@ -17,6 +17,6 @@ public interface BootcampRepository extends JpaRepository<Bootcamp, Long> {
     List<Bootcamp> findAllByOrderByTotalScore();
 
     //후기순으로 정렬
-    List<Bootcamp> findAllByOrderByrOrderByReviewCnt();
-    
+
+
 }
