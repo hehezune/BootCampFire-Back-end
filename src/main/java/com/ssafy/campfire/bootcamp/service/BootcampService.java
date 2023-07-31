@@ -4,6 +4,8 @@ import com.ssafy.campfire.bootcamp.domain.Bootcamp;
 import com.ssafy.campfire.bootcamp.dto.request.BootcampRegisterRequestDto;
 import com.ssafy.campfire.bootcamp.repository.BootcampRepository;
 import com.ssafy.campfire.category.repository.CategoryRepository;
+import com.ssafy.campfire.utils.error.enums.ErrorMessage;
+import com.ssafy.campfire.utils.error.exception.custom.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,13 @@ public class BootcampService {
 
     public Optional<Bootcamp> getBootcamp(Long bootcampId){
         return bootcampRepository.findById(bootcampId);
+    }
+
+    public Long deleteBootcamp(Long bootcampId) {
+        Bootcamp bootcamp = bootcampRepository.findById(bootcampId)
+                .orElseThrow(()->new BusinessException(ErrorMessage.BOOTCAMP_NOT_FOUND));
+        bootcampRepository.delete(bootcamp);
+        return bootcamp.getId();
     }
 
 //    @Transactional //트랜잭션 범위는 유지하되 기능을 조회로 제한함으로써 조회 속도가 개선
