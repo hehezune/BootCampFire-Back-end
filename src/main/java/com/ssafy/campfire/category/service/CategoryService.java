@@ -28,19 +28,19 @@ public class CategoryService {
 
     @Transactional(readOnly = true)
     public List<BoardMainResponse> getMainList(Long categoryId){
-        List<BoardMainResponse> boardMainResponses = (List<BoardMainResponse>) categoryRepository
+        List<BoardMainResponse> boardMainResponses = categoryRepository
                 .getLatestFiveBoard(categoryId)
                 .stream()
-                .map(BoardMainResponse::of);
+                .map(BoardMainResponse::of).toList();
         return boardMainResponses;
     }
 
     @Transactional(readOnly = true)
     public List<BoardHotResponse> getHotList(){
-        List<BoardHotResponse> boardHotResponses = (List<BoardHotResponse>) categoryRepository
+        List<BoardHotResponse> boardHotResponses = categoryRepository
                 .getHotFiveBoard()
                 .stream()
-                .map(BoardHotResponse::of);
+                .map(BoardHotResponse::of).toList();
         return boardHotResponses;
     }
 

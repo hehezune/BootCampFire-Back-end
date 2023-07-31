@@ -16,15 +16,16 @@ public record BootcampRequestDto(
         Boolean card,
         Boolean support,
         Boolean hasCodingtest,
-        String on_off,
+        String onOff,
         LocalDateTime startDate,
         LocalDateTime endDate,
+        String imgUrl,
         List<Track> tracks,
         List<Language> languages,
         List<Region> regions
 ) {
     public Bootcamp toBootcamp(){
-        return new Bootcamp( name, siteUrl,  process, schedule, description,  cost,card,support,hasCodingtest,on_off,startDate,endDate);
+        return new Bootcamp( name, siteUrl,  process, schedule, description,  cost,card,support,hasCodingtest,onOff,startDate,endDate, imgUrl);
     }
     public List<BootTrack> toBootTrackList(Bootcamp bootcamp){
         List<BootTrack> bootTrackList = new ArrayList<>();
