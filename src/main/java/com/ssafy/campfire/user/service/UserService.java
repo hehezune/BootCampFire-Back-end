@@ -43,9 +43,9 @@ public class UserService {
 
         return optionalUser.get();
     }
-    public UserReadResponse read(String nickname) {
+    public UserReadResponse read(Long userId) {
 
-        User user = userRepository.findByNickname(nickname)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
 
 
@@ -59,10 +59,10 @@ public class UserService {
                 user.getEmail()
         );
     }
-    public UserUpdateResponse update(String nickname,
+    public UserUpdateResponse update(Long userId,
                                      UserUpdateRequest request) {
 
-        User user = userRepository.findByNickname(nickname)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
 
         user.update(request.toDto());
@@ -89,15 +89,12 @@ public class UserService {
     public boolean confirmRequest(Long userId){
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
-        System.out.println(user.getIsPermision());
-        if(user == null){
-            return false;
-        }
+        System.out.println("전 : "+user.toString());
 
         if(user.getIsPermision()){
             user.updatePermision(false);
         }
-        System.out.println(user.getIsPermision());
+        System.out.println("후 : "+user.getIsPermision());
         return true;
     }
 
