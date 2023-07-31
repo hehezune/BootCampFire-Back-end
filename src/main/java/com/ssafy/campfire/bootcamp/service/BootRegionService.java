@@ -1,8 +1,11 @@
 package com.ssafy.campfire.bootcamp.service;
 
 import com.ssafy.campfire.bootcamp.domain.*;
-import com.ssafy.campfire.bootcamp.dto.request.BootcampRegisterRequestDto;
+import com.ssafy.campfire.bootcamp.dto.request.BootcampRequestDto;
 import com.ssafy.campfire.bootcamp.repository.BootRegionRepository;
+import com.ssafy.campfire.bootcamp.repository.RegionRepository;
+import com.ssafy.campfire.utils.error.enums.ErrorMessage;
+import com.ssafy.campfire.utils.error.exception.custom.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +20,9 @@ import java.util.Optional;
 public class BootRegionService {
 
     private  final BootRegionRepository bootRegionRepository;
+    private  final RegionRepository regionRepository;
 
-    public List<Region> save(Bootcamp bootcamp, BootcampRegisterRequestDto bootcampRegisterRequestDto) {
+    public List<Region> save(Bootcamp bootcamp, BootcampRequestDto bootcampRegisterRequestDto) {
         List<BootRegion> bootRegionList = bootcampRegisterRequestDto.toBootRegionList(bootcamp);
 
         List<Region> regionList = new ArrayList<>();
@@ -30,8 +34,20 @@ public class BootRegionService {
     }
 
 
-    public Optional<List<Region>> getRegionListByBootcamp(Long bootcampId) {
+    public Optional<List<Region>> getRegionListByBootcampId(Long bootcampId) {
         Optional<List<Region>> regionList = bootRegionRepository.getBootRegionsByBootcampId(bootcampId);
         return regionList;
     }
+    public void deleteBootRegion(Long bootcampId) {
+        bootRegionRepository.deleteByBootcampId(bootcampId);
+    }
+
+    public List<Region> getRegionList(){
+        List<Region> regionList = Optional.of(regionRepository.findAll())
+                .orElseThrow(() -> new BusinessException(ErrorMessage.REGION_NOT_FOUND));
+
+        return regionList;
+    }
+
+
 }
