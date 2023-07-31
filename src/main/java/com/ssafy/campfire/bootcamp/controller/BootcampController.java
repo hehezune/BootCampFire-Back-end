@@ -2,6 +2,7 @@ package com.ssafy.campfire.bootcamp.controller;
 
 import com.ssafy.campfire.bootcamp.domain.*;
 import com.ssafy.campfire.bootcamp.dto.request.BootcampRegisterRequestDto;
+import com.ssafy.campfire.bootcamp.dto.request.BootcampUpdateRequestDto;
 import com.ssafy.campfire.bootcamp.dto.response.BootcampResponseDto;
 import com.ssafy.campfire.bootcamp.service.BootLanguageServie;
 import com.ssafy.campfire.bootcamp.service.BootRegionService;
@@ -46,6 +47,17 @@ public class BootcampController {
         return BaseResponseDto.ok(BootcampResponseDto.of(bootcamp, trackList,languageList, regionList));
     }
 
+
+    @PutMapping("/{bootcampId}")
+    public BaseResponseDto<BootcampResponseDto> updateBootcamp(@RequestBody BootcampUpdateRequestDto bootcampUpdateRequestDto, @PathVariable Long bootcampId){
+        Bootcamp updateBootcamp = bootcampService.updateBootcamp(bootcampId, bootcampUpdateRequestDto);
+s
+        Optional<List<Track>> trackList = bootTrackService.getTrackListByBootcamp(bootcampId);
+        Optional<List<Language>>languageList = bootLanguageServie.getLanguageListByBootcamp(bootcampId);
+        Optional<List<Region>> regionList = bootRegionService.getRegionListByBootcamp(bootcampId);
+
+        return BaseResponseDto.ok(BootcampResponseDto.of(Optional.ofNullable(updateBootcamp), trackList,languageList, regionList));
+    }
 
 
     //부트캠프 리스트를 이름순으로 보기
