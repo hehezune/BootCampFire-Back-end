@@ -30,7 +30,6 @@ public class BootLanguageServie {
         List<Language> languageList = new ArrayList<>();
         for (BootLanguage bootLanguage: bootLanguageList) {
             languageList.add(bootLanguageRepository.save(bootLanguage).getLanguage());
-
         }
         return languageList;
     }
