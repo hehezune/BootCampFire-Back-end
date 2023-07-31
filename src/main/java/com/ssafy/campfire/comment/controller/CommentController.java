@@ -31,7 +31,7 @@ public class CommentController {
     }
 
     @ApiOperation(value ="댓글 조회")
-    @GetMapping("/{boardId}")
+    @GetMapping("/list/{boardId}")
     public BaseResponseDto<List<CommentReadResponse>> getMainList(@PathVariable Long boardId) {
         return BaseResponseDto.ok(commentService.getCommentList(boardId));
     }
@@ -58,7 +58,7 @@ public class CommentController {
     @ApiOperation(value ="댓글 작성")
     @PostMapping
     public BaseResponseDto<CommentCreateResponse> createBoard(@RequestBody @Valid CommentCreateRequest request,
-                                                                             Long userId) {
+                                                              Long userId) {
         return BaseResponseDto.ok(commentService.save(userId, request));
     }
 }

@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface CustomBootTrackRepository {
     Optional<List<Track>> getBootTracksByBootcampId(Long bootcampId);
+    void deleteByBootcampId(Long bootcampId);
 }
