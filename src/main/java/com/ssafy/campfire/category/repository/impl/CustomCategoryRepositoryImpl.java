@@ -36,7 +36,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .fetchJoin()
                 .where(
                         board.category.name.ne(BOOTCAMP),
-                        board.createdDate.in(LocalDateTime.now().minusDays(3))
+                        board.createdDate.between(LocalDateTime.now().minusDays(3), LocalDateTime.now())
                         )
                 .orderBy(board.createdDate.desc())
                 .orderBy(board.likeCnt.desc())
