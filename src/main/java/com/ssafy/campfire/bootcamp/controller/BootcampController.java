@@ -8,6 +8,7 @@ import com.ssafy.campfire.bootcamp.service.BootRegionService;
 import com.ssafy.campfire.bootcamp.service.BootTrackService;
 import com.ssafy.campfire.bootcamp.service.BootcampService;
 import com.ssafy.campfire.utils.dto.response.BaseResponseDto;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,4 +54,22 @@ public class BootcampController {
 //    public BaseResponseDto<List<BootcampListResponseDto>> getBootcampListOrderByName(){
 //        return BaseResponseDto.ok(bootcampService.getBootcampListOrderByName());
 //    }
+
+    @ApiOperation("지역 목록 가져오기")
+    @GetMapping("/regions")
+    public BaseResponseDto<List<Region>> getRegionList(){
+        return BaseResponseDto.ok(bootRegionService.getRegionList());
+    }
+
+    @ApiOperation("트랙명 목록 가져오기")
+    @GetMapping("/tracks")
+    public BaseResponseDto<List<Track>> getTrackList(){
+        return BaseResponseDto.ok(bootTrackService.getTrackList());
+    }
+
+    @ApiOperation("언어명 목록 가져오기")
+    @GetMapping("/languages")
+    public BaseResponseDto<List<Language>> getLanguageList(){
+        return BaseResponseDto.ok(bootLanguageServie.getLanguageList());
+    }
 }

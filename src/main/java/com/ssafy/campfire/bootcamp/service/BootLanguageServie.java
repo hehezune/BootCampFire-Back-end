@@ -3,6 +3,9 @@ package com.ssafy.campfire.bootcamp.service;
 import com.ssafy.campfire.bootcamp.domain.*;
 import com.ssafy.campfire.bootcamp.dto.request.BootcampRegisterRequestDto;
 import com.ssafy.campfire.bootcamp.repository.BootLanguageRepository;
+import com.ssafy.campfire.bootcamp.repository.LanguageRepository;
+import com.ssafy.campfire.utils.error.enums.ErrorMessage;
+import com.ssafy.campfire.utils.error.exception.custom.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,7 @@ import java.util.Optional;
 @Transactional
 public class BootLanguageServie {
     private  final BootLanguageRepository bootLanguageRepository;
+    private  final LanguageRepository LanguageRepository;
 
     public List<Language> save(Bootcamp bootcamp, BootcampRegisterRequestDto bootcampRegisterRequestDto){
         List<BootLanguage> bootLanguageList = bootcampRegisterRequestDto.toBootLanguageList(bootcamp);
@@ -31,6 +35,13 @@ public class BootLanguageServie {
 
     public Optional<List<Language>> getLanguageListByBootcamp(Long bootcampId) {
         Optional<List<Language>> languageList = bootLanguageRepository.getBootLanguagesByBootcampId(bootcampId);
+        return languageList;
+    }
+
+    public List<Language> getLanguageList(){
+        List<Language> languageList = Optional.of(LanguageRepository.findAll())
+                .orElseThrow(() -> new BusinessException(ErrorMessage.REGION_NOT_FOUND));
+
         return languageList;
     }
 }
