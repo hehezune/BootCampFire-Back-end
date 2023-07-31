@@ -1,21 +1,14 @@
 package com.ssafy.campfire.bootcamp.service;
 
-import com.ssafy.campfire.bootcamp.domain.BootTrack;
 import com.ssafy.campfire.bootcamp.domain.Bootcamp;
-import com.ssafy.campfire.bootcamp.domain.Track;
 import com.ssafy.campfire.bootcamp.dto.request.BootcampRegisterRequestDto;
-import com.ssafy.campfire.bootcamp.dto.response.BootcampListResponseDto;
-import com.ssafy.campfire.bootcamp.repository.BootTrackRepository;
 import com.ssafy.campfire.bootcamp.repository.BootcampRepository;
-import com.ssafy.campfire.bootcamp.repository.TrackRepository;
-import com.ssafy.campfire.category.domain.Category;
 import com.ssafy.campfire.category.repository.CategoryRepository;
-import com.sun.xml.bind.v2.TODO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -31,6 +24,9 @@ public class BootcampService {
         return bootcamp;
     }
 
+    public Optional<Bootcamp> getBootcamp(Long bootcampId){
+        return bootcampRepository.findById(bootcampId);
+    }
 
 //    @Transactional //트랜잭션 범위는 유지하되 기능을 조회로 제한함으로써 조회 속도가 개선
 //    public List<BootcampListResponseDto> getBootcampListOrderByName() {

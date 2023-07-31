@@ -5,13 +5,13 @@ import com.ssafy.campfire.bootcamp.domain.Bootcamp;
 import com.ssafy.campfire.bootcamp.domain.Track;
 import com.ssafy.campfire.bootcamp.dto.request.BootcampRegisterRequestDto;
 import com.ssafy.campfire.bootcamp.repository.BootTrackRepository;
-import com.ssafy.campfire.bootcamp.repository.TrackRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -29,5 +29,11 @@ public class BootTrackService {
         }
         return trackList;
     }
+
+    public Optional<List<Track>> getTrackListByBootcamp(Long bootcampId) {
+        Optional<List<Track>> trackList = bootTrackRepository.getBootTracksByBootcampId(bootcampId);
+        return trackList;
+    }
+
 
 }
