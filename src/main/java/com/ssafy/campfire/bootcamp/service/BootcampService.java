@@ -8,6 +8,9 @@ import com.ssafy.campfire.bootcamp.dto.response.BootcampListResponseDto;
 import com.ssafy.campfire.bootcamp.repository.BootTrackRepository;
 import com.ssafy.campfire.bootcamp.repository.BootcampRepository;
 import com.ssafy.campfire.bootcamp.repository.TrackRepository;
+import com.ssafy.campfire.category.domain.Category;
+import com.ssafy.campfire.category.repository.CategoryRepository;
+import com.sun.xml.bind.v2.TODO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +22,13 @@ import java.util.List;
 @Transactional
 public class BootcampService {
     private final BootcampRepository bootcampRepository;
-    private final TrackRepository trackRepository;
-    private final BootTrackRepository bootTrackRepository;
-
+    private  final CategoryRepository categoryRepository;
 
     public Bootcamp save(BootcampRegisterRequestDto bootcampRegisterRequestDto) {
-        return bootcampRepository.save(bootcampRegisterRequestDto.toBootcamp());
+        Bootcamp bootcamp = bootcampRepository.save(bootcampRegisterRequestDto.toBootcamp());
+        //부트캠프 등록시 카테고리 테이블에도 추가 되도록 하기
+//        categoryRepository.save(new Category("BOOTCAMP", bootcamp.getId()));
+        return bootcamp;
     }
 
 
