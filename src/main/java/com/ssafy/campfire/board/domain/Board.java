@@ -7,7 +7,17 @@ import com.ssafy.campfire.likes.domain.Likes;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.utils.domain.BaseEntity;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -65,6 +75,8 @@ public class Board extends BaseEntity {
 
     private Integer view;
 
+    private Integer maxRef;
+
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Likes> likes = new HashSet<>();
 
@@ -75,6 +87,7 @@ public class Board extends BaseEntity {
         this.commentCnt = 0;
         this.likeCnt = 0;
         this.view = 0;
+        this.maxRef = 0;
         this.createdDate = LocalDateTime.now();
     }
 
@@ -101,6 +114,18 @@ public class Board extends BaseEntity {
 
     public void minusLikeCnt() {
         this.likeCnt--;
+    }
+
+    public void addMaxRef() {
+        this.maxRef++;
+    }
+
+    public void addCommentCnt() {
+        this.commentCnt++;
+    }
+
+    public void minusCommentCnt() {
+        this.commentCnt--;
     }
 
     public void update(BoardUpdate boardUpdate) {

@@ -3,13 +3,13 @@ package com.ssafy.campfire.bootcamp.service;
 import com.ssafy.campfire.bootcamp.domain.*;
 import com.ssafy.campfire.bootcamp.dto.request.BootcampRegisterRequestDto;
 import com.ssafy.campfire.bootcamp.repository.BootLanguageRepository;
-import com.ssafy.campfire.bootcamp.repository.BootLanguageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -25,6 +25,12 @@ public class BootLanguageServie {
             languageList.add(bootLanguageRepository.save(bootLanguage).getLanguage());
 
         }
+        return languageList;
+    }
+
+
+    public Optional<List<Language>> getLanguageListByBootcamp(Long bootcampId) {
+        Optional<List<Language>> languageList = bootLanguageRepository.getBootLanguagesByBootcampId(bootcampId);
         return languageList;
     }
 }
