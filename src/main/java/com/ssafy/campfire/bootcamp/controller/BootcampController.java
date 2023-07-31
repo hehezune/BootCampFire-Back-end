@@ -2,6 +2,7 @@ package com.ssafy.campfire.bootcamp.controller;
 
 import com.ssafy.campfire.bootcamp.domain.*;
 import com.ssafy.campfire.bootcamp.dto.request.BootcampRequestDto;
+import com.ssafy.campfire.bootcamp.dto.response.BootcampNameListResponseDto;
 import com.ssafy.campfire.bootcamp.dto.response.BootcampResponseDto;
 import com.ssafy.campfire.bootcamp.service.BootLanguageServie;
 import com.ssafy.campfire.bootcamp.service.BootRegionService;
@@ -103,5 +104,11 @@ public class BootcampController {
     @GetMapping("/lists/{bootcampName}")
     public BaseResponseDto<BootcampResponseDto> searchByBootcampName(@PathVariable String bootcampName){
         return BaseResponseDto.ok(bootcampService.getBootcampByBootcampName(bootcampName));
+    }
+
+    @ApiOperation("부트캠프 이름 목록가져오기")
+    @GetMapping("/names")
+    public BaseResponseDto<List<BootcampNameListResponseDto>> getBootcampNameList(){
+        return BaseResponseDto.ok(bootcampService.getBootcampNameList());
     }
 }
