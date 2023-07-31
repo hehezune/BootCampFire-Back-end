@@ -23,9 +23,10 @@ public record BootcampResponseDto(
         Boolean card,
         Boolean support,
         Boolean hasCodingtest,
-        String on_off,
+        String onOff,
         LocalDateTime startDate,
         LocalDateTime endDate,
+        String imgUrl,
         Integer reviewCnt,
         Double score,
         Integer algoCnt,
@@ -45,9 +46,10 @@ public record BootcampResponseDto(
                 .card(bootcamp.get().getCard())
                 .support(bootcamp.get().getSupport())
                 .hasCodingtest(bootcamp.get().getHasCodingtest())
-                .on_off(bootcamp.get().getOn_off())
+                .onOff(bootcamp.get().getOnOff())
                 .startDate(bootcamp.get().getStartDate())
                 .endDate(bootcamp.get().getEndDate())
+                .imgUrl(bootcamp.get().getImgUrl())
                 .reviewCnt(bootcamp.get().getReviewCnt())
                 .score(bootcamp.get().getTotalScore() / (double) bootcamp.get().getReviewCnt())
                 .tracks(tracks.get())

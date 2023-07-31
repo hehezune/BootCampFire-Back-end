@@ -12,13 +12,15 @@ public record BootcampListResponseDto(
          Double cost, //수강료
          Boolean support, //지원금
          Boolean hasCodingtest, //코테 유무
-         String on_off, //온/오프
+         String onOff, //온/오프
          LocalDateTime startDate,
          LocalDateTime endDate,
+         String imgUrl,
          Integer reviewCnt,
          Double totalScore,
          List<String> tracks,
          List<String> regions
+
 ) {
 //    cost 는 있음 없음으로 보내기
     // 평점
