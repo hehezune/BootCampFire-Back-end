@@ -1,8 +1,6 @@
 package com.ssafy.campfire.bootcamp.service;
 
-import com.ssafy.campfire.bootcamp.domain.BootRegion;
-import com.ssafy.campfire.bootcamp.domain.Bootcamp;
-import com.ssafy.campfire.bootcamp.domain.Region;
+import com.ssafy.campfire.bootcamp.domain.*;
 import com.ssafy.campfire.bootcamp.dto.request.BootcampRegisterRequestDto;
 import com.ssafy.campfire.bootcamp.repository.BootRegionRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +9,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Service
 @Transactional
@@ -26,6 +26,12 @@ public class BootRegionService {
             regionList.add(bootRegionRepository.save(bootRegion).getRegion());
 
         }
+        return regionList;
+    }
+
+
+    public Optional<List<Region>> getRegionListByBootcamp(Long bootcampId) {
+        Optional<List<Region>> regionList = bootRegionRepository.getBootRegionsByBootcampId(bootcampId);
         return regionList;
     }
 }

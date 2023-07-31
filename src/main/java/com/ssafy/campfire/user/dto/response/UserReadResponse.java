@@ -7,6 +7,8 @@ public record UserReadResponse(
         String nickname,
         String bojId,
         String imgUrl,
+        Long bootcampId,
+        String bootcampName,
         String email
 ) {
     public static UserReadResponse from(
@@ -14,6 +16,8 @@ public record UserReadResponse(
             String nickname,
             String bojId,
             String imgUrl,
+            Long bootcampId,
+            String bootcampName,
             String email
     ){
         return new UserReadResponse(
@@ -21,6 +25,8 @@ public record UserReadResponse(
                 nickname,
                 bojId,
                 imgUrl,
+                bootcampId,
+                bootcampName,
                 email
         );
     }
