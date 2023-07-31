@@ -3,6 +3,7 @@ package com.ssafy.campfire.comment.controller;
 import com.ssafy.campfire.comment.dto.request.CommentCreateRequest;
 import com.ssafy.campfire.comment.dto.request.CommentUpdateRequest;
 import com.ssafy.campfire.comment.dto.response.CommentCreateResponse;
+import com.ssafy.campfire.comment.dto.response.CommentReadResponse;
 import com.ssafy.campfire.comment.dto.response.CommentUpdateResponse;
 import com.ssafy.campfire.comment.service.CommentService;
 import com.ssafy.campfire.global.login.PrincipalDetails;
@@ -13,6 +14,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +28,12 @@ public class CommentController {
     public BaseResponseDto<CommentUpdateResponse> updateComment(@PathVariable Long commentId,
                                                                 @RequestBody @Valid CommentUpdateRequest request) {
         return BaseResponseDto.ok(commentService.update(commentId, request));
+    }
+
+    @ApiOperation(value ="댓글 조회")
+    @GetMapping("/{boardId}")
+    public BaseResponseDto<List<CommentReadResponse>> getMainList(@PathVariable Long boardId) {
+        return BaseResponseDto.ok(commentService.getCommentList(boardId));
     }
 
     @ApiOperation(value ="댓글 삭제")
