@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface CustomBootRegionRepository {
     Optional<List<Region>> getBootRegionsByBootcampId(Long bootcampId);
+    void deleteByBootcampId(Long bootcampId);
 }

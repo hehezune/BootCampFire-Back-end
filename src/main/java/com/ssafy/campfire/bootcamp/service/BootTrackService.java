@@ -35,9 +35,13 @@ public class BootTrackService {
         return trackList;
     }
 
-    public Optional<List<Track>> getTrackListByBootcamp(Long bootcampId) {
+    public Optional<List<Track>> getTrackListByBootcampId(Long bootcampId) {
         Optional<List<Track>> trackList = bootTrackRepository.getBootTracksByBootcampId(bootcampId);
         return trackList;
+    }
+
+    public void deleteBootTrack(Long bootcampId) {
+        bootTrackRepository.deleteByBootcampId(bootcampId);
     }
 
     public List<Track> getTrackList(){
@@ -46,4 +50,6 @@ public class BootTrackService {
 
         return trackList;
     }
+
+
 }

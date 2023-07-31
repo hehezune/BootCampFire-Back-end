@@ -34,9 +34,12 @@ public class BootRegionService {
     }
 
 
-    public Optional<List<Region>> getRegionListByBootcamp(Long bootcampId) {
+    public Optional<List<Region>> getRegionListByBootcampId(Long bootcampId) {
         Optional<List<Region>> regionList = bootRegionRepository.getBootRegionsByBootcampId(bootcampId);
         return regionList;
+    }
+    public void deleteBootRegion(Long bootcampId) {
+        bootRegionRepository.deleteByBootcampId(bootcampId);
     }
 
     public List<Region> getRegionList(){
@@ -45,4 +48,6 @@ public class BootRegionService {
 
         return regionList;
     }
+
+
 }

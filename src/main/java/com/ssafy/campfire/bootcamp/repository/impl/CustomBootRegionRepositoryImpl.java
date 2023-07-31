@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.ssafy.campfire.bootcamp.domain.QBootRegion.bootRegion;
+import static com.ssafy.campfire.bootcamp.domain.QBootTrack.bootTrack;
 import static com.ssafy.campfire.bootcamp.domain.QRegion.region;
 
 @Repository
@@ -23,5 +24,12 @@ public class CustomBootRegionRepositoryImpl implements CustomBootRegionRepositor
                 .where(bootRegion.bootcamp.id.eq(bootcampId))
                 .fetch();
         return Optional.ofNullable(regionList);
+    }
+
+    @Override
+    public void deleteByBootcampId(Long bootcampId) {
+        queryFactory.delete(bootRegion)
+                .where(bootRegion.bootcamp.id.eq(bootcampId))
+                .execute();
     }
 }

@@ -25,4 +25,11 @@ public class CustomBootTrackRepositoryImpl implements CustomBootTrackRepository 
                 .fetch();
         return Optional.ofNullable(trackList);
     }
+
+    @Override
+    public void deleteByBootcampId(Long bootcampId) {
+        queryFactory.delete(bootTrack)
+                .where(bootTrack.bootcamp.id.eq(bootcampId))
+                .execute();
+    }
 }

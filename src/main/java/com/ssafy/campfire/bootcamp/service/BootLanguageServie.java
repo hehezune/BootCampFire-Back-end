@@ -33,15 +33,19 @@ public class BootLanguageServie {
     }
 
 
-    public Optional<List<Language>> getLanguageListByBootcamp(Long bootcampId) {
+    public Optional<List<Language>> getLanguageListByBootcampId(Long bootcampId) {
         Optional<List<Language>> languageList = bootLanguageRepository.getBootLanguagesByBootcampId(bootcampId);
         return languageList;
     }
-
+    public void deleteBootLanguage(Long bootcampId) {
+        bootLanguageRepository.deleteByBootcampId(bootcampId);
+    }
     public List<Language> getLanguageList(){
         List<Language> languageList = Optional.of(LanguageRepository.findAll())
                 .orElseThrow(() -> new BusinessException(ErrorMessage.REGION_NOT_FOUND));
 
         return languageList;
     }
+
+
 }

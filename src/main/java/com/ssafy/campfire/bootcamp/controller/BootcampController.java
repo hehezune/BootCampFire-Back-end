@@ -40,13 +40,22 @@ public class BootcampController {
     public BaseResponseDto<BootcampResponseDto> getBootcamp(@PathVariable Long bootcampId){
         Optional<Bootcamp> bootcamp = bootcampService.getBootcamp(bootcampId);
 
-        Optional<List<Track>> trackList = bootTrackService.getTrackListByBootcamp(bootcampId);
-        Optional<List<Language>>languageList = bootLanguageServie.getLanguageListByBootcamp(bootcampId);
-        Optional<List<Region>> regionList = bootRegionService.getRegionListByBootcamp(bootcampId);
+        Optional<List<Track>> trackList = bootTrackService.getTrackListByBootcampId(bootcampId);
+        Optional<List<Language>>languageList = bootLanguageServie.getLanguageListByBootcampId(bootcampId);
+        Optional<List<Region>> regionList = bootRegionService.getRegionListByBootcampId(bootcampId);
 
         return BaseResponseDto.ok(BootcampResponseDto.of(bootcamp, trackList,languageList, regionList));
     }
 
+
+
+    @DeleteMapping("{bootcampId}")
+    public BaseResponseDto<Long> deleteBootcamp(@PathVariable Long bootcampId){
+        bootTrackService.deleteBootTrack(bootcampId);
+        bootLanguageServie.deleteBootLanguage(bootcampId);
+        bootRegionService.deleteBootRegion(bootcampId);
+        return BaseResponseDto.ok(bootcampService.deleteBootcamp(bootcampId));
+    }
 
 
     //부트캠프 리스트를 이름순으로 보기
