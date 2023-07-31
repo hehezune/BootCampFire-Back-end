@@ -53,7 +53,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         String userId = email.substring(0,index);
         String nickname = userId+"_"+provider;
 
-        Optional<User> optionalUser = userRepository.findByEmail(email);
+        Optional<User> optionalUser = userRepository.findByEmailAndProvider(email,provider);
         Optional<Bootcamp> Optionalbootcamp = bootcampRepository.findById(1L);
 
         User user = null;
@@ -62,12 +62,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             user = new User(nickname, email, provider, bootcamp);
             userRepository.save(user);
         } else {
-            if(userRepository.findDeatailByEmail(email).getProvider().equals(provider)){
-                user = optionalUser.get();
-            } else{
-                user = new User(nickname ,email, provider, bootcamp);
-                userRepository.save(user);
-            }
+            user = optionalUser.get();
         }
 
         return new PrincipalDetails(user, oAuth2User.getAttributes());
