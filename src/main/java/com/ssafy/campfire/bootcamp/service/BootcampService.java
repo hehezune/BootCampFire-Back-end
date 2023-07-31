@@ -3,6 +3,7 @@ package com.ssafy.campfire.bootcamp.service;
 import com.ssafy.campfire.bootcamp.domain.Bootcamp;
 import com.ssafy.campfire.bootcamp.dto.request.BootcampRequestDto;
 import com.ssafy.campfire.bootcamp.repository.BootcampRepository;
+import com.ssafy.campfire.category.domain.Category;
 import com.ssafy.campfire.category.repository.CategoryRepository;
 import com.ssafy.campfire.utils.error.enums.ErrorMessage;
 import com.ssafy.campfire.utils.error.exception.custom.BusinessException;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
+
+import static com.ssafy.campfire.category.domain.enums.CategoryType.BOOTCAMP;
 
 @RequiredArgsConstructor
 @Service
@@ -22,7 +25,7 @@ public class BootcampService {
     public Bootcamp save(BootcampRequestDto bootcampRequestDto) {
         Bootcamp bootcamp = bootcampRepository.save(bootcampRequestDto.toBootcamp());
         //부트캠프 등록시 카테고리 테이블에도 추가 되도록 하기
-//        categoryRepository.save(new Category("BOOTCAMP", bootcamp.getId()));
+        categoryRepository.save(new Category(BOOTCAMP, bootcamp));
         return bootcamp;
     }
 
