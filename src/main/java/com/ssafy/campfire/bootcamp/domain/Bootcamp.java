@@ -92,7 +92,7 @@ public class Bootcamp extends BaseEntity {
         this.algoCnt = 0;
         this.reviewCnt = 5;
         this.totalScore = 5.0;
-//        this.createdDate = LocalDateTime.now();
+        this.createdDate = LocalDateTime.now();
     }
 
 }
