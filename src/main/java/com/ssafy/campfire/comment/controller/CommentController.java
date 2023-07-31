@@ -8,10 +8,7 @@ import com.ssafy.campfire.utils.dto.response.BaseResponseDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -21,6 +18,12 @@ import javax.validation.Valid;
 public class CommentController {
 
     private final CommentService commentService;
+
+    @ApiOperation(value ="댓글 삭제")
+    @DeleteMapping("/{commentId}")
+    public BaseResponseDto<Long> deleteComment(@PathVariable Long commentId) {
+        return BaseResponseDto.ok(commentService.delete(commentId));
+    }
 
     /**
      * @AuthenticationPrincipal 설정 후
