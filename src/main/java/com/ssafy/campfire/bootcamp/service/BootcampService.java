@@ -4,6 +4,7 @@ import com.ssafy.campfire.bootcamp.domain.*;
 import com.ssafy.campfire.bootcamp.dto.request.BootcampRequestDto;
 import com.ssafy.campfire.bootcamp.dto.response.BootcampListResponseDto;
 import com.ssafy.campfire.bootcamp.dto.response.BootcampNameListResponseDto;
+import com.ssafy.campfire.bootcamp.dto.response.BootcampResponseDto;
 import com.ssafy.campfire.bootcamp.repository.*;
 import com.ssafy.campfire.category.domain.Category;
 import com.ssafy.campfire.category.repository.CategoryRepository;
@@ -23,37 +24,67 @@ import static com.ssafy.campfire.category.domain.enums.CategoryType.BOOTCAMP;
 @Service
 @Transactional
 public class BootcampService {
+
+
+    private final BootTrackService bootTrackService;
+    private final BootLanguageServie bootLanguageServie;
+    private final BootRegionService bootRegionService;
+
     private final BootcampRepository bootcampRepository;
     private  final CategoryRepository categoryRepository;
     private  final BootLanguageRepository bootLanguageRepository;
     private final BootTrackRepository bootTrackRepository;
     private final BootRegionRepository bootRegionRepository;
-    private final BootTrackService bootTrackService;
-    private final BootLanguageServie bootLanguageServie;
-    private final BootRegionService bootRegionService;
 
-    public Bootcamp save(BootcampRequestDto bootcampRequestDto) {
+    public BootcampResponseDto save(BootcampRequestDto bootcampRequestDto) {
         Bootcamp bootcamp = bootcampRepository.save(bootcampRequestDto.toBootcamp());
+
+        List<Track> trackList = bootTrackService.save(bootcamp, bootcampRequestDto);
+        List<Language> languageList = bootLanguageServie.save(bootcamp, bootcampRequestDto);
+        List<Region> regionList = bootRegionService.save(bootcamp, bootcampRequestDto);
+
         //부트캠프 등록시 카테고리 테이블에도 추가 되도록 하기
         categoryRepository.save(new Category(BOOTCAMP, bootcamp));
-        return bootcamp;
+
+        return BootcampResponseDto.of(Optional.ofNullable(bootcamp), Optional.ofNullable(trackList), Optional.ofNullable(languageList), Optional.ofNullable(regionList));
     }
 
-    public Optional<Bootcamp> getBootcamp(Long bootcampId){
-        return bootcampRepository.findById(bootcampId);
+    public BootcampResponseDto getBootcamp(Long bootcampId){
+        Optional<Bootcamp> bootcamp = bootcampRepository.findById(bootcampId);
+        Optional<List<Track>> trackList = bootTrackService.getTrackListByBootcampId(bootcampId);
+        Optional<List<Language>>languageList = bootLanguageServie.getLanguageListByBootcampId(bootcampId);
+        Optional<List<Region>> regionList = bootRegionService.getRegionListByBootcampId(bootcampId);
+        return BootcampResponseDto.of(bootcamp, trackList,languageList, regionList);
     }
 
-    public Bootcamp updateBootcamp(Long bootcampId, BootcampRequestDto bootcampRequestDto) {
+    public BootcampResponseDto updateBootcamp(Long bootcampId, BootcampRequestDto bootcampRequestDto) {
+
         Bootcamp bootcamp = bootcampRepository.findById(bootcampId).orElseThrow(() -> new BusinessException(ErrorMessage.BOOTCAMP_NOT_FOUND));
 
+        //부트캠프 정보 업데이트
         bootcamp.update(bootcampRequestDto.toBootcamp());
 
-        return bootcamp;
+        //해당 부트캠프에 해당하는 부트트랙, 부트언어, 부트지역 삭제
+        bootTrackService.deleteBootTrack(bootcampId);
+        bootLanguageServie.deleteBootLanguage(bootcampId);
+        bootRegionService.deleteBootRegion(bootcampId);
+
+        //RequestDto에 있는 부트트랙, 부트언어, 부트지역 다시 재저장
+        List<Track> trackList = bootTrackService.save(bootcamp, bootcampRequestDto);
+        List<Language> languageList = bootLanguageServie.save(bootcamp, bootcampRequestDto);
+        List<Region> regionList = bootRegionService.save(bootcamp, bootcampRequestDto);
+
+        return BootcampResponseDto.of(Optional.ofNullable(bootcamp), Optional.ofNullable(trackList), Optional.ofNullable(languageList), Optional.ofNullable(regionList));
     }
 
     public Long deleteBootcamp(Long bootcampId) {
         Bootcamp bootcamp = bootcampRepository.findById(bootcampId)
                 .orElseThrow(()->new BusinessException(ErrorMessage.BOOTCAMP_NOT_FOUND));
+
+        bootTrackService.deleteBootTrack(bootcamp.getId());
+        bootLanguageServie.deleteBootLanguage(bootcamp.getId());
+        bootRegionService.deleteBootRegion(bootcamp.getId());
+
         bootcampRepository.delete(bootcamp);
         return bootcamp.getId();
     }

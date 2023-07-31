@@ -15,8 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/bootcamps")
@@ -29,51 +27,24 @@ public class BootcampController {
 
     //부트캠프 등록
     @PostMapping
-    public BaseResponseDto<BootcampResponseDto> bootcampRegistry(@RequestBody BootcampRequestDto bootcampRegisterRequestDto ){
-        Bootcamp bootcamp = bootcampService.save(bootcampRegisterRequestDto);
-
-        List<Track> trackList = bootTrackService.save(bootcamp, bootcampRegisterRequestDto);
-        List<Language> languageList = bootLanguageServie.save(bootcamp, bootcampRegisterRequestDto);
-        List<Region> regionList = bootRegionService.save(bootcamp, bootcampRegisterRequestDto);
-
-        return BaseResponseDto.ok(BootcampResponseDto.of(Optional.ofNullable(bootcamp), Optional.ofNullable(trackList), Optional.ofNullable(languageList), Optional.ofNullable(regionList)));
+    public BaseResponseDto<BootcampResponseDto> bootcampRegistry(@RequestBody BootcampRequestDto bootcampRequestDto ){
+        return BaseResponseDto.ok(bootcampService.save(bootcampRequestDto));
     }
 
     @GetMapping("/{bootcampId}")
     public BaseResponseDto<BootcampResponseDto> getBootcamp(@PathVariable Long bootcampId){
-        Optional<Bootcamp> bootcamp = bootcampService.getBootcamp(bootcampId);
-
-        Optional<List<Track>> trackList = bootTrackService.getTrackListByBootcampId(bootcampId);
-        Optional<List<Language>>languageList = bootLanguageServie.getLanguageListByBootcampId(bootcampId);
-        Optional<List<Region>> regionList = bootRegionService.getRegionListByBootcampId(bootcampId);
-
-        return BaseResponseDto.ok(BootcampResponseDto.of(bootcamp, trackList,languageList, regionList));
+        return BaseResponseDto.ok(bootcampService.getBootcamp(bootcampId));
     }
 
 
     @PutMapping("/{bootcampId}")
     public BaseResponseDto<BootcampResponseDto> updateBootcamp(@RequestBody BootcampRequestDto bootcampRequestDto, @PathVariable Long bootcampId){
-        Bootcamp updateBootcamp = bootcampService.updateBootcamp(bootcampId, bootcampRequestDto);
-
-        //해당 부트캠프에 해당하는 부트트랙, 부트언어, 부트지역 삭제
-        bootTrackService.deleteBootTrack(bootcampId);
-        bootLanguageServie.deleteBootLanguage(bootcampId);
-        bootRegionService.deleteBootRegion(bootcampId);
-
-        //RequestDto에 있는 부트트랙, 부트언어, 부트지역 다시 재저장
-        List<Track> trackList = bootTrackService.save(updateBootcamp, bootcampRequestDto);
-        List<Language> languageList = bootLanguageServie.save(updateBootcamp, bootcampRequestDto);
-        List<Region> regionList = bootRegionService.save(updateBootcamp, bootcampRequestDto);
-
-        return BaseResponseDto.ok(BootcampResponseDto.of(Optional.ofNullable(updateBootcamp), Optional.ofNullable(trackList), Optional.ofNullable(languageList), Optional.ofNullable(regionList)));
+        return BaseResponseDto.ok(bootcampService.updateBootcamp(bootcampId, bootcampRequestDto));
     }
 
 
     @DeleteMapping("/{bootcampId}")
     public BaseResponseDto<Long> deleteBootcamp(@PathVariable Long bootcampId){
-        bootTrackService.deleteBootTrack(bootcampId);
-        bootLanguageServie.deleteBootLanguage(bootcampId);
-        bootRegionService.deleteBootRegion(bootcampId);
         return BaseResponseDto.ok(bootcampService.deleteBootcamp(bootcampId));
     }
 
@@ -117,7 +88,7 @@ public class BootcampController {
     }
 
     @ApiOperation("부트캠프 명으로 검색하기")
-    @GetMapping("/{bootcampName}")
+    @GetMapping("/search/{bootcampName}")
     public BaseResponseDto<BootcampListResponseDto> searchByBootcampName(@PathVariable String bootcampName){
         return BaseResponseDto.ok(bootcampService.getBootcampByBootcampName(bootcampName));
     }
