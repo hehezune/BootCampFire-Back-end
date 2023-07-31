@@ -1,6 +1,8 @@
 package com.ssafy.campfire.bootcamp.domain;
 
 import javax.persistence.*;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,4 +25,10 @@ public class BootRegion {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
     private Region region;
+
+    @Builder
+    public BootRegion(Bootcamp bootcamp, Region region){
+        this.bootcamp = bootcamp;
+        this.region = region;
+    }
 }
