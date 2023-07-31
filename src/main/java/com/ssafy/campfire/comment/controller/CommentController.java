@@ -24,8 +24,8 @@ public class CommentController {
     private final CommentService commentService;
 
     @ApiOperation(value ="댓글 수정")
-    @PutMapping("/{commentId}")
-    public BaseResponseDto<CommentUpdateResponse> updateComment(@PathVariable Long commentId,
+    @PutMapping("/{boardId}/{commentId}")
+    public BaseResponseDto<CommentUpdateResponse> updateComment(@PathVariable Long boardId, @PathVariable Long commentId,
                                                                 @RequestBody @Valid CommentUpdateRequest request) {
         return BaseResponseDto.ok(commentService.update(commentId, request));
     }
@@ -37,8 +37,8 @@ public class CommentController {
     }
 
     @ApiOperation(value ="댓글 삭제")
-    @DeleteMapping("/{commentId}")
-    public BaseResponseDto<Long> deleteComment(@PathVariable Long commentId) {
+    @DeleteMapping("/{boardId}/{commentId}")
+    public BaseResponseDto<Long> deleteComment(@PathVariable Long boardId, @PathVariable Long commentId) {
         return BaseResponseDto.ok(commentService.delete(commentId));
     }
 
@@ -46,7 +46,7 @@ public class CommentController {
      * @AuthenticationPrincipal 설정 후
      */
 //    @ApiOperation(value ="댓글 저장")
-//    @PostMapping
+//    @PostMapping("/{boardId}")
 //    public BaseResponseDto<CommentCreateResponse> createBoard(@RequestBody @Valid CommentCreateRequest request,
 //                                                              @AuthenticationPrincipal PrincipalDetails user) {
 //        return BaseResponseDto.ok(commentService.save(user.getId(), request));
@@ -56,9 +56,9 @@ public class CommentController {
      * swagger test
      */
     @ApiOperation(value ="댓글 작성")
-    @PostMapping
+    @PostMapping("/{boardId}")
     public BaseResponseDto<CommentCreateResponse> createBoard(@RequestBody @Valid CommentCreateRequest request,
-                                                                             Long userId) {
+                                                              @PathVariable Long boardId, Long userId) {
         return BaseResponseDto.ok(commentService.save(userId, request));
     }
 }
