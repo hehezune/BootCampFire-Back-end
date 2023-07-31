@@ -24,21 +24,21 @@ public class CommentController {
     private final CommentService commentService;
 
     @ApiOperation(value ="댓글 수정")
-    @PutMapping("/{boardId}/{commentId}")
-    public BaseResponseDto<CommentUpdateResponse> updateComment(@PathVariable Long boardId, @PathVariable Long commentId,
+    @PutMapping("/{commentId}")
+    public BaseResponseDto<CommentUpdateResponse> updateComment(@PathVariable Long commentId,
                                                                 @RequestBody @Valid CommentUpdateRequest request) {
         return BaseResponseDto.ok(commentService.update(commentId, request));
     }
 
     @ApiOperation(value ="댓글 조회")
-    @GetMapping("/{boardId}")
+    @GetMapping("/list/{boardId}")
     public BaseResponseDto<List<CommentReadResponse>> getMainList(@PathVariable Long boardId) {
         return BaseResponseDto.ok(commentService.getCommentList(boardId));
     }
 
     @ApiOperation(value ="댓글 삭제")
-    @DeleteMapping("/{boardId}/{commentId}")
-    public BaseResponseDto<Long> deleteComment(@PathVariable Long boardId, @PathVariable Long commentId) {
+    @DeleteMapping("/{commentId}")
+    public BaseResponseDto<Long> deleteComment(@PathVariable Long commentId) {
         return BaseResponseDto.ok(commentService.delete(commentId));
     }
 
@@ -46,7 +46,7 @@ public class CommentController {
      * @AuthenticationPrincipal 설정 후
      */
 //    @ApiOperation(value ="댓글 저장")
-//    @PostMapping("/{boardId}")
+//    @PostMapping
 //    public BaseResponseDto<CommentCreateResponse> createBoard(@RequestBody @Valid CommentCreateRequest request,
 //                                                              @AuthenticationPrincipal PrincipalDetails user) {
 //        return BaseResponseDto.ok(commentService.save(user.getId(), request));
@@ -56,9 +56,9 @@ public class CommentController {
      * swagger test
      */
     @ApiOperation(value ="댓글 작성")
-    @PostMapping("/{boardId}")
+    @PostMapping
     public BaseResponseDto<CommentCreateResponse> createBoard(@RequestBody @Valid CommentCreateRequest request,
-                                                              @PathVariable Long boardId, Long userId) {
+                                                              Long userId) {
         return BaseResponseDto.ok(commentService.save(userId, request));
     }
 }
