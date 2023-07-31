@@ -3,7 +3,7 @@ package com.ssafy.campfire.bootcamp.service;
 import com.ssafy.campfire.bootcamp.domain.*;
 import com.ssafy.campfire.bootcamp.dto.request.BootcampRequestDto;
 import com.ssafy.campfire.bootcamp.dto.response.BootcampListResponseDto;
-import com.ssafy.campfire.bootcamp.dto.response.BootcampResponseDto;
+import com.ssafy.campfire.bootcamp.dto.response.BootcampNameListResponseDto;
 import com.ssafy.campfire.bootcamp.repository.*;
 import com.ssafy.campfire.category.domain.Category;
 import com.ssafy.campfire.category.repository.CategoryRepository;
@@ -123,14 +123,23 @@ public class BootcampService {
         return bootcampListResponseDtoList;
     }
 
-    public BootcampResponseDto getBootcampByBootcampName(String bootcampName) {
+    //부트캠프 이름으로 검색
+    public BootcampListResponseDto getBootcampByBootcampName(String bootcampName) {
         Optional<Bootcamp> optionalBootcamp = bootcampRepository.findByName(bootcampName);
         Bootcamp bootcamp = optionalBootcamp.get();
         Optional<List<Track>> trackList = bootTrackRepository.getBootTracksByBootcampId(bootcamp.getId());
-        Optional<List<Language>> languageList = bootLanguageRepository.getBootLanguagesByBootcampId(bootcamp.getId());
         Optional<List<Region>> regionList = bootRegionRepository.getBootRegionsByBootcampId(bootcamp.getId());
 
-        return BootcampResponseDto.of(optionalBootcamp, trackList, languageList, regionList);
+        return BootcampListResponseDto.of(optionalBootcamp, trackList, regionList);
     }
 
+    //부트캠프 이름 목록 가져오기
+    public List<BootcampNameListResponseDto> getBootcampNameList(){
+        Optional<List<Bootcamp>> bootcampList = Optional.of(bootcampRepository.findAll());
+        List<BootcampNameListResponseDto> nameList = new ArrayList<>();
+        for (Bootcamp bootcamp : bootcampList.get()) {
+            nameList.add(new BootcampNameListResponseDto(bootcamp.getId(), bootcamp.getName()));
+        }
+        return nameList;
+    }
 }
