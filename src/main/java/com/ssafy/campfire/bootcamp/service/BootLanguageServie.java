@@ -28,13 +28,9 @@ public class BootLanguageServie {
         return languageList;
     }
 
-    public List<Language> getLanguageListByBootcamp(Optional<Bootcamp> bootcamp) {
-        List<BootLanguage> bootLanguageList = bootLanguageRepository.findByBootcamp(bootcamp);
-        List<Language> languageList = new ArrayList<>();
-        for (BootLanguage bootLanguage: bootLanguageList) {
-            languageList.add(bootLanguage.getLanguage());
-        }
+
+    public Optional<List<Language>> getLanguageListByBootcamp(Long bootcampId) {
+        Optional<List<Language>> languageList = bootLanguageRepository.getBootLanguagesByBootcampId(bootcampId);
         return languageList;
-        
     }
 }

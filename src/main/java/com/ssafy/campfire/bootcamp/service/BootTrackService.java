@@ -5,7 +5,6 @@ import com.ssafy.campfire.bootcamp.domain.Bootcamp;
 import com.ssafy.campfire.bootcamp.domain.Track;
 import com.ssafy.campfire.bootcamp.dto.request.BootcampRegisterRequestDto;
 import com.ssafy.campfire.bootcamp.repository.BootTrackRepository;
-import com.ssafy.campfire.bootcamp.repository.TrackRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,22 +30,10 @@ public class BootTrackService {
         return trackList;
     }
 
-    public List<Track> getTrackListByBootcamp(Long bootcampId) {
-        List<BootTrack> bootTrackList = bootTrackRepository.findByBootcamp(bootcamp);
+    public Optional<List<Track>> getTrackListByBootcamp(Long bootcampId) {
+        Optional<List<Track>> trackList = bootTrackRepository.getBootTracksByBootcampId(bootcampId);
+        return trackList;
     }
 
 
-//    public List<Track> getTrackListByBootcamp(Optional<Bootcamp> bootcamp) {
-//        System.out.println("부트트랙서비스 ---------------------");
-////        List<BootTrack> bootTrackList = bootTrackRepository.findByBootcamp(bootcamp);
-//        List<BootTrack> bootTrackList = bootTrackRepository.findBootTracksByBootcamp(bootcamp);
-//        List<Track> trackList = new ArrayList<>();
-//        System.out.println(bootTrackList.size());
-//        for (BootTrack bootTrack: bootTrackList) {
-//            System.out.println(bootTrack.toString());
-//            System.out.println(bootTrack.getTrack().toString());
-//            trackList.add(bootTrack.getTrack());
-//        }
-//        return trackList;
-//    }
 }

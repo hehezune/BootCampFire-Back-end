@@ -32,31 +32,8 @@ public record BootcampResponseDto(
         List<Track> tracks,
         List<Language> languages,
         List<Region> regions) {
-//    public static BootcampResponseDto of(Bootcamp bootcamp, List<Track> tracks, List<Language> languages, List<Region> regions) {
-//
-//        return BootcampResponseDto.builder()
-//                .id(bootcamp.getId())
-//                .name(bootcamp.getName())
-//                .siteUrl(bootcamp.getSiteUrl())
-//                .process(bootcamp.getProcess())
-//                .schedule(bootcamp.getSchedule())
-//                .description(bootcamp.getDescription())
-//                .cost(bootcamp.getCost())
-//                .card(bootcamp.getCard())
-//                .support(bootcamp.getSupport())
-//                .hasCodingtest(bootcamp.getHasCodingtest())
-//                .on_off(bootcamp.getOn_off())
-//                .startDate(bootcamp.getStartDate())
-//                .endDate(bootcamp.getEndDate())
-//                .reviewCnt(bootcamp.getReviewCnt())
-//                .score(bootcamp.getTotalScore() / (double) bootcamp.getReviewCnt())
-//                .tracks(tracks)
-//                .languages(languages)
-//                .regions(regions)
-//                .build();
-//    }
 
-    public static BootcampResponseDto of(Optional<Bootcamp> bootcamp, List<Track> tracks, List<Language> languages,List<Region> regions) {
+    public static BootcampResponseDto of(Optional<Bootcamp> bootcamp, Optional<List<Track>> tracks, Optional<List<Language>> languages, Optional<List<Region>> regions) {
         return BootcampResponseDto.builder()
                 .id(bootcamp.get().getId())
                 .name(bootcamp.get().getName())
@@ -73,9 +50,9 @@ public record BootcampResponseDto(
                 .endDate(bootcamp.get().getEndDate())
                 .reviewCnt(bootcamp.get().getReviewCnt())
                 .score(bootcamp.get().getTotalScore() / (double) bootcamp.get().getReviewCnt())
-                .tracks(tracks)
-                .languages(languages)
-                .regions(regions)
+                .tracks(tracks.get())
+                .languages(languages.get())
+                .regions(regions.get())
                 .build();
     }
 }

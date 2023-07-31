@@ -29,13 +29,9 @@ public class BootRegionService {
         return regionList;
     }
 
-    public List<Region> getRegionListByBootcamp(Optional<Bootcamp> bootcamp) {
-        List<BootRegion> bootRegionList = bootRegionRepository.findByBootcamp(bootcamp);
-        List<Region> regionList = new ArrayList<>();
-        for (BootRegion bootRegion: bootRegionList) {
-            regionList.add(bootRegion.getRegion());
-        }
-        return regionList;
 
+    public Optional<List<Region>> getRegionListByBootcamp(Long bootcampId) {
+        Optional<List<Region>> regionList = bootRegionRepository.getBootRegionsByBootcampId(bootcampId);
+        return regionList;
     }
 }

@@ -32,24 +32,16 @@ public class BootcampController {
         List<Language> languageList = bootLanguageServie.save(bootcamp, bootcampRegisterRequestDto);
         List<Region> regionList = bootRegionService.save(bootcamp, bootcampRegisterRequestDto);
 
-        return BaseResponseDto.ok(BootcampResponseDto.of(Optional.ofNullable(bootcamp), trackList,languageList, regionList));
+        return BaseResponseDto.ok(BootcampResponseDto.of(Optional.ofNullable(bootcamp), Optional.ofNullable(trackList), Optional.ofNullable(languageList), Optional.ofNullable(regionList)));
     }
 
     @GetMapping("/{bootcampId}")
     public BaseResponseDto<BootcampResponseDto> getBootcamp(@PathVariable Long bootcampId){
         Optional<Bootcamp> bootcamp = bootcampService.getBootcamp(bootcampId);
 
-        List<Track> trackList = bootTrackService.getTrackListByBootcamp(bootcampId);
-//        List<Track> trackList = bootTrackService.getTrackListByBootcamp(bootcamp);
-
-        System.out.println("트랙 트랙");
-        System.out.println(trackList.size());
-        for ( Track t: trackList) {
-            System.out.println("트랙:" +t.toString());
-
-        }
-        List<Language> languageList = bootLanguageServie.getLanguageListByBootcamp(bootcamp);
-        List<Region> regionList = bootRegionService.getRegionListByBootcamp(bootcamp);
+        Optional<List<Track>> trackList = bootTrackService.getTrackListByBootcamp(bootcampId);
+        Optional<List<Language>>languageList = bootLanguageServie.getLanguageListByBootcamp(bootcampId);
+        Optional<List<Region>> regionList = bootRegionService.getRegionListByBootcamp(bootcampId);
 
         return BaseResponseDto.ok(BootcampResponseDto.of(bootcamp, trackList,languageList, regionList));
     }

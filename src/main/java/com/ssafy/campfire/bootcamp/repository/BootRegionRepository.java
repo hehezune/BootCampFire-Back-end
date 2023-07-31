@@ -8,9 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface BootRegionRepository extends JpaRepository<BootRegion, Long> {
-    List<BootRegion> findByBootcamp(Optional<Bootcamp> bootcamp);
-
-
-
+public interface BootRegionRepository extends JpaRepository<BootRegion, Long> ,CustomBootRegionRepository{
 }
