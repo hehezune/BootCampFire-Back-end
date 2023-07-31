@@ -44,4 +44,17 @@ public class CommentService {
 
         return CommentCreateResponse.from(savedComment);
     }
+
+    public Long delete(Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.COMMENT_NOT_FOUND));
+
+        Long boardId = comment.getBoard().getId();
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.BOARD_NOT_FOUND));
+        board.minusCommentCnt();
+
+        commentRepository.delete(comment);
+        return comment.getId();
+    }
 }
