@@ -1,7 +1,9 @@
 package com.ssafy.campfire.comment.domain;
 
 import com.ssafy.campfire.board.domain.Board;
+import com.ssafy.campfire.board.domain.dto.BoardUpdate;
 import com.ssafy.campfire.category.domain.Category;
+import com.ssafy.campfire.comment.domain.dto.CommentUpdate;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.utils.domain.BaseEntity;
 import lombok.AccessLevel;
@@ -61,6 +63,12 @@ public class Comment extends BaseEntity {
     public void setOrder(int ref, int refOrder){
         this.ref = ref;
         this.refOrder = refOrder;
+    }
+
+    public void update(CommentUpdate commentUpdate) {
+        this.content = commentUpdate.content();
+        this.anonymous = commentUpdate.anonymous();
+        this.updatedDate = LocalDateTime.now();
     }
 
 }

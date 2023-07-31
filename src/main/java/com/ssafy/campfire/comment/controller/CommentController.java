@@ -1,7 +1,9 @@
 package com.ssafy.campfire.comment.controller;
 
 import com.ssafy.campfire.comment.dto.request.CommentCreateRequest;
+import com.ssafy.campfire.comment.dto.request.CommentUpdateRequest;
 import com.ssafy.campfire.comment.dto.response.CommentCreateResponse;
+import com.ssafy.campfire.comment.dto.response.CommentUpdateResponse;
 import com.ssafy.campfire.comment.service.CommentService;
 import com.ssafy.campfire.global.login.PrincipalDetails;
 import com.ssafy.campfire.utils.dto.response.BaseResponseDto;
@@ -18,6 +20,13 @@ import javax.validation.Valid;
 public class CommentController {
 
     private final CommentService commentService;
+
+    @ApiOperation(value ="댓글 수정")
+    @PutMapping("/{commentId}")
+    public BaseResponseDto<CommentUpdateResponse> updateComment(@PathVariable Long commentId,
+                                                                @RequestBody @Valid CommentUpdateRequest request) {
+        return BaseResponseDto.ok(commentService.update(commentId, request));
+    }
 
     @ApiOperation(value ="댓글 삭제")
     @DeleteMapping("/{commentId}")

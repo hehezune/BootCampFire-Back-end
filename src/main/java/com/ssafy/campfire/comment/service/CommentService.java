@@ -1,10 +1,14 @@
 package com.ssafy.campfire.comment.service;
 
 import com.ssafy.campfire.board.domain.Board;
+import com.ssafy.campfire.board.dto.request.BoardUpdateRequest;
+import com.ssafy.campfire.board.dto.response.BoardUpdateResponse;
 import com.ssafy.campfire.board.repository.BoardRepository;
 import com.ssafy.campfire.comment.domain.Comment;
 import com.ssafy.campfire.comment.dto.request.CommentCreateRequest;
+import com.ssafy.campfire.comment.dto.request.CommentUpdateRequest;
 import com.ssafy.campfire.comment.dto.response.CommentCreateResponse;
+import com.ssafy.campfire.comment.dto.response.CommentUpdateResponse;
 import com.ssafy.campfire.comment.repository.CommentRepository;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.user.repository.UserRepository;
@@ -43,6 +47,25 @@ public class CommentService {
         Comment savedComment = commentRepository.save(comment);
 
         return CommentCreateResponse.from(savedComment);
+    }
+
+    public CommentUpdateResponse update(Long commentId,
+                                        CommentUpdateRequest request) {
+
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.COMMENT_NOT_FOUND));
+
+        comment.update(request.toDto());
+
+        return new CommentUpdateResponse(
+                comment.getId(),
+                comment.getBoard().getId(),
+                comment.getUser().getNickname(),
+                comment.getContent(),
+                comment.getAnonymous(),
+                comment.getRef(),
+                comment.getRefOrder()
+        );
     }
 
     public Long delete(Long commentId) {

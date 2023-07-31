@@ -7,7 +7,9 @@ public record CommentCreateResponse(
         Long boardId,
         String user,
         String content,
-        Boolean anonymous
+        Boolean anonymous,
+        int ref,
+        int refOrder
 ) {
     public static CommentCreateResponse from(Comment comment){
         return new CommentCreateResponse(
@@ -15,7 +17,9 @@ public record CommentCreateResponse(
                 comment.getBoard().getId(),
                 comment.getUser().getNickname(),
                 comment.getContent(),
-                comment.getAnonymous()
+                comment.getAnonymous(),
+                comment.getRef(),
+                comment.getRefOrder()
         );
     }
 }
