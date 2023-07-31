@@ -1,7 +1,7 @@
 package com.ssafy.campfire.bootcamp.service;
 
 import com.ssafy.campfire.bootcamp.domain.*;
-import com.ssafy.campfire.bootcamp.dto.request.BootcampRegisterRequestDto;
+import com.ssafy.campfire.bootcamp.dto.request.BootcampRequestDto;
 import com.ssafy.campfire.bootcamp.repository.BootRegionRepository;
 import com.ssafy.campfire.bootcamp.repository.RegionRepository;
 import com.ssafy.campfire.utils.error.enums.ErrorMessage;
@@ -22,7 +22,7 @@ public class BootRegionService {
     private  final BootRegionRepository bootRegionRepository;
     private  final RegionRepository regionRepository;
 
-    public List<Region> save(Bootcamp bootcamp, BootcampRegisterRequestDto bootcampRegisterRequestDto) {
+    public List<Region> save(Bootcamp bootcamp, BootcampRequestDto bootcampRegisterRequestDto) {
         List<BootRegion> bootRegionList = bootcampRegisterRequestDto.toBootRegionList(bootcamp);
 
         List<Region> regionList = new ArrayList<>();

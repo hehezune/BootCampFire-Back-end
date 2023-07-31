@@ -1,7 +1,7 @@
 package com.ssafy.campfire.bootcamp.service;
 
 import com.ssafy.campfire.bootcamp.domain.*;
-import com.ssafy.campfire.bootcamp.dto.request.BootcampRegisterRequestDto;
+import com.ssafy.campfire.bootcamp.dto.request.BootcampRequestDto;
 import com.ssafy.campfire.bootcamp.repository.BootLanguageRepository;
 import com.ssafy.campfire.bootcamp.repository.LanguageRepository;
 import com.ssafy.campfire.utils.error.enums.ErrorMessage;
@@ -21,7 +21,7 @@ public class BootLanguageServie {
     private  final BootLanguageRepository bootLanguageRepository;
     private  final LanguageRepository LanguageRepository;
 
-    public List<Language> save(Bootcamp bootcamp, BootcampRegisterRequestDto bootcampRegisterRequestDto){
+    public List<Language> save(Bootcamp bootcamp, BootcampRequestDto bootcampRegisterRequestDto){
         List<BootLanguage> bootLanguageList = bootcampRegisterRequestDto.toBootLanguageList(bootcamp);
 
         List<Language> languageList = new ArrayList<>();

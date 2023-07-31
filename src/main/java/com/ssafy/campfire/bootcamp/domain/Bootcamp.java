@@ -90,9 +90,25 @@ public class Bootcamp extends BaseEntity {
         this.startDate = startDate;
         this.endDate = endDate;
         this.algoCnt = 0;
-        this.reviewCnt = 5;
-        this.totalScore = 5.0;
+        this.reviewCnt = 0;
+        this.totalScore = 0.0;
         this.createdDate = LocalDateTime.now();
     }
 
+
+    public void update(Bootcamp bootcamp) {
+        this.name = bootcamp.getName();
+        this.siteUrl = bootcamp.getSiteUrl();
+        this.process = bootcamp.getProcess();
+        this.schedule = bootcamp.getSchedule();
+        this.description = bootcamp.getDescription();
+        this.cost = bootcamp.getCost();
+        this.card = bootcamp.getCard();
+        this.support = bootcamp.getSupport();
+        this.hasCodingtest = bootcamp.getHasCodingtest();
+        this.on_off = bootcamp.getOn_off();
+        this.startDate = bootcamp.getStartDate();
+        this.endDate = bootcamp.getEndDate();
+        this.updatedDate = LocalDateTime.now();
+    }
 }

@@ -1,13 +1,12 @@
 package com.ssafy.campfire.bootcamp.dto.request;
 
 import com.ssafy.campfire.bootcamp.domain.*;
-import com.ssafy.campfire.bootcamp.repository.TrackRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public record BootcampRegisterRequestDto(
+public record BootcampRequestDto(
         String name,
         String siteUrl,
         String process,
