@@ -2,6 +2,7 @@ package com.ssafy.campfire.bootcamp.controller;
 
 import com.ssafy.campfire.bootcamp.domain.*;
 import com.ssafy.campfire.bootcamp.dto.request.BootcampRequestDto;
+import com.ssafy.campfire.bootcamp.dto.response.BootcampListResponseDto;
 import com.ssafy.campfire.bootcamp.dto.response.BootcampResponseDto;
 import com.ssafy.campfire.bootcamp.service.BootLanguageServie;
 import com.ssafy.campfire.bootcamp.service.BootRegionService;
@@ -20,6 +21,7 @@ import java.util.Optional;
 @RequestMapping("/bootcamps")
 public class BootcampController {
     private final BootcampService bootcampService;
+
     private final BootTrackService bootTrackService;
     private final BootLanguageServie bootLanguageServie;
     private final BootRegionService bootRegionService;
@@ -66,7 +68,7 @@ public class BootcampController {
     }
 
 
-    @DeleteMapping("{bootcampId}")
+    @DeleteMapping("/{bootcampId}")
     public BaseResponseDto<Long> deleteBootcamp(@PathVariable Long bootcampId){
         bootTrackService.deleteBootTrack(bootcampId);
         bootLanguageServie.deleteBootLanguage(bootcampId);
@@ -75,11 +77,25 @@ public class BootcampController {
     }
 
 
-    //부트캠프 리스트를 이름순으로 보기
-//    @GetMapping("/bootcamps/names")
-//    public BaseResponseDto<List<BootcampListResponseDto>> getBootcampListOrderByName(){
-//        return BaseResponseDto.ok(bootcampService.getBootcampListOrderByName());
-//    }
+//    부트캠프 리스트를 이름순으로 보기
+    @GetMapping("/lists/names")
+    public BaseResponseDto<List<BootcampListResponseDto>> getBootcampListOrderByName(){
+        return BaseResponseDto.ok(bootcampService.getBootcampListOrderByName());
+    }
+
+
+    // 부트캠프 리스트를 평점 순으로 보기
+    @GetMapping("/lists/scores")
+    public BaseResponseDto<List<BootcampListResponseDto>> getBootcampListOrderByScore(){
+        return BaseResponseDto.ok(bootcampService.getBootcampListOrderByScore());
+    }
+
+
+    //    부트캠프 리스트를 리뷰 개수 순으로 보기
+    @GetMapping("/lists/reviews")
+    public BaseResponseDto<List<BootcampListResponseDto>> getBootcampListOrderByReview(){
+        return BaseResponseDto.ok(bootcampService.getBootcampListOrderByReview());
+    }
 
     @ApiOperation("지역 목록 가져오기")
     @GetMapping("/regions")
@@ -100,7 +116,7 @@ public class BootcampController {
     }
 
     @ApiOperation("부트캠프 명으로 검색하기")
-    @GetMapping("/lists/{bootcampName}")
+    @GetMapping("/{bootcampName}")
     public BaseResponseDto<BootcampResponseDto> searchByBootcampName(@PathVariable String bootcampName){
         return BaseResponseDto.ok(bootcampService.getBootcampByBootcampName(bootcampName));
     }
