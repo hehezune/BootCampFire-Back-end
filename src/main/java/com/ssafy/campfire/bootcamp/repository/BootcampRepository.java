@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BootcampRepository extends JpaRepository<Bootcamp, Long> {
-
+    Optional<Bootcamp> findByName(String bootcampName);
     //이름순으로 정렬 Default
     List<Bootcamp> findAllByOrderByName();
 
