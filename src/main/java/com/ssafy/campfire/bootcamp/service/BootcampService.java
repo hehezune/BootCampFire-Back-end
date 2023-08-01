@@ -81,6 +81,10 @@ public class BootcampService {
         Bootcamp bootcamp = bootcampRepository.findById(bootcampId)
                 .orElseThrow(()->new BusinessException(ErrorMessage.BOOTCAMP_NOT_FOUND));
 
+        Category category = categoryRepository.findCategoryByBootcamp(bootcamp).get();
+
+        categoryRepository.delete(category);
+
         bootTrackService.deleteBootTrack(bootcamp.getId());
         bootLanguageServie.deleteBootLanguage(bootcamp.getId());
         bootRegionService.deleteBootRegion(bootcamp.getId());
