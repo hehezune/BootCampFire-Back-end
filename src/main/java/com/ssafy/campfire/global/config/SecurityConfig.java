@@ -20,14 +20,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 // 인증
-                .antMatchers("/user/info").authenticated()
+                .antMatchers("/users/info").authenticated()
                 // 인가
-                .antMatchers("/user/admin/**").hasAuthority(Role.ADMIN.name())
+                .antMatchers("/users/admin/**").hasAuthority(Role.ADMIN.name())
                 .anyRequest().permitAll()
+                .and()
+                .logout()
+                .logoutUrl("/logout")
                 // OAuth 로그인
                 .and()
                 .oauth2Login()
-                .loginPage("/user/login")
+                .loginPage("/")
                 .defaultSuccessUrl("/")
                 .userInfoEndpoint()
                 .userService(principalOauth2UserService)

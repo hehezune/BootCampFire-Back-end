@@ -58,6 +58,11 @@ public class UserController {
     @ApiOperation("소속 인증 요청 리스트 받아오기 - 관리자")
     @GetMapping("/admin/permission/list")
     public BaseResponseDto<List<UserConfirmResponse>> permissionList(){
+        List<UserConfirmResponse> userConfirmResponseList = userService.needPermissionUserList();
+        for (UserConfirmResponse user: userConfirmResponseList
+             ) {
+            System.out.println(user.toString());
+        }
         return BaseResponseDto.ok(userService.needPermissionUserList());
     }
 
