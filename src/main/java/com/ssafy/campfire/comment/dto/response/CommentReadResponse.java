@@ -9,6 +9,8 @@ public record CommentReadResponse(
         String user,
         String bootcamp,
         String content,
+        Integer ref,
+        Integer refOrder,
         LocalDateTime createdDate
 ) {
     public static CommentReadResponse of(Comment comment){
@@ -19,6 +21,8 @@ public record CommentReadResponse(
                     "익명",
                     "익명의 캠프",
                     comment.getContent(),
+                    comment.getRef(),
+                    comment.getRefOrder(),
                     comment.getCreatedDate()
             );
         return new CommentReadResponse(
@@ -26,6 +30,8 @@ public record CommentReadResponse(
                 comment.getUser().getNickname(),
                 comment.getUser().getBootcamp().getName(),
                 comment.getContent(),
+                comment.getRef(),
+                comment.getRefOrder(),
                 comment.getCreatedDate()
         );
     }
