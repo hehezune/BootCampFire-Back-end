@@ -52,10 +52,11 @@ public class CommentService {
 
     @Transactional(readOnly = true)
     public List<CommentReadResponse> getCommentList(Long commentId){
-        List<CommentReadResponse> commentReadResponses = (List<CommentReadResponse>) commentRepository
+        List<CommentReadResponse> commentReadResponses = commentRepository
                 .getCommentList(commentId)
                 .stream()
-                .map(CommentReadResponse::of);
+                .map(CommentReadResponse::of)
+                .toList();
         return commentReadResponses;
     }
 

@@ -12,9 +12,18 @@ public record CommentReadResponse(
         LocalDateTime createdDate
 ) {
     public static CommentReadResponse of(Comment comment){
+
+        if(comment.getAnonymous())
+            return new CommentReadResponse(
+                    comment.getId(),
+                    "익명",
+                    "익명의 캠프",
+                    comment.getContent(),
+                    comment.getCreatedDate()
+            );
         return new CommentReadResponse(
                 comment.getId(),
-                comment.getContent(),
+                comment.getUser().getNickname(),
                 comment.getUser().getBootcamp().getName(),
                 comment.getContent(),
                 comment.getCreatedDate()
