@@ -115,4 +115,12 @@ public class Bootcamp extends BaseEntity {
         this.imgUrl = bootcamp.getImgUrl();
         this.updatedDate = LocalDateTime.now();
     }
+
+    public void addReviewCnt() {
+        this.reviewCnt++;
+    }
+
+    public void minusReviewCnt() {
+        this.reviewCnt--;
+    }
 }
