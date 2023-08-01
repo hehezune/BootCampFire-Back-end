@@ -39,7 +39,7 @@ public class ReviewService {
         Review saveReview;
         saveReview = reviewRepository.save(review);
 
-        bootcamp.updateTotalScore(saveReview.getScore());
+        bootcamp.addTotalScore(saveReview.getScore());
 
 
         return ReviewReponseDto.of(saveReview);
@@ -57,8 +57,14 @@ public class ReviewService {
     public ReviewReponseDto update(Long reviewId, ReviewRequestDto request) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.COMMENT_NOT_FOUND));
+        Bootcamp bootcamp = bootcampRepository.findById(request.bootcampId())
+                .orElseThrow(()->new BusinessException(ErrorMessage.BOOTCAMP_NOT_FOUND));
+
+        bootcamp.subTotalScore(review.getScore());
 
         review.update(request.toDo());
+
+        bootcamp.addTotalScore(review.getScore());
 
         return ReviewReponseDto.of(review);
     }
@@ -69,7 +75,7 @@ public class ReviewService {
 
         Bootcamp bootcamp = bootcampRepository.findById(bootcampId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.BOARD_NOT_FOUND));
-        bootcamp.minusReviewCnt();
+        bootcamp.subTotalScore(review.getScore());
 
         reviewRepository.delete(review);
         return review.getId();
@@ -85,25 +91,20 @@ public class ReviewService {
         return true;
     }
 
-    public boolean historyCheck(Long bootcampId, Long userId){
+    public ReviewReponseDto historyCheck(Long bootcampId, Long userId){
         Review review = reviewRepository.findByBootcampIdAndUserId(bootcampId, userId);
-
-        if (review != null){
-            return false;
+        if(review == null){
+            return ReviewReponseDto.nullReview();
         }
-
-        return true;
+        return ReviewReponseDto.of(review);
     }
 
-    public boolean vaildationCheck(Long bootcampId, Long userId){
+    public ReviewReponseDto vaildationCheck(Long bootcampId, Long userId){
+        Review review = new Review();
         if(!bootcampCheck(bootcampId, userId)){
-            return false;
+            return ReviewReponseDto.nullReview();
         }
 
-        if (!historyCheck(bootcampId,userId)){
-            return false;
-        }
-
-        return true;
+        return historyCheck(bootcampId, userId);
     }
 }

@@ -37,4 +37,22 @@ public record ReviewReponseDto(
         );
     }
 
+    public static ReviewReponseDto nullReview(){
+        return new ReviewReponseDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+    }
 }
