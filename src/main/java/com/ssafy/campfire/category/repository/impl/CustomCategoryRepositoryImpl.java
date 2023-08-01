@@ -384,6 +384,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .leftJoin(board.category.bootcamp, bootcamp)
                 .fetchJoin()
                 .where(
+                        board.anonymous.eq(false),
                         board.user.nickname.contains(nickname),
                         board.category.id.eq(categoryId)
                 );
@@ -437,6 +438,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .fetchJoin()
                 .leftJoin(board.category.bootcamp, bootcamp)
                 .where(
+                        board.anonymous.eq(false),
                         board.category.bootcamp.id.eq(bootcampId),
                         board.user.nickname.contains(nickname),
                         board.category.id.eq(categoryId)
@@ -455,6 +457,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .leftJoin(board.category.bootcamp, bootcamp)
                 .fetchJoin()
                 .where(
+                        board.anonymous.eq(false),
                         board.category.bootcamp.id.eq(bootcampId),
                         board.user.nickname.contains(nickname),
                         board.category.id.eq(categoryId)
