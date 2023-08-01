@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -50,7 +51,7 @@ public class Review extends BaseEntity {
     private Boolean isRecommend;
 
 
-    @Column(name = "like_cnt", nullable = false)
+    @Column(name = "like_cnt",nullable = false)
     private Integer likeCnt;
 
 
@@ -85,7 +86,22 @@ public class Review extends BaseEntity {
         this.backUp =backUp;
         this.management =management;
         this.mood =mood;
-        this.score = score;
+        this.score = (curriculum+potential+backUp+management+mood)/5.0;
+        this.likeCnt = 0;
+        this.createdDate = LocalDateTime.now();
+
+    }
+
+    public void writeBy(User user) {
+        this.user = user;
+    }
+    public void setBootcamp(Bootcamp bootcamp){
+        this.bootcamp = bootcamp;
+    }
+
+    public  void update(Review review){
+
+        this.updatedDate = LocalDateTime.now();
     }
 
 }
