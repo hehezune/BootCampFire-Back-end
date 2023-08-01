@@ -283,7 +283,10 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .fetchJoin()
                 .leftJoin(board.user, user)
                 .fetchJoin()
-                .where(board.user.nickname.contains(nickname))
+                .where(
+                        board.anonymous.eq(false),
+                        board.user.nickname.contains(nickname)
+                )
                 .orderBy(board.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -340,6 +343,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .leftJoin(board.user, user)
                 .fetchJoin()
                 .where(
+                        board.anonymous.eq(false),
                         board.user.nickname.contains(nickname),
                         board.category.id.eq(categoryId)
                 )
