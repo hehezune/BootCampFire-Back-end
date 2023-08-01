@@ -16,9 +16,10 @@ public record ReviewReponseDto(
         Integer backUp,
         Integer management,
         Integer mood,
-        Double score
+        Double score,
+        Boolean isAlreadyReviewLike
 ) {
-    public static ReviewReponseDto of(Review review){
+    public static ReviewReponseDto of(Review review, Boolean isAlreadyReviewLike){
         return new ReviewReponseDto(
                 review.getId(),
                 review.getUser().getNickname(),
@@ -33,12 +34,14 @@ public record ReviewReponseDto(
                 review.getBackUp(),
                 review.getManagement(),
                 review.getMood(),
-                review.getScore()
+                review.getScore(),
+                isAlreadyReviewLike
         );
     }
 
     public static ReviewReponseDto nullReview(){
         return new ReviewReponseDto(
+                null,
                 null,
                 null,
                 null,

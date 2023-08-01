@@ -37,17 +37,32 @@ public class ReviewController {
 //                                                          @AuthenticationPrincipal PrincipalDetails user){
 //        return BaseResponseDto.ok(reviewService.save(user.getId(), reviewRequestDto));
 //    }
+//    @ApiOperation(value = "리뷰 조회")
+//    @GetMapping("/{bootcampId}/lists")
+//    public BaseResponseDto<List<ReviewReponseDto>> getReviewList(@PathVariable Long bootcampId,
+//                                                                 @AuthenticationPrincipal PrincipalDetails user){
+//        return BaseResponseDto.ok(reviewService.getReviewList(bootcampId, user));
+//    }
+//
+//    @ApiOperation(value = "부트캠프 소속 검사, 작성 이력 검사")
+//    @GetMapping("/{bootcampId}/vaildation")
+//    public BaseResponseDto<ReviewReponseDto> validation(@PathVariable Long bootcampId,
+//                                                        @AuthenticationPrincipal PrincipalDetails user){
+//        return BaseResponseDto.ok(reviewService.vaildationCheck(bootcampId, user.getId()));
+//    }
 
-    @PostMapping("/{bootcampId}")
-    public BaseResponseDto<ReviewReponseDto> cerateReview(@RequestBody @Valid ReviewRequestDto reviewRequestDto,
-                                                          @PathVariable Long bootcampId){
+
+    @PostMapping
+    public BaseResponseDto<ReviewReponseDto> cerateReview(@RequestBody @Valid ReviewRequestDto reviewRequestDto){
         return BaseResponseDto.ok(reviewService.save(reviewRequestDto.userId(), reviewRequestDto));
     }
 
     @ApiOperation(value = "리뷰 조회")
     @GetMapping("/{bootcampId}/lists")
     public BaseResponseDto<List<ReviewReponseDto>> getReviewList(@PathVariable Long bootcampId){
-        return BaseResponseDto.ok(reviewService.getReviewList(bootcampId));
+        //테스트용 -> user 도메인에서 setId 메소드 만들어서 id 세팅 해준 후 테스트 진행
+        User user = new User();
+        return BaseResponseDto.ok(reviewService.getReviewList(bootcampId, user));
     }
 
     @ApiOperation(value = "리뷰 수정")
@@ -67,4 +82,6 @@ public class ReviewController {
     public BaseResponseDto<ReviewReponseDto> validation(@PathVariable Long bootcampId, @RequestBody @Valid User user){
         return BaseResponseDto.ok(reviewService.vaildationCheck(bootcampId, user.getId()));
     }
+    
+
 }
