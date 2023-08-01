@@ -62,11 +62,15 @@ public class Bootcamp extends BaseEntity {
     private Integer algoCnt;
 
 
-    public void updateTotalScore(double score){
+    public void addTotalScore(double score){
         this.totalScore += score;
         this.reviewCnt++;
     }
 
+    public void subTotalScore(double score){
+        this.totalScore -= score;
+        this.reviewCnt--;
+    }
     @Builder
     public Bootcamp(String name){
         this.name = name;
@@ -116,11 +120,4 @@ public class Bootcamp extends BaseEntity {
         this.updatedDate = LocalDateTime.now();
     }
 
-    public void addReviewCnt() {
-        this.reviewCnt++;
-    }
-
-    public void minusReviewCnt() {
-        this.reviewCnt--;
-    }
 }

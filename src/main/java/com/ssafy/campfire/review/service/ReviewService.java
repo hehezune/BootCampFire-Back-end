@@ -39,7 +39,7 @@ public class ReviewService {
         Review saveReview;
         saveReview = reviewRepository.save(review);
 
-        bootcamp.updateTotalScore(saveReview.getScore());
+        bootcamp.addTotalScore(saveReview.getScore());
 
 
         return ReviewReponseDto.of(saveReview);
@@ -57,8 +57,14 @@ public class ReviewService {
     public ReviewReponseDto update(Long reviewId, ReviewRequestDto request) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.COMMENT_NOT_FOUND));
+        Bootcamp bootcamp = bootcampRepository.findById(request.bootcampId())
+                .orElseThrow(()->new BusinessException(ErrorMessage.BOOTCAMP_NOT_FOUND));
+
+        bootcamp.subTotalScore(review.getScore());
 
         review.update(request.toDo());
+
+        bootcamp.addTotalScore(review.getScore());
 
         return ReviewReponseDto.of(review);
     }
@@ -69,7 +75,7 @@ public class ReviewService {
 
         Bootcamp bootcamp = bootcampRepository.findById(bootcampId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.BOARD_NOT_FOUND));
-        bootcamp.minusReviewCnt();
+        bootcamp.subTotalScore(review.getScore());
 
         reviewRepository.delete(review);
         return review.getId();
