@@ -37,10 +37,14 @@ public class CommentService {
 
         Comment comment = request.toEntity();
 
-        if(request.ref()!=null){
-            comment.setOrder(request.ref(), request.refOrder()+1);
+        if(request.preCommentId()!=null){
+            Comment preComment = commentRepository.findById(request.preCommentId())
+                    .orElseThrow(() -> new BusinessException(ErrorMessage.COMMENT_NOT_FOUND));
+            comment.setOrder(preComment.getRef(), preComment.getMaxRefOrder());
+            preComment.addMaxRefOrder();
         } else{
             comment.setOrder(board.getMaxRef()+1, 0);
+            comment.addMaxRefOrder();
             board.addMaxRef();
         }
         comment.writeBy(user, board);
@@ -52,10 +56,11 @@ public class CommentService {
 
     @Transactional(readOnly = true)
     public List<CommentReadResponse> getCommentList(Long commentId){
-        List<CommentReadResponse> commentReadResponses = (List<CommentReadResponse>) commentRepository
+        List<CommentReadResponse> commentReadResponses = commentRepository
                 .getCommentList(commentId)
                 .stream()
-                .map(CommentReadResponse::of);
+                .map(CommentReadResponse::of)
+                .toList();
         return commentReadResponses;
     }
 

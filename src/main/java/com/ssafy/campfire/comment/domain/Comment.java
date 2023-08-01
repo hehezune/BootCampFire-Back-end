@@ -46,12 +46,19 @@ public class Comment extends BaseEntity {
     @Column(nullable = false)
     private Integer ref;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private Integer refOrder;
+
+    private Integer maxRefOrder;
+
+    public void addMaxRefOrder() {
+        this.maxRefOrder++;
+    }
 
     public Comment(String content, Boolean anonymous){
         this.content = content;
         this.anonymous = anonymous;
+        this.maxRefOrder = 0;
         this.createdDate = LocalDateTime.now();
     }
 
