@@ -12,8 +12,9 @@ import com.ssafy.campfire.utils.error.enums.ErrorMessage;
 import com.ssafy.campfire.utils.error.exception.custom.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -42,6 +43,67 @@ public class ReviewService {
 
 
         return ReviewReponseDto.of(saveReview);
+    }
 
+    @Transactional(readOnly = true)
+    public List<ReviewReponseDto> getReviewList(Long bootcampId){
+        List<ReviewReponseDto> reviewResponses = (List<ReviewReponseDto>) reviewRepository
+                .getReviewList(bootcampId)
+                .stream()
+                .map(ReviewReponseDto::of).toList();
+        return reviewResponses;
+    }
+
+    public ReviewReponseDto update(Long reviewId, ReviewRequestDto request) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.COMMENT_NOT_FOUND));
+
+        review.update(request.toDo());
+
+        return ReviewReponseDto.of(review);
+    }
+
+    public Long delete(Long bootcampId, Long reviewId) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.COMMENT_NOT_FOUND));
+
+        Bootcamp bootcamp = bootcampRepository.findById(bootcampId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.BOARD_NOT_FOUND));
+        bootcamp.minusReviewCnt();
+
+        reviewRepository.delete(review);
+        return review.getId();
+    }
+
+    public boolean bootcampCheck(Long bootcampId, Long userId){
+        User user = userRepository.findUserById(userId);
+
+        if(user.getBootcamp().getId() != bootcampId){
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean historyCheck(Long bootcampId, Long userId){
+        Review review = reviewRepository.findByBootcampIdAndUserId(bootcampId, userId);
+
+        if (review != null){
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean vaildationCheck(Long bootcampId, Long userId){
+        if(!bootcampCheck(bootcampId, userId)){
+            return false;
+        }
+
+        if (!historyCheck(bootcampId,userId)){
+            return false;
+        }
+
+        return true;
     }
 }

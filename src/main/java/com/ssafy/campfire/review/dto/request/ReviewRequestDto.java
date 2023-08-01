@@ -1,6 +1,7 @@
 package com.ssafy.campfire.review.dto.request;
 
 import com.ssafy.campfire.review.domain.Review;
+import com.ssafy.campfire.review.domain.dto.ReviewUpdate;
 import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 
 import javax.validation.constraints.NotNull;
@@ -43,5 +44,8 @@ public record ReviewRequestDto(
 ) {
     public Review toReview(){
         return new Review(tip,good, bad, isRecommend, curriculum, potential,backUp, management, mood);
+    }
+    public ReviewUpdate toDo(){
+        return new ReviewUpdate(this.tip,this.good, this.bad, this.isRecommend, this.curriculum, this.potential,this.backUp, this.management, this.mood);
     }
 }

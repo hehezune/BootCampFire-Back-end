@@ -1,6 +1,7 @@
 package com.ssafy.campfire.review.domain;
 
 import com.ssafy.campfire.bootcamp.domain.Bootcamp;
+import com.ssafy.campfire.review.domain.dto.ReviewUpdate;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.utils.domain.BaseEntity;
 import lombok.Getter;
@@ -99,8 +100,17 @@ public class Review extends BaseEntity {
         this.bootcamp = bootcamp;
     }
 
-    public  void update(Review review){
-
+    public  void update(ReviewUpdate reviewUpdate){
+        this.tip = reviewUpdate.tip();
+        this.good = reviewUpdate.good();
+        this.bad = reviewUpdate.bad();
+        this.isRecommend = reviewUpdate.isRecommend();
+        this.curriculum = reviewUpdate.curriculum();
+        this.potential = reviewUpdate.potential();
+        this.backUp = reviewUpdate.backUp();
+        this.management = reviewUpdate.management();
+        this.mood = reviewUpdate.mood();
+        this.score = (curriculum+potential+backUp+management+mood)/5.0;
         this.updatedDate = LocalDateTime.now();
     }
 
