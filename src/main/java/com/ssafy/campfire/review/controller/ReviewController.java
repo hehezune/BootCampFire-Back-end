@@ -37,6 +37,20 @@ public class ReviewController {
 //                                                          @AuthenticationPrincipal PrincipalDetails user){
 //        return BaseResponseDto.ok(reviewService.save(user.getId(), reviewRequestDto));
 //    }
+//    @ApiOperation(value = "리뷰 조회")
+//    @GetMapping("/{bootcampId}/lists")
+//    public BaseResponseDto<List<ReviewReponseDto>> getReviewList(@PathVariable Long bootcampId,
+//                                                                 @AuthenticationPrincipal PrincipalDetails user){
+//        return BaseResponseDto.ok(reviewService.getReviewList(bootcampId, user));
+//    }
+//
+//    @ApiOperation(value = "부트캠프 소속 검사, 작성 이력 검사")
+//    @GetMapping("/{bootcampId}/vaildation")
+//    public BaseResponseDto<ReviewReponseDto> validation(@PathVariable Long bootcampId,
+//                                                        @AuthenticationPrincipal PrincipalDetails user){
+//        return BaseResponseDto.ok(reviewService.vaildationCheck(bootcampId, user.getId()));
+//    }
+
 
     @PostMapping
     public BaseResponseDto<ReviewReponseDto> cerateReview(@RequestBody @Valid ReviewRequestDto reviewRequestDto){
@@ -46,7 +60,10 @@ public class ReviewController {
     @ApiOperation(value = "리뷰 조회")
     @GetMapping("/{bootcampId}/lists")
     public BaseResponseDto<List<ReviewReponseDto>> getReviewList(@PathVariable Long bootcampId){
-        return BaseResponseDto.ok(reviewService.getReviewList(bootcampId));
+        //테스트용
+        User user = new User();
+        user.setId(10L);
+        return BaseResponseDto.ok(reviewService.getReviewList(bootcampId, user));
     }
 
     @ApiOperation(value = "리뷰 수정")
@@ -66,4 +83,6 @@ public class ReviewController {
     public BaseResponseDto<ReviewReponseDto> validation(@PathVariable Long bootcampId, @RequestBody @Valid User user){
         return BaseResponseDto.ok(reviewService.vaildationCheck(bootcampId, user.getId()));
     }
+    
+
 }

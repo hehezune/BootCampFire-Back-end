@@ -6,6 +6,9 @@ import com.ssafy.campfire.review.domain.Review;
 import com.ssafy.campfire.review.dto.request.ReviewRequestDto;
 import com.ssafy.campfire.review.dto.response.ReviewReponseDto;
 import com.ssafy.campfire.review.repository.ReviewRepository;
+import com.ssafy.campfire.reviewLike.domain.ReviewLike;
+import com.ssafy.campfire.reviewLike.dto.response.ReviewLikeResponse;
+import com.ssafy.campfire.reviewLike.repository.ReviewLikeRepository;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.user.repository.UserRepository;
 import com.ssafy.campfire.utils.error.enums.ErrorMessage;
@@ -25,6 +28,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
     private final BootcampRepository bootcampRepository;
+    private final ReviewLikeRepository reviewLikeRepository;
 
 
     public ReviewReponseDto save(Long userId, ReviewRequestDto reviewRequestDto) {
@@ -47,16 +51,20 @@ public class ReviewService {
         bootcamp.addTotalScore(saveReview.getScore());
 
 
-        return ReviewReponseDto.of(saveReview);
+        return ReviewReponseDto.of(saveReview, false);
     }
 
     @Transactional(readOnly = true)
-    public List<ReviewReponseDto> getReviewList(Long bootcampId){
+    public List<ReviewReponseDto> getReviewList(Long bootcampId, User user){
         List<ReviewReponseDto> reviewResponses = (List<ReviewReponseDto>) reviewRepository
                 .getReviewList(bootcampId)
                 .stream()
-                .map(ReviewReponseDto::of).toList();
+                .map((Review review) -> ReviewReponseDto.of(review, isAlreadyReviewLike(review, user))).toList();
         return reviewResponses;
+    }
+
+    private Boolean isAlreadyReviewLike(Review review, User user) {
+        return reviewLikeRepository.findByUserAndReview(user, review).isPresent();
     }
 
     public ReviewReponseDto update(Long reviewId, ReviewRequestDto request) {
@@ -71,7 +79,7 @@ public class ReviewService {
 
         bootcamp.addTotalScore(review.getScore());
 
-        return ReviewReponseDto.of(review);
+        return ReviewReponseDto.of(review, isAlreadyReviewLike(review, review.getUser()));
     }
 
     public Long delete(Long bootcampId, Long reviewId) {
@@ -80,6 +88,7 @@ public class ReviewService {
 
         Bootcamp bootcamp = bootcampRepository.findById(bootcampId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.BOARD_NOT_FOUND));
+
         bootcamp.subTotalScore(review.getScore());
 
         reviewRepository.delete(review);
@@ -92,7 +101,6 @@ public class ReviewService {
         if(user.getBootcamp().getId() != bootcampId){
             return false;
         }
-
         return true;
     }
 
@@ -101,15 +109,14 @@ public class ReviewService {
         if(review == null){
             return ReviewReponseDto.nullReview();
         }
-        return ReviewReponseDto.of(review);
+        return ReviewReponseDto.of(review, isAlreadyReviewLike(review, review.getUser()));
     }
 
     public ReviewReponseDto vaildationCheck(Long bootcampId, Long userId){
-        Review review = new Review();
+//        Review review = new Review();
         if(!bootcampCheck(bootcampId, userId)){
             return ReviewReponseDto.nullReview();
         }
-
         return historyCheck(bootcampId, userId);
     }
 }
