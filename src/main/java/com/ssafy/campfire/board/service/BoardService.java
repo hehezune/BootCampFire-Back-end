@@ -6,9 +6,9 @@ import com.ssafy.campfire.board.dto.request.BoardUpdateRequest;
 import com.ssafy.campfire.board.dto.response.BoardCreateResponse;
 import com.ssafy.campfire.board.dto.response.BoardReadResponse;
 import com.ssafy.campfire.board.dto.response.BoardUpdateResponse;
+import com.ssafy.campfire.board.dto.response.UserBoardListResponse;
 import com.ssafy.campfire.board.repository.BoardRepository;
 import com.ssafy.campfire.category.domain.Category;
-import com.ssafy.campfire.category.dto.response.BoardListResponse;
 import com.ssafy.campfire.category.repository.CategoryRepository;
 import com.ssafy.campfire.likes.repository.LikesRepository;
 import com.ssafy.campfire.user.domain.User;
@@ -48,11 +48,11 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public GlobalPageResponseDto<BoardListResponse> getUserBoard(Long userId, Pageable pageable){
+    public GlobalPageResponseDto<UserBoardListResponse> getUserBoard(Long userId, Pageable pageable){
 
-        Page<BoardListResponse> page = boardRepository
+        Page<UserBoardListResponse> page = boardRepository
                 .getUserBoard(userId, pageable)
-                .map(BoardListResponse::of);
+                .map(UserBoardListResponse::of);
 
         return GlobalPageResponseDto.of(page);
     }
