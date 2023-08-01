@@ -38,4 +38,19 @@ public class ReviewLikeService {
 
         return ReviewLikeResponse.from(review);
     }
+
+    public ReviewLikeResponse cancelLike(Long userId, Long reviewId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.REVIEW_NOT_FOUND));
+
+        reviewLikeRepository.findByUserAndReview(user, review)
+                .ifPresent(it -> {
+                    reviewLikeRepository.delete(it);
+                    review.minusLike(it);
+                    review.minusLikeCnt();
+                });
+        return ReviewLikeResponse.from(review);
+    }
 }
