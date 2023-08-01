@@ -24,6 +24,12 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
+    @ApiOperation(value ="사용자 부캠 카테고리 id 반환")
+    @GetMapping("/bootcamp")
+    public BaseResponseDto<Long> getUserBootCampCategoryId(Long userId) {
+        return BaseResponseDto.ok(categoryService.getUserBootCampCategoryId(userId));
+    }
+
     @ApiOperation(value ="메인화면 : 인기 게시글 10개 보기")
     @GetMapping("/hots")
     public BaseResponseDto<List<BoardHotResponse>> getHotList() {

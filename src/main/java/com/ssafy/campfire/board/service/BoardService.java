@@ -10,6 +10,7 @@ import com.ssafy.campfire.board.dto.response.UserBoardListResponse;
 import com.ssafy.campfire.board.repository.BoardRepository;
 import com.ssafy.campfire.category.domain.Category;
 import com.ssafy.campfire.category.repository.CategoryRepository;
+import com.ssafy.campfire.category.service.CategoryService;
 import com.ssafy.campfire.likes.repository.LikesRepository;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.user.repository.UserRepository;
@@ -32,11 +33,18 @@ public class BoardService {
     private final CategoryRepository categoryRepository;
     private final LikesRepository likesRepository;
 
+    private final CategoryService categoryService;
+
     public BoardCreateResponse save(Long userId, BoardCreateRequest request) {
+
+        Long categoryId = request.categoryId();
+
+        if(categoryId==9)
+            categoryId = categoryService.getUserBootCampCategoryId(userId);
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
-        Category category = categoryRepository.findById(request.categoryId())
+        Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.CATEGORY_NOT_FOUND));
 
         Board board = request.toEntity();
