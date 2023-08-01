@@ -6,8 +6,8 @@ import com.ssafy.campfire.board.dto.request.BoardUpdateRequest;
 import com.ssafy.campfire.board.dto.response.BoardCreateResponse;
 import com.ssafy.campfire.board.dto.response.BoardReadResponse;
 import com.ssafy.campfire.board.dto.response.BoardUpdateResponse;
+import com.ssafy.campfire.board.dto.response.UserBoardListResponse;
 import com.ssafy.campfire.board.service.BoardService;
-import com.ssafy.campfire.category.dto.response.BoardListResponse;
 import com.ssafy.campfire.global.login.PrincipalDetails;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.utils.dto.response.BaseResponseDto;
@@ -58,7 +58,7 @@ public class BoardController {
 //    }
 //    @ApiOperation(value ="사용자 게시글 조회")
 //    @GetMapping("/users")
-//    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getUserBoard(Pageable pageable,
+//    public BaseResponseDto<GlobalPageResponseDto<UserBoardListResponse>> getUserBoard(Pageable pageable,
 //                                                                                  @AuthenticationPrincipal PrincipalDetails user) {
 //        return BaseResponseDto.ok(boardService.getUserBoard(user.getId(), pageable));
 //    }
@@ -82,7 +82,7 @@ public class BoardController {
 
     @ApiOperation(value ="사용자 게시글 조회")
     @GetMapping("/users")
-    public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getNewestList(Pageable pageable, Long userId) {
+    public BaseResponseDto<GlobalPageResponseDto<UserBoardListResponse>> getNewestList(Pageable pageable, Long userId) {
         return BaseResponseDto.ok(boardService.getUserBoard(userId, pageable));
     }
 
