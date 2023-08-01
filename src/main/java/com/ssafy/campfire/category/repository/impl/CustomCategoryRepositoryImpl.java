@@ -25,6 +25,8 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
 
     private final JPAQueryFactory queryFactory;
 
+
+
     @Override
     public List<Board> getHotFiveBoard() {
 
@@ -34,6 +36,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .fetchJoin()
                 .leftJoin(board.user, user)
                 .fetchJoin()
+                .leftJoin(board.category.bootcamp, bootcamp)
                 .where(
                         board.category.name.ne(BOOTCAMP),
                         board.createdDate.between(LocalDateTime.now().minusDays(3), LocalDateTime.now())
@@ -55,6 +58,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .fetchJoin()
                 .leftJoin(board.user, user)
                 .fetchJoin()
+                .leftJoin(board.category.bootcamp, bootcamp)
                 .where(board.category.id.eq(categoryId))
                 .orderBy(board.createdDate.desc())
                 .limit(5)
@@ -72,6 +76,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .fetchJoin()
                 .leftJoin(board.user, user)
                 .fetchJoin()
+                .leftJoin(board.category.bootcamp, bootcamp)
                 .where(board.category.id.eq(categoryId))
                 .orderBy(board.createdDate.desc())
                 .offset(pageable.getOffset())
@@ -83,6 +88,8 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .leftJoin(board.category, category)
                 .fetchJoin()
                 .leftJoin(board.user, user)
+                .fetchJoin()
+                .leftJoin(board.category.bootcamp, bootcamp)
                 .fetchJoin()
                 .where(board.category.id.eq(categoryId));
 
@@ -99,7 +106,6 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .leftJoin(board.user, user)
                 .fetchJoin()
                 .leftJoin(board.category.bootcamp, bootcamp)
-                .fetchJoin()
                 .where(
                         board.category.bootcamp.id.eq(bootcampId),
                         board.category.id.eq(categoryId)
@@ -134,6 +140,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .fetchJoin()
                 .leftJoin(board.user, user)
                 .fetchJoin()
+                .leftJoin(board.category.bootcamp, bootcamp)
                 .where(board.category.id.eq(categoryId))
                 .orderBy(board.likeCnt.desc())
                 .offset(pageable.getOffset())
@@ -145,6 +152,8 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .leftJoin(board.category, category)
                 .fetchJoin()
                 .leftJoin(board.user, user)
+                .fetchJoin()
+                .leftJoin(board.category.bootcamp, bootcamp)
                 .fetchJoin()
                 .where(board.category.id.eq(categoryId));
 
@@ -161,7 +170,6 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .leftJoin(board.user, user)
                 .fetchJoin()
                 .leftJoin(board.category.bootcamp, bootcamp)
-                .fetchJoin()
                 .where(
                         board.category.bootcamp.id.eq(bootcampId),
                         board.category.id.eq(categoryId)
@@ -196,6 +204,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .fetchJoin()
                 .leftJoin(board.user, user)
                 .fetchJoin()
+                .leftJoin(board.category.bootcamp, bootcamp)
                 .where(board.category.id.eq(categoryId))
                 .orderBy(board.view.desc())
                 .offset(pageable.getOffset())
@@ -207,6 +216,8 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .leftJoin(board.category, category)
                 .fetchJoin()
                 .leftJoin(board.user, user)
+                .fetchJoin()
+                .leftJoin(board.category.bootcamp, bootcamp)
                 .fetchJoin()
                 .where(board.category.id.eq(categoryId));
 
@@ -223,7 +234,6 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .leftJoin(board.user, user)
                 .fetchJoin()
                 .leftJoin(board.category.bootcamp, bootcamp)
-                .fetchJoin()
                 .where(
                         board.category.bootcamp.id.eq(bootcampId),
                         board.category.id.eq(categoryId)
@@ -258,7 +268,11 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .fetchJoin()
                 .leftJoin(board.user, user)
                 .fetchJoin()
-                .where((board.title.contains(keyword)).or(board.content.contains(keyword)))
+                .leftJoin(board.category.bootcamp, bootcamp)
+                .where(
+                        (board.title.contains(keyword))
+                                .or(board.content.contains(keyword))
+                )
                 .orderBy(board.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -269,6 +283,8 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .leftJoin(board.category, category)
                 .fetchJoin()
                 .leftJoin(board.user, user)
+                .fetchJoin()
+                .leftJoin(board.category.bootcamp, bootcamp)
                 .fetchJoin()
                 .where((board.title.contains(keyword)).or(board.content.contains(keyword)));
 
@@ -283,7 +299,11 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .fetchJoin()
                 .leftJoin(board.user, user)
                 .fetchJoin()
-                .where(board.user.nickname.contains(nickname))
+                .leftJoin(board.category.bootcamp, bootcamp)
+                .where(
+                        board.anonymous.eq(false),
+                        board.user.nickname.contains(nickname)
+                )
                 .orderBy(board.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -294,6 +314,8 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .leftJoin(board.category, category)
                 .fetchJoin()
                 .leftJoin(board.user, user)
+                .fetchJoin()
+                .leftJoin(board.category.bootcamp, bootcamp)
                 .fetchJoin()
                 .where(board.user.nickname.contains(nickname));
 
@@ -308,6 +330,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .fetchJoin()
                 .leftJoin(board.user, user)
                 .fetchJoin()
+                .leftJoin(board.category.bootcamp, bootcamp)
                 .where(
                         (board.title.contains(keyword)).or(board.content.contains(keyword)),
                         board.category.id.eq(categoryId)
@@ -322,6 +345,8 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .leftJoin(board.category, category)
                 .fetchJoin()
                 .leftJoin(board.user, user)
+                .fetchJoin()
+                .leftJoin(board.category.bootcamp, bootcamp)
                 .fetchJoin()
                 .where(
                         (board.title.contains(keyword)).or(board.content.contains(keyword)),
@@ -339,7 +364,9 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .fetchJoin()
                 .leftJoin(board.user, user)
                 .fetchJoin()
+                .leftJoin(board.category.bootcamp, bootcamp)
                 .where(
+                        board.anonymous.eq(false),
                         board.user.nickname.contains(nickname),
                         board.category.id.eq(categoryId)
                 )
@@ -354,7 +381,10 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .fetchJoin()
                 .leftJoin(board.user, user)
                 .fetchJoin()
+                .leftJoin(board.category.bootcamp, bootcamp)
+                .fetchJoin()
                 .where(
+                        board.anonymous.eq(false),
                         board.user.nickname.contains(nickname),
                         board.category.id.eq(categoryId)
                 );
@@ -371,7 +401,6 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .leftJoin(board.user, user)
                 .fetchJoin()
                 .leftJoin(board.category.bootcamp, bootcamp)
-                .fetchJoin()
                 .where(
                         board.category.bootcamp.id.eq(bootcampId),
                         (board.title.contains(keyword)).or(board.content.contains(keyword)),
@@ -408,8 +437,8 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .leftJoin(board.user, user)
                 .fetchJoin()
                 .leftJoin(board.category.bootcamp, bootcamp)
-                .fetchJoin()
                 .where(
+                        board.anonymous.eq(false),
                         board.category.bootcamp.id.eq(bootcampId),
                         board.user.nickname.contains(nickname),
                         board.category.id.eq(categoryId)
@@ -428,6 +457,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .leftJoin(board.category.bootcamp, bootcamp)
                 .fetchJoin()
                 .where(
+                        board.anonymous.eq(false),
                         board.category.bootcamp.id.eq(bootcampId),
                         board.user.nickname.contains(nickname),
                         board.category.id.eq(categoryId)

@@ -18,11 +18,9 @@ public record CommentCreateRequest(
         @NotNull(message = "익명여부는 필수입니다.")
         Boolean anonymous,
 
-        //대댓이면 부모 ref 보냄
-        Integer ref,
+        //대댓이면 부모댓글 ID보냄
+        Long preCommentId
 
-        //대댓이면 부모 ref의 maxOrder 보냄
-        Integer refOrder
 ) {
     public Comment toEntity(){
         return new Comment(
