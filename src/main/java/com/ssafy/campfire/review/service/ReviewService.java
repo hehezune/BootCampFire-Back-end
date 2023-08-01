@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.logging.ErrorManager;
 
 @RequiredArgsConstructor
 @Service
@@ -31,6 +32,10 @@ public class ReviewService {
                 .orElseThrow(()->new BusinessException(ErrorMessage.USER_NOT_FOUND));
         Bootcamp bootcamp = bootcampRepository.findById(reviewRequestDto.bootcampId())
                 .orElseThrow(()->new BusinessException(ErrorMessage.BOOTCAMP_NOT_FOUND));
+
+        if(user.getBootcamp().getId() != bootcamp.getId()){
+            throw new BusinessException(ErrorMessage.INVALID_REVIEW_REQUEST);
+        }
 
         Review review = reviewRequestDto.toReview();
         review.setBootcamp(bootcamp);

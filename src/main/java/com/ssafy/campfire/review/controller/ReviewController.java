@@ -38,9 +38,8 @@ public class ReviewController {
 //        return BaseResponseDto.ok(reviewService.save(user.getId(), reviewRequestDto));
 //    }
 
-    @PostMapping("/{bootcampId}")
-    public BaseResponseDto<ReviewReponseDto> cerateReview(@RequestBody @Valid ReviewRequestDto reviewRequestDto,
-                                                          @PathVariable Long bootcampId){
+    @PostMapping
+    public BaseResponseDto<ReviewReponseDto> cerateReview(@RequestBody @Valid ReviewRequestDto reviewRequestDto){
         return BaseResponseDto.ok(reviewService.save(reviewRequestDto.userId(), reviewRequestDto));
     }
 
