@@ -60,9 +60,8 @@ public class ReviewController {
     @ApiOperation(value = "리뷰 조회")
     @GetMapping("/{bootcampId}/lists")
     public BaseResponseDto<List<ReviewReponseDto>> getReviewList(@PathVariable Long bootcampId){
-        //테스트용
+        //테스트용 -> user 도메인에서 setId 메소드 만들어서 id 세팅 해준 후 테스트 진행
         User user = new User();
-        user.setId(10L);
         return BaseResponseDto.ok(reviewService.getReviewList(bootcampId, user));
     }
 
