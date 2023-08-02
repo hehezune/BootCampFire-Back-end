@@ -27,7 +27,7 @@ public class BootcampController {
 
     //부트캠프 등록
     @PostMapping
-    public BaseResponseDto<BootcampResponseDto> bootcampRegistry(@RequestBody BootcampRequestDto bootcampRequestDto ){
+    public BaseResponseDto<BootcampResponseDto> createBootcamp(@RequestBody BootcampRequestDto bootcampRequestDto ){
         return BaseResponseDto.ok(bootcampService.save(bootcampRequestDto));
     }
 
