@@ -2,8 +2,10 @@ package com.ssafy.campfire.algorithm.service;
 
 import com.ssafy.campfire.algorithm.domain.Algorithm;
 import com.ssafy.campfire.algorithm.dto.request.AlgorithmRequestDto;
+import com.ssafy.campfire.algorithm.dto.response.AlgorithmListResponseDto;
 import com.ssafy.campfire.algorithm.dto.response.AlgorithmResponseDto;
 import com.ssafy.campfire.algorithm.repository.AlgorithmRepository;
+import com.ssafy.campfire.bootcamp.dto.response.BootcampListResponseDto;
 import com.ssafy.campfire.utils.error.enums.ErrorMessage;
 import com.ssafy.campfire.utils.error.exception.custom.BusinessException;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import javax.print.Doc;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -63,7 +66,30 @@ public class AlgorithmService {
     }
 
 
+    public Long deleteAlgorithm(Long algorithmId) {
+        Algorithm algorithm = algorithmRepository.findById(algorithmId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.ALGORITHM_NOT_FOUND));
+        algorithmRepository.delete(algorithm);
+        return algorithm.getId();
+    }
 
+    public AlgorithmResponseDto getAlgorithm() {
+        Algorithm algorithm = algorithmRepository.findAlgorithmByDate(LocalDate.now())
+                .orElseThrow(() -> new BusinessException(ErrorMessage.ALGORITHM_NOT_FOUND));
+        return AlgorithmResponseDto.from(algorithm);
+    }
+
+    public List<AlgorithmListResponseDto> getAlgorithmList() {
+        List<Algorithm> algorithmList = algorithmRepository.findAllByOrderByDateDesc();
+
+        List<AlgorithmListResponseDto> algorithmListResponseDtoList = new ArrayList<>();
+        for (Algorithm algorithm : algorithmList) {
+            System.out.println("algorithm.toString() = " + algorithm.toString());
+            algorithmListResponseDtoList.add(AlgorithmListResponseDto.from(algorithm));
+
+        }
+        return algorithmListResponseDtoList;
+    }
 
 
 //    public List<Algorithm> getAlgoDatas() throws IOException{
@@ -134,3 +160,5 @@ public class AlgorithmService {
 
 
 }
+
+
