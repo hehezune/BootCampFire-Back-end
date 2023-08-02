@@ -25,45 +25,48 @@ public class BootcampController {
     private final BootLanguageServie bootLanguageServie;
     private final BootRegionService bootRegionService;
 
-    //부트캠프 등록
+
+    @ApiOperation(value ="부트캠프 등록")
     @PostMapping
     public BaseResponseDto<BootcampResponseDto> createBootcamp(@RequestBody BootcampRequestDto bootcampRequestDto ){
         return BaseResponseDto.ok(bootcampService.save(bootcampRequestDto));
     }
 
+    @ApiOperation(value ="부트캠프 상세조회")
     @GetMapping("/{bootcampId}")
     public BaseResponseDto<BootcampResponseDto> getBootcamp(@PathVariable Long bootcampId){
         return BaseResponseDto.ok(bootcampService.getBootcamp(bootcampId));
     }
 
 
+    @ApiOperation(value ="부트캠프 수정")
     @PutMapping("/{bootcampId}")
     public BaseResponseDto<BootcampResponseDto> updateBootcamp(@RequestBody BootcampRequestDto bootcampRequestDto, @PathVariable Long bootcampId){
         return BaseResponseDto.ok(bootcampService.updateBootcamp(bootcampId, bootcampRequestDto));
     }
 
 
+    @ApiOperation(value ="부트캠프 삭제")
     @DeleteMapping("/{bootcampId}")
     public BaseResponseDto<Long> deleteBootcamp(@PathVariable Long bootcampId){
         return BaseResponseDto.ok(bootcampService.deleteBootcamp(bootcampId));
     }
 
 
-//    부트캠프 리스트를 이름순으로 보기
+    @ApiOperation(value ="부트캠프 리스트를 이름순으로 조회")
     @GetMapping("/lists/names")
     public BaseResponseDto<List<BootcampListResponseDto>> getBootcampListOrderByName(){
         return BaseResponseDto.ok(bootcampService.getBootcampListOrderByName());
     }
 
-
-    // 부트캠프 리스트를 평점 순으로 보기
+    @ApiOperation(value ="부트캠프 리스트를 평점 순으로 조회")
     @GetMapping("/lists/scores")
     public BaseResponseDto<List<BootcampListResponseDto>> getBootcampListOrderByScore(){
         return BaseResponseDto.ok(bootcampService.getBootcampListOrderByScore());
     }
 
 
-    //    부트캠프 리스트를 리뷰 개수 순으로 보기
+    @ApiOperation(value ="부트캠프 리뷰 개수 순으로 조회")
     @GetMapping("/lists/reviews")
     public BaseResponseDto<List<BootcampListResponseDto>> getBootcampListOrderByReview(){
         return BaseResponseDto.ok(bootcampService.getBootcampListOrderByReview());
