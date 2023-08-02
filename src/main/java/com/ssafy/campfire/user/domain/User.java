@@ -32,9 +32,8 @@ public class User extends BaseEntity {
      * bojId : 백준 아이디
      * latestAlgoNum : 마지막으로 푼 문제번호
      * role : user 인지 admin 인지 구분
-     * kakaoEmail : 카카오 소셜 api를 통해 가입한 이메일
-     * googleEmail : 구글 소셜 api를 통해 가입한 이메일
-     * naverEmail : 네이버 소셜 api를 통해 가입한 이메일
+     * email : 소셜 api를 통해 가입한 이메일
+     * provider : 가입 한 소셜 경로
      * imgUrl : 소속인증 용 사진
      * isPermision : 소속 인증 현황/ true : 인증 허가, false : 인증 미허가
      * refeshToken : refresh 토큰
