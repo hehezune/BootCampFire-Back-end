@@ -1,15 +1,18 @@
-package com.ssafy.campfire.review.domain;
+package com.ssafy.campfire.reviewLike.domain;
 
+import com.ssafy.campfire.review.domain.Review;
 import com.ssafy.campfire.user.domain.User;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
 @Entity
+@EqualsAndHashCode(of = "id", callSuper = false)
 @Table(name = "review_like")
 public class ReviewLike {
     /*
@@ -20,7 +23,7 @@ public class ReviewLike {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id")
@@ -30,6 +33,10 @@ public class ReviewLike {
     @JoinColumn(name = "user_id")
     private User user;
 
-
+    @Builder
+    public ReviewLike(Review review, User user){
+        this.review = review;
+        this.user = user;
+    }
 
 }

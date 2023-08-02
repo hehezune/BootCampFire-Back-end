@@ -2,6 +2,7 @@ package com.ssafy.campfire.review.domain;
 
 import com.ssafy.campfire.bootcamp.domain.Bootcamp;
 import com.ssafy.campfire.review.domain.dto.ReviewUpdate;
+import com.ssafy.campfire.reviewLike.domain.ReviewLike;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.utils.domain.BaseEntity;
 import lombok.Getter;
@@ -9,6 +10,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -55,6 +58,8 @@ public class Review extends BaseEntity {
     @Column(name = "like_cnt",nullable = false)
     private Integer likeCnt;
 
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ReviewLike> reviewLikeSet = new HashSet<>();
 
     //-------평가항목
     @Column(nullable = false)
@@ -99,6 +104,10 @@ public class Review extends BaseEntity {
     public void setBootcamp(Bootcamp bootcamp){
         this.bootcamp = bootcamp;
     }
+
+    public void minusLike(ReviewLike reviewLike){this.reviewLikeSet.remove(reviewLike);}
+    public  void addLikeCnt(){this.likeCnt++;}
+    public  void minusLikeCnt(){this.likeCnt--;}
 
     public  void update(ReviewUpdate reviewUpdate){
         this.tip = reviewUpdate.tip();

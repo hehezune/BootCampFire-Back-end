@@ -32,6 +32,7 @@ public class CommentService {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
+
         Board board = boardRepository.findById(request.boardId())
                 .orElseThrow(() -> new BusinessException(ErrorMessage.BOARD_NOT_FOUND));
 
@@ -47,6 +48,7 @@ public class CommentService {
             comment.addMaxRefOrder();
             board.addMaxRef();
         }
+
         comment.writeBy(user, board);
         board.addCommentCnt();
         Comment savedComment = commentRepository.save(comment);
@@ -56,16 +58,19 @@ public class CommentService {
 
     @Transactional(readOnly = true)
     public List<CommentReadResponse> getCommentList(Long commentId){
+
         List<CommentReadResponse> commentReadResponses = commentRepository
                 .getCommentList(commentId)
                 .stream()
                 .map(CommentReadResponse::of)
                 .toList();
+
         return commentReadResponses;
     }
 
 
     public CommentUpdateResponse update(Long commentId, CommentUpdateRequest request) {
+
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.COMMENT_NOT_FOUND));
 
@@ -83,15 +88,17 @@ public class CommentService {
     }
 
     public Long delete(Long commentId) {
+
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.COMMENT_NOT_FOUND));
 
         Long boardId = comment.getBoard().getId();
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.BOARD_NOT_FOUND));
-        board.minusCommentCnt();
 
+        board.minusCommentCnt();
         commentRepository.delete(comment);
+
         return comment.getId();
     }
 }
