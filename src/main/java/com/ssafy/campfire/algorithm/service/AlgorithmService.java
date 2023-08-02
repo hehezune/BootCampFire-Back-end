@@ -30,7 +30,7 @@ public class AlgorithmService {
 
 //    private static String Result_Url = "https://www.acmicpc.net/status?option-status-pid=on&problem_id=1000&user_id=dksek3050&language_id=-1&result_id=-1&from_problem=1"; //크롤링할 url
 
-    public AlgorithmResponseDto getAlgorithm(AlgorithmRequestDto algorithmRequestDto) throws IOException {
+    public AlgorithmResponseDto save(AlgorithmRequestDto algorithmRequestDto) throws IOException {
         if(algorithmRepository.findAlgorithmByDate(algorithmRequestDto.date()).isPresent()){
             throw new BusinessException(ErrorMessage.DUPLICATE_ALGORITHM_REQUEST);
         }

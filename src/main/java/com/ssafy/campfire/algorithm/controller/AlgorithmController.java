@@ -19,10 +19,9 @@ public class AlgorithmController {
     private final AlgorithmService algorithmService;
 
     @PostMapping
-    public BaseResponseDto<AlgorithmResponseDto> getAlgorithm(@RequestBody AlgorithmRequestDto algorithmRequestDto) throws IOException {
-        return BaseResponseDto.ok(algorithmService.getAlgorithm(algorithmRequestDto));
+    public BaseResponseDto<AlgorithmResponseDto> createAlgorithm(@RequestBody AlgorithmRequestDto algorithmRequestDto) throws IOException {
+        return BaseResponseDto.ok(algorithmService.save(algorithmRequestDto));
     }
-
 
 //    @GetMapping("/result/{userId}")
 //    public BaseResponseDto<List<Algorithm>> getAlgoResult(@PathVariable Long userId) throws IOException {
