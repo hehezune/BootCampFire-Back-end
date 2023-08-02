@@ -1,5 +1,8 @@
 package com.ssafy.campfire.global.oauth2.service;
 
+import com.ssafy.campfire.board.repository.BoardRepository;
+import com.ssafy.campfire.bootcamp.domain.Bootcamp;
+import com.ssafy.campfire.bootcamp.repository.BootcampRepository;
 import com.ssafy.campfire.global.login.PrincipalDetails;
 import com.ssafy.campfire.global.oauth2.GoogleUserInfo;
 import com.ssafy.campfire.global.oauth2.KakaoUserInfo;
@@ -24,7 +27,7 @@ import java.util.Optional;
 public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
-
+    private final BootcampRepository bootcampRepository;
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
@@ -50,19 +53,16 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         String userId = email.substring(0,index);
         String nickname = userId+"_"+provider;
 
-        Optional<User> optionalUser = userRepository.findByEmail(email);
+        Optional<User> optionalUser = userRepository.findByEmailAndProvider(email,provider);
+        Optional<Bootcamp> Optionalbootcamp = bootcampRepository.findById(1L);
 
         User user = null;
+        Bootcamp bootcamp = Optionalbootcamp.get();
         if(optionalUser.isEmpty()) {
-            user = new User(nickname, email, provider);
+            user = new User(nickname, email, provider, bootcamp);
             userRepository.save(user);
         } else {
-            if(userRepository.findDeatailByEmail(email).getProvider().equals(provider)){
-                user = optionalUser.get();
-            } else{
-                user = new User(nickname ,email, provider);
-                userRepository.save(user);
-            }
+            user = optionalUser.get();
         }
 
         return new PrincipalDetails(user, oAuth2User.getAttributes());

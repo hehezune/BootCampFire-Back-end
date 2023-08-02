@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,30 +28,38 @@ public class CategoryService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
+    public Long getUserBootCampCategoryId(Long userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
+        Category category = categoryRepository.findCategoryByBootcamp(user.getBootcamp())
+                .orElseThrow(() -> new BusinessException(ErrorMessage.CATEGORY_NOT_FOUND));
+        return category.getId();
+    }
+
+    @Transactional(readOnly = true)
     public List<BoardMainResponse> getMainList(Long categoryId){
-        List<BoardMainResponse> boardMainResponses = (List<BoardMainResponse>) categoryRepository
+        List<BoardMainResponse> boardMainResponses = categoryRepository
                 .getLatestFiveBoard(categoryId)
                 .stream()
-                .map(BoardMainResponse::of);
+                .map(BoardMainResponse::of).toList();
         return boardMainResponses;
     }
 
     @Transactional(readOnly = true)
     public List<BoardHotResponse> getHotList(){
-        List<BoardHotResponse> boardHotResponses = (List<BoardHotResponse>) categoryRepository
+        List<BoardHotResponse> boardHotResponses = categoryRepository
                 .getHotFiveBoard()
                 .stream()
-                .map(BoardHotResponse::of);
+                .map(BoardHotResponse::of).toList();
         return boardHotResponses;
     }
 
     @Transactional(readOnly = true)
     public GlobalPageResponseDto<BoardListResponse> getNewestList(Long userId, Long categoryId, Pageable pageable){
 
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new BusinessException(ErrorMessage.CATEGORY_NOT_FOUND));
+        if(categoryId==9){
+            categoryId = getUserBootCampCategoryId(userId);
 
-        if( userId != null && category.getName().getMessage().equals("부트캠프")){
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
 
@@ -71,10 +80,9 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public GlobalPageResponseDto<BoardListResponse> getLikeOrderList(Long userId, Long categoryId, Pageable pageable){
 
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new BusinessException(ErrorMessage.CATEGORY_NOT_FOUND));
+        if(categoryId==9){
+            categoryId = getUserBootCampCategoryId(userId);
 
-        if(userId != null && category.getName().getMessage().equals("부트캠프")){
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
 
@@ -95,10 +103,9 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public GlobalPageResponseDto<BoardListResponse> getViewOrderList(Long userId, Long categoryId, Pageable pageable){
 
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new BusinessException(ErrorMessage.CATEGORY_NOT_FOUND));
+        if(categoryId==9){
+            categoryId = getUserBootCampCategoryId(userId);
 
-        if( userId != null && category.getName().getMessage().equals("부트캠프")){
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
 
@@ -139,10 +146,9 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public GlobalPageResponseDto<BoardListResponse> getSearchByTitleContent(Long userId, Long categoryId, String keyword, Pageable pageable){
 
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new BusinessException(ErrorMessage.CATEGORY_NOT_FOUND));
+        if(categoryId==9){
+            categoryId = getUserBootCampCategoryId(userId);
 
-        if( userId != null && category.getName().getMessage().equals("부트캠프")){
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
 
@@ -163,10 +169,9 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public GlobalPageResponseDto<BoardListResponse> getSearchByNickname(Long userId, Long categoryId, String nickname, Pageable pageable){
 
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new BusinessException(ErrorMessage.CATEGORY_NOT_FOUND));
+        if(categoryId==9){
+            categoryId = getUserBootCampCategoryId(userId);
 
-        if( userId != null && category.getName().getMessage().equals("부트캠프")){
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
 

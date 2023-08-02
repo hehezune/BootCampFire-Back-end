@@ -1,11 +1,17 @@
 package com.ssafy.campfire.user.domain;
 
+import com.querydsl.core.types.dsl.BooleanPath;
+import com.querydsl.core.types.dsl.EnumPath;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.StringPath;
 import com.ssafy.campfire.bootcamp.domain.Bootcamp;
+import com.ssafy.campfire.bootcamp.domain.QBootcamp;
 import com.ssafy.campfire.user.domain.dto.UserUpdate;
 import com.ssafy.campfire.utils.domain.BaseEntity;
 import javax.persistence.*;
 
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -38,7 +44,7 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "bootcamp_id")
     private Bootcamp bootcamp;
 
@@ -57,19 +63,26 @@ public class User extends BaseEntity {
 
     private String imgUrl;
 
-    @ColumnDefault("false")
+    @ColumnDefault("true")
     private Boolean isPermision;
 
     private String refreshToken; // 리프레시 토큰
 
-    public User(String nickname, String email, String provider) {
+    public User(String nickname, String email, String provider, Bootcamp bootcamp) {
+        this.bootcamp = bootcamp;
         this.nickname = nickname;
         this.email = email;
         this.provider = provider;
         this.role = Role.USER;
+        this.isPermision = true;
         this.createdDate = LocalDateTime.now();
         this.updatedDate = LocalDateTime.now();
     }
+
+    public User(Long id, Bootcamp bootcamp, String nickname, int latestAlgoNum, Role role, String email, String provider, String imgUrl, Boolean isPermision, String refreshToken) {
+        super();
+    }
+
 
     // 유저 권한 설정 메소드
     public void authorizeUser() {
@@ -81,6 +94,10 @@ public class User extends BaseEntity {
     //== 유저 필드 업데이트 ==//
     public void updateNickname(String updateNickname) {
         this.nickname = updateNickname;
+        updatedUpdatedate();
+    }
+    public void updateBootcamp(Bootcamp bootcamp) {
+        this.bootcamp = bootcamp;
         updatedUpdatedate();
     }
 

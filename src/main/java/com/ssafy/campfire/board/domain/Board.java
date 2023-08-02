@@ -75,6 +75,8 @@ public class Board extends BaseEntity {
 
     private Integer view;
 
+    private Integer maxRef;
+
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Likes> likes = new HashSet<>();
 
@@ -85,6 +87,7 @@ public class Board extends BaseEntity {
         this.commentCnt = 0;
         this.likeCnt = 0;
         this.view = 0;
+        this.maxRef = 0;
         this.createdDate = LocalDateTime.now();
     }
 
@@ -111,6 +114,18 @@ public class Board extends BaseEntity {
 
     public void minusLikeCnt() {
         this.likeCnt--;
+    }
+
+    public void addMaxRef() {
+        this.maxRef++;
+    }
+
+    public void addCommentCnt() {
+        this.commentCnt++;
+    }
+
+    public void minusCommentCnt() {
+        this.commentCnt--;
     }
 
     public void update(BoardUpdate boardUpdate) {

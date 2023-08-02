@@ -8,8 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor //기본 생성자 생성
@@ -42,13 +40,17 @@ public class Bootcamp extends BaseEntity {
     @Column(name = "has_codingtest")
     private Boolean hasCodingtest;
 
-    private String on_off;
+    @Column(name ="on_off")
+    private String onOff;
 
     @Column(name = "start_date")
     private LocalDateTime startDate;
 
     @Column(name = "end_date")
     private LocalDateTime endDate;
+
+    @Column(name = "img_url")
+    private String imgUrl;
 
     @Column(name ="review_cnt", nullable = false)
     private Integer reviewCnt;
@@ -60,11 +62,15 @@ public class Bootcamp extends BaseEntity {
     private Integer algoCnt;
 
 
-    public void updateTotalScore(double score){
+    public void addTotalScore(double score){
         this.totalScore += score;
         this.reviewCnt++;
     }
 
+    public void subTotalScore(double score){
+        this.totalScore -= score;
+        this.reviewCnt--;
+    }
     @Builder
     public Bootcamp(String name){
         this.name = name;
@@ -75,7 +81,7 @@ public class Bootcamp extends BaseEntity {
     @Builder
     public Bootcamp(String name, String siteUrl, String process,
                     String schedule, String description, Double cost, Boolean card, Boolean support,
-                    Boolean hasCodingtest, String on_off, LocalDateTime startDate, LocalDateTime endDate){
+                    Boolean hasCodingtest, String onOff, LocalDateTime startDate, LocalDateTime endDate, String imgUrl){
 
         this.name = name;
         this.siteUrl = siteUrl;
@@ -86,13 +92,32 @@ public class Bootcamp extends BaseEntity {
         this.card = card;
         this.support = support;
         this.hasCodingtest = hasCodingtest;
-        this.on_off = on_off;
+        this.onOff = onOff;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.imgUrl = imgUrl;
         this.algoCnt = 0;
-        this.reviewCnt = 5;
-        this.totalScore = 5.0;
-//        this.createdDate = LocalDateTime.now();
+        this.reviewCnt = 0;
+        this.totalScore = 0.0;
+        this.createdDate = LocalDateTime.now();
+    }
+
+
+    public void update(Bootcamp bootcamp) {
+        this.name = bootcamp.getName();
+        this.siteUrl = bootcamp.getSiteUrl();
+        this.process = bootcamp.getProcess();
+        this.schedule = bootcamp.getSchedule();
+        this.description = bootcamp.getDescription();
+        this.cost = bootcamp.getCost();
+        this.card = bootcamp.getCard();
+        this.support = bootcamp.getSupport();
+        this.hasCodingtest = bootcamp.getHasCodingtest();
+        this.onOff = bootcamp.getOnOff();
+        this.startDate = bootcamp.getStartDate();
+        this.endDate = bootcamp.getEndDate();
+        this.imgUrl = bootcamp.getImgUrl();
+        this.updatedDate = LocalDateTime.now();
     }
 
 }

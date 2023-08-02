@@ -1,12 +1,17 @@
 package com.ssafy.campfire.review.domain;
 
 import com.ssafy.campfire.bootcamp.domain.Bootcamp;
+import com.ssafy.campfire.review.domain.dto.ReviewUpdate;
+import com.ssafy.campfire.reviewLike.domain.ReviewLike;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.utils.domain.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -50,9 +55,11 @@ public class Review extends BaseEntity {
     private Boolean isRecommend;
 
 
-    @Column(name = "like_cnt", nullable = false)
+    @Column(name = "like_cnt",nullable = false)
     private Integer likeCnt;
 
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ReviewLike> reviewLikeSet = new HashSet<>();
 
     //-------평가항목
     @Column(nullable = false)
@@ -85,7 +92,35 @@ public class Review extends BaseEntity {
         this.backUp =backUp;
         this.management =management;
         this.mood =mood;
-        this.score = score;
+        this.score = (curriculum+potential+backUp+management+mood)/5.0;
+        this.likeCnt = 0;
+        this.createdDate = LocalDateTime.now();
+
+    }
+
+    public void writeBy(User user) {
+        this.user = user;
+    }
+    public void setBootcamp(Bootcamp bootcamp){
+        this.bootcamp = bootcamp;
+    }
+
+    public void minusLike(ReviewLike reviewLike){this.reviewLikeSet.remove(reviewLike);}
+    public  void addLikeCnt(){this.likeCnt++;}
+    public  void minusLikeCnt(){this.likeCnt--;}
+
+    public  void update(ReviewUpdate reviewUpdate){
+        this.tip = reviewUpdate.tip();
+        this.good = reviewUpdate.good();
+        this.bad = reviewUpdate.bad();
+        this.isRecommend = reviewUpdate.isRecommend();
+        this.curriculum = reviewUpdate.curriculum();
+        this.potential = reviewUpdate.potential();
+        this.backUp = reviewUpdate.backUp();
+        this.management = reviewUpdate.management();
+        this.mood = reviewUpdate.mood();
+        this.score = (curriculum+potential+backUp+management+mood)/5.0;
+        this.updatedDate = LocalDateTime.now();
     }
 
 }
