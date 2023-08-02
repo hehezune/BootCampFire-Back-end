@@ -11,11 +11,16 @@ public record CommentReadResponse(
         String content,
         Integer ref,
         Integer refOrder,
+        Boolean isWriter,
         LocalDateTime createdDate
 ) {
     public static CommentReadResponse of(Comment comment){
 
-        if(comment.getAnonymous())
+        Boolean isWriter = false;
+        if(comment.getBoard().getUser().getId() == comment.getUser().getId())
+            isWriter = true;
+
+        if(comment.getAnonymous()) {
             return new CommentReadResponse(
                     comment.getId(),
                     "익명",
@@ -23,8 +28,10 @@ public record CommentReadResponse(
                     comment.getContent(),
                     comment.getRef(),
                     comment.getRefOrder(),
+                    isWriter,
                     comment.getCreatedDate()
             );
+        }
         return new CommentReadResponse(
                 comment.getId(),
                 comment.getUser().getNickname(),
@@ -32,6 +39,7 @@ public record CommentReadResponse(
                 comment.getContent(),
                 comment.getRef(),
                 comment.getRefOrder(),
+                isWriter,
                 comment.getCreatedDate()
         );
     }
