@@ -53,7 +53,7 @@ public class ReviewController {
 
 
     @PostMapping
-    public BaseResponseDto<ReviewReponseDto> cerateReview(@RequestBody @Valid ReviewRequestDto reviewRequestDto){
+    public BaseResponseDto<ReviewReponseDto> createReview(@RequestBody @Valid ReviewRequestDto reviewRequestDto){
         return BaseResponseDto.ok(reviewService.save(reviewRequestDto.userId(), reviewRequestDto));
     }
 
