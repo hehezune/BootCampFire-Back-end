@@ -8,6 +8,7 @@ import com.ssafy.campfire.bootcamp.domain.Track;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,8 +25,8 @@ public record BootcampResponseDto(
         Boolean support,
         Boolean hasCodingtest,
         String onOff,
-        LocalDateTime startDate,
-        LocalDateTime endDate,
+        String startDate,
+        String endDate,
         String imgUrl,
         Integer reviewCnt,
         Double score,
@@ -47,8 +48,10 @@ public record BootcampResponseDto(
                 .support(bootcamp.get().getSupport())
                 .hasCodingtest(bootcamp.get().getHasCodingtest())
                 .onOff(bootcamp.get().getOnOff())
-                .startDate(bootcamp.get().getStartDate())
-                .endDate(bootcamp.get().getEndDate())
+                .startDate(bootcamp.get().getStartDate()
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .endDate(bootcamp.get().getEndDate()
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .imgUrl(bootcamp.get().getImgUrl())
                 .reviewCnt(bootcamp.get().getReviewCnt())
                 .score(bootcamp.get().getTotalScore() / (double) bootcamp.get().getReviewCnt())
