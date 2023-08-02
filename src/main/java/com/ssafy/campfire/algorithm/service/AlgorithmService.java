@@ -7,6 +7,7 @@ import com.ssafy.campfire.algorithm.repository.AlgorithmRepository;
 import com.ssafy.campfire.utils.error.enums.ErrorMessage;
 import com.ssafy.campfire.utils.error.exception.custom.BusinessException;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -87,8 +88,12 @@ public class AlgorithmService {
 
     private Algorithm getAlgorithmFromBoj(Algorithm algorithm, Long algorithmNum) throws IOException {
         String URL = AlgorithmUrl + algorithmNum;
-
-        Document document = Jsoup.connect(URL).get();
+        Document document;
+        try{
+            document = Jsoup.connect(URL).get();
+        }catch (HttpStatusException e){
+            throw new BusinessException(ErrorMessage.INVALID_ALGORITHM_REQUEST);
+        }
 
         Elements titleElements = document.select("div.col-md-12 > div.page-header");
         String title = titleElements.get(0).text();
