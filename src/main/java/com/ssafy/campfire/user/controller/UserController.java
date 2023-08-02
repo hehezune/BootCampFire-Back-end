@@ -23,6 +23,12 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+
+    @GetMapping("login")
+    public String login(){
+        return "login";
+    }
+
     @ApiOperation(value ="개인 정보 조회")
     @GetMapping("")
     public BaseResponseDto<UserReadResponse> userInfo(@AuthenticationPrincipal PrincipalDetails user) {
