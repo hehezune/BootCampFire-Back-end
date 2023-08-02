@@ -1,12 +1,10 @@
 package com.ssafy.campfire.utils.error.enums;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+
+import static org.springframework.http.HttpStatus.*;
 
 @Getter
 @RequiredArgsConstructor
@@ -25,6 +23,7 @@ public enum ErrorMessage {
     INVALID_BOOTCAMP_REQUEST(BAD_REQUEST, "해당 부트캠프 요청이 적절하지 않습니다."),
     INVALID_REVIEW_REQUEST(BAD_REQUEST, "해당 리뷰 요청이 적절하지 않습니다."),
     INVALID_COMMENT_REQUEST(BAD_REQUEST, "해당 댓글 요청이 적절하지 않습니다."),
+    DUPLICATE_ALGORITHM_REQUEST(CONFLICT, "해당 날짜에 이미 알고리즘이 존재합니다."),
     INVALID_FILE_UPLOAD(BAD_REQUEST, "유효하지 않은 파일 업로드입니다.");
 
     private final int code;
