@@ -34,9 +34,44 @@ public class AlgorithmService {
         if(algorithmRepository.findAlgorithmByDate(algorithmRequestDto.date()).isPresent()){
             throw new BusinessException(ErrorMessage.DUPLICATE_ALGORITHM_REQUEST);
         }
-        String URL = AlgorithmUrl + algorithmRequestDto.num();
-
         Algorithm algorithm = algorithmRequestDto.toAlgorithm();
+
+
+        algorithm = getAlgorithmFromBoj(algorithm);
+
+        return AlgorithmResponseDto.from(algorithmRepository.save(algorithm));
+    }
+
+
+
+//    public Object updateAlgorithm(AlgorithmRequestDto algorithmRequestDto) {
+//
+//
+//    }
+
+
+//    public List<Algorithm> getAlgoDatas() throws IOException{
+//        List<Algorithm> algoList = new ArrayList<>();
+//
+//        Document document = Jsoup.connect(URL).get();
+//        Elements contents = document.select("#status-table > tbody");
+//        System.out.println("contents = " + contents);
+//        for(Element content : contents){
+//            Algorithm algorithm = Algorithm.builder()
+//                    .bojId(content.select("td:nth-child(2) > a").text())
+//                    .result(content.select("td.result > span.result-text.result-ac").text())
+//                    .solveDate(content.select("td:nth-child(9) > a").attr("title"))
+//                            .build();
+//            System.out.println("algorithm.toString() = " + algorithm.toString());
+//            algoList.add(algorithm);
+//        }
+//
+//        return algoList;
+//    }
+
+
+    private Algorithm getAlgorithmFromBoj(Algorithm algorithm) throws IOException {
+        String URL = AlgorithmUrl + algorithm.getNum();
 
         Document document = Jsoup.connect(URL).get();
 
@@ -54,7 +89,7 @@ public class AlgorithmService {
 
         algorithm.setAlgorithmContents(URL, title, description);
 
-        return AlgorithmResponseDto.from(algorithmRepository.save(algorithm));
+        return algorithm;
     }
     private String iterElement(Elements elements) {
         //문제 설명이 p 태그 여러개에 나눠 들어가 있음 -> iterator 순회하여 스트링 빌더로 합침
@@ -77,23 +112,4 @@ public class AlgorithmService {
         return ret;
     }
 
-
-//    public List<Algorithm> getAlgoDatas() throws IOException{
-//        List<Algorithm> algoList = new ArrayList<>();
-//
-//        Document document = Jsoup.connect(URL).get();
-//        Elements contents = document.select("#status-table > tbody");
-//        System.out.println("contents = " + contents);
-//        for(Element content : contents){
-//            Algorithm algorithm = Algorithm.builder()
-//                    .bojId(content.select("td:nth-child(2) > a").text())
-//                    .result(content.select("td.result > span.result-text.result-ac").text())
-//                    .solveDate(content.select("td:nth-child(9) > a").attr("title"))
-//                            .build();
-//            System.out.println("algorithm.toString() = " + algorithm.toString());
-//            algoList.add(algorithm);
-//        }
-//
-//        return algoList;
-//    }
 }
