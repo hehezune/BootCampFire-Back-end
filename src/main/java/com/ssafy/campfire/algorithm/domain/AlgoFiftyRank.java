@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "fifty_rank")
-public class FiftyRank extends BaseEntity {
+@Table(name = "algo_fifty_rank")
+public class AlgoFiftyRank extends BaseEntity {
     /*
     id : pk
     bootcamp : 부트캠프
@@ -36,7 +36,7 @@ public class FiftyRank extends BaseEntity {
     Integer rank;
 
     @Builder
-    public FiftyRank(Bootcamp bootcamp , Algorithm algorithm, Integer rank){
+    public AlgoFiftyRank(Bootcamp bootcamp , Algorithm algorithm, Integer rank){
         this.bootcamp = bootcamp;
         this.algorithm = algorithm;
         this.rank = rank;

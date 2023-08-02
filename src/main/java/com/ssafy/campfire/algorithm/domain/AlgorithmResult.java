@@ -8,7 +8,9 @@ import lombok.ToString;
 @Builder
 @ToString
 public class AlgorithmResult {
-    private String bojId;
+    private Long userId;
+    private Long algorithmId;
+    private String problemId;
     private String result;
     private String solveDate;
 
