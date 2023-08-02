@@ -30,8 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // OAuth 로그인
                 .and()
                 .oauth2Login()
-                .loginPage("/")
-                .defaultSuccessUrl("/")
+                .loginPage("/users/login")
+                .defaultSuccessUrl("http://localhost:3000/")
                 .userInfoEndpoint()
                 .userService(principalOauth2UserService)
         ;
