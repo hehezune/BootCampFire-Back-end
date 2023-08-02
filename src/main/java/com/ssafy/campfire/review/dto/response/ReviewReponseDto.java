@@ -2,6 +2,8 @@ package com.ssafy.campfire.review.dto.response;
 
 import com.ssafy.campfire.review.domain.Review;
 
+import java.time.format.DateTimeFormatter;
+
 public record ReviewReponseDto(
         Long id,
         String user,
@@ -17,6 +19,7 @@ public record ReviewReponseDto(
         Integer management,
         Integer mood,
         Double score,
+        String createdDate,
         Boolean isAlreadyReviewLike
 ) {
     public static ReviewReponseDto of(Review review, Boolean isAlreadyReviewLike){
@@ -35,12 +38,14 @@ public record ReviewReponseDto(
                 review.getManagement(),
                 review.getMood(),
                 review.getScore(),
+                review.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
                 isAlreadyReviewLike
         );
     }
 
     public static ReviewReponseDto nullReview(){
         return new ReviewReponseDto(
+                null,
                 null,
                 null,
                 null,
