@@ -23,10 +23,15 @@ public class AlgorithmController {
         return BaseResponseDto.ok(algorithmService.save(algorithmRequestDto));
     }
 
-    @PutMapping("{algorithmId}")
+    @PutMapping("/{algorithmId}")
     public BaseResponseDto<AlgorithmResponseDto> updateAlgorithm(@RequestBody AlgorithmRequestDto algorithmRequestDto,
                                                               @PathVariable Long algorithmId) throws IOException {
         return BaseResponseDto.ok(algorithmService.updateAlgorithm(algorithmRequestDto, algorithmId));
+    }
+
+    @DeleteMapping("/{algorithmId}")
+    public BaseResponseDto<Long> deleteAlgorithm(@PathVariable Long algorithmId) throws IOException {
+        return BaseResponseDto.ok(algorithmService.deleteAlgorithm(algorithmId));
     }
 
 //    @GetMapping("/result/{userId}")

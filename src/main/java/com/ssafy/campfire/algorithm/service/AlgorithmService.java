@@ -133,4 +133,10 @@ public class AlgorithmService {
     }
 
 
+    public Long deleteAlgorithm(Long algorithmId) {
+        Algorithm algorithm = algorithmRepository.findById(algorithmId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.ALGORITHM_NOT_FOUND));
+        algorithmRepository.delete(algorithm);
+        return algorithm.getId();
+    }
 }
