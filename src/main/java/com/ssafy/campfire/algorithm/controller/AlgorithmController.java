@@ -2,6 +2,7 @@ package com.ssafy.campfire.algorithm.controller;
 
 import com.ssafy.campfire.algorithm.domain.Algorithm;
 import com.ssafy.campfire.algorithm.dto.request.AlgorithmRequestDto;
+import com.ssafy.campfire.algorithm.dto.response.AlgorithmListResponseDto;
 import com.ssafy.campfire.algorithm.dto.response.AlgorithmResponseDto;
 import com.ssafy.campfire.algorithm.service.AlgorithmService;
 import com.ssafy.campfire.utils.dto.response.BaseResponseDto;
@@ -37,6 +38,19 @@ public class AlgorithmController {
     public BaseResponseDto<Long> deleteAlgorithm(@PathVariable Long algorithmId) throws IOException {
         return BaseResponseDto.ok(algorithmService.deleteAlgorithm(algorithmId));
     }
+
+    @ApiOperation(value ="오늘의 알고리즘 조회")
+    @GetMapping
+    public BaseResponseDto<AlgorithmResponseDto> getAlgorithm() throws IOException {
+        return BaseResponseDto.ok(algorithmService.getAlgorithm());
+    }
+
+    @ApiOperation(value ="알고리즘 목록 조회")
+    @GetMapping("/lists")
+    public BaseResponseDto<List<AlgorithmListResponseDto>> getAlgorithmList() throws IOException {
+        return BaseResponseDto.ok(algorithmService.getAlgorithmList());
+    }
+
 
 //    @GetMapping("/result/{userId}")
 //    public BaseResponseDto<List<Algorithm>> getAlgoResult(@PathVariable Long userId) throws IOException {
