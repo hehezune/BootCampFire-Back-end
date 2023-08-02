@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -36,18 +37,32 @@ public class AlgorithmService {
         }
         Algorithm algorithm = algorithmRequestDto.toAlgorithm();
 
-
-        algorithm = getAlgorithmFromBoj(algorithm);
+        algorithm = getAlgorithmFromBoj( algorithm ,algorithmRequestDto.num());
 
         return AlgorithmResponseDto.from(algorithmRepository.save(algorithm));
     }
 
+    public AlgorithmResponseDto updateAlgorithm(AlgorithmRequestDto algorithmRequestDto, Long algorithmId) throws IOException {
+        Algorithm algorithm = algorithmRepository.findById(algorithmId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.ALGORITHM_NOT_FOUND));
+
+        if(algorithmRepository.findAlgorithmByDate(algorithmRequestDto.date()).isPresent()){
+            if(algorithmRepository.findAlgorithmByDate(algorithmRequestDto.date()).get().getId() != algorithmId) {
+                throw new BusinessException(ErrorMessage.DUPLICATE_ALGORITHM_REQUEST);
+            }
+        }
+
+        if(algorithm.getNum() != algorithmRequestDto.num()){
+            algorithm = getAlgorithmFromBoj(algorithm, algorithmRequestDto.num());
+        }
+
+        algorithm.updateAlgorithm(algorithmRequestDto.num(), algorithmRequestDto.date());
+
+        return AlgorithmResponseDto.from(algorithm);
+    }
 
 
-//    public Object updateAlgorithm(AlgorithmRequestDto algorithmRequestDto) {
-//
-//
-//    }
+
 
 
 //    public List<Algorithm> getAlgoDatas() throws IOException{
@@ -70,8 +85,8 @@ public class AlgorithmService {
 //    }
 
 
-    private Algorithm getAlgorithmFromBoj(Algorithm algorithm) throws IOException {
-        String URL = AlgorithmUrl + algorithm.getNum();
+    private Algorithm getAlgorithmFromBoj(Algorithm algorithm, Long algorithmNum) throws IOException {
+        String URL = AlgorithmUrl + algorithmNum;
 
         Document document = Jsoup.connect(URL).get();
 
@@ -111,5 +126,6 @@ public class AlgorithmService {
         ret = ret.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
         return ret;
     }
+
 
 }

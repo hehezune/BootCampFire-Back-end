@@ -50,5 +50,11 @@ public class Algorithm extends BaseEntity {
         this.description = description;
     }
 
+    public void updateAlgorithm(Long num,LocalDate date){
+        this.num = num;
+        this.date = date;
+        this.updatedDate = LocalDateTime.now();
+    }
+
 
 }

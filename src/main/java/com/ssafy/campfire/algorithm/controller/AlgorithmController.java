@@ -23,6 +23,12 @@ public class AlgorithmController {
         return BaseResponseDto.ok(algorithmService.save(algorithmRequestDto));
     }
 
+    @PutMapping("{algorithmId}")
+    public BaseResponseDto<AlgorithmResponseDto> updateAlgorithm(@RequestBody AlgorithmRequestDto algorithmRequestDto,
+                                                              @PathVariable Long algorithmId) throws IOException {
+        return BaseResponseDto.ok(algorithmService.updateAlgorithm(algorithmRequestDto, algorithmId));
+    }
+
 //    @GetMapping("/result/{userId}")
 //    public BaseResponseDto<List<Algorithm>> getAlgoResult(@PathVariable Long userId) throws IOException {
 //        return BaseResponseDto.ok(algorithmService.getAlgoDatas());

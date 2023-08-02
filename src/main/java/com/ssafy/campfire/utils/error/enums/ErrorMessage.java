@@ -18,6 +18,7 @@ public enum ErrorMessage {
     REVIEW_NOT_FOUND(NOT_FOUND, "해당 리뷰 찾을 수 없습니다."),
     COMMENT_NOT_FOUND(NOT_FOUND, "해당 댓글 찾을 수 없습니다."),
     LIKE_NOT_FOUND(NOT_FOUND, "해당 좋아요를 찾을 수 없습니다."),
+    ALGORITHM_NOT_FOUND(NOT_FOUND, "해당 알고리즘을 찾을 수 없습니다."),
     INVALID_BOARD_REQUEST(BAD_REQUEST, "해당 게시물 요청이 적절하지 않습니다."),
     INVALID_CATEGORY_REQUEST(BAD_REQUEST, "해당 카테고리 요청이 적절하지 않습니다."),
     INVALID_BOOTCAMP_REQUEST(BAD_REQUEST, "해당 부트캠프 요청이 적절하지 않습니다."),
