@@ -11,3 +11,5 @@ sed -i '/if \[ -n \"\$dns\" \]/a     dns=\"$dns 8.8.8.8\"' /usr/share/udhcpc/def
 ### cicd push를 위한 변화 주기 -> yml 간격
 
 ### cicd push를 위한 변화 주기 -> db 확인
+
+### cicd push를 위한 변화 주기 -> application ddl option
