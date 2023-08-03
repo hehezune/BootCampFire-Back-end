@@ -1,13 +1,16 @@
 package com.ssafy.campfire.algorithm.controller;
 
 import com.ssafy.campfire.algorithm.domain.Algorithm;
+import com.ssafy.campfire.algorithm.domain.AlgorithmResult;
 import com.ssafy.campfire.algorithm.dto.request.AlgorithmRequestDto;
 import com.ssafy.campfire.algorithm.dto.response.AlgorithmListResponseDto;
 import com.ssafy.campfire.algorithm.dto.response.AlgorithmResponseDto;
 import com.ssafy.campfire.algorithm.service.AlgorithmService;
+import com.ssafy.campfire.global.login.PrincipalDetails;
 import com.ssafy.campfire.utils.dto.response.BaseResponseDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,9 +55,11 @@ public class AlgorithmController {
     }
 
 
-//    @GetMapping("/result/{userId}")
-//    public BaseResponseDto<List<Algorithm>> getAlgoResult(@PathVariable Long userId) throws IOException {
-//        return BaseResponseDto.ok(algorithmService.getAlgoDatas());
-//    }
+    @ApiOperation(value ="유저의 알고리즘 풀이 결과 갱신")
+    @GetMapping("/{problemId}")
+    public BaseResponseDto<List<AlgorithmResult>> getAlgoResult(@PathVariable Long problemId,
+                                                                @AuthenticationPrincipal PrincipalDetails user) throws IOException {
+        return BaseResponseDto.ok(algorithmService.getAlgorithmResult(user, problemId));
+    }
 
 }
