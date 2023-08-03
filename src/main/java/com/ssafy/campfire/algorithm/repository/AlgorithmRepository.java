@@ -9,4 +9,5 @@ import java.util.Optional;
 
 public interface AlgorithmRepository extends JpaRepository<Algorithm, Long> {
     Optional<Algorithm> findAlgorithmByDate(LocalDate date);
+    List<Algorithm> findAllByOrderByDateDesc();
 }

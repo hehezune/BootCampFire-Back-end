@@ -31,6 +31,7 @@ public class ReviewController {
     /**
      * @AuthenticationPrincipal 설정 후
      */
+//    @ApiOperation(value = "리뷰 등록")
 //    @PostMapping("/{bootcampId}")
 //    public BaseResponseDto<ReviewReponseDto> cerateReview(@RequestBody @Valid ReviewRequestDto reviewRequestDto,
 //                                                          @PathVariable Long bootcampId,
@@ -52,6 +53,7 @@ public class ReviewController {
 //    }
 
 
+    @ApiOperation(value = "리뷰 등록")
     @PostMapping
     public BaseResponseDto<ReviewReponseDto> createReview(@RequestBody @Valid ReviewRequestDto reviewRequestDto){
         return BaseResponseDto.ok(reviewService.save(reviewRequestDto.userId(), reviewRequestDto));

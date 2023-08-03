@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor //기본 생성자 생성
 @Entity
 @Table(name = "algorithm") // DB 이름과 동일하게
+@ToString
 public class Algorithm extends BaseEntity {
     /*
     id : pk

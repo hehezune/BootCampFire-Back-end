@@ -25,24 +25,29 @@ public class ReviewLikeController {
     /**
      * @AuthenticationPrincipal 설정 후
      */
+
+//    @ApiOperation(value = "리뷰 공감")
 //    @PostMapping("/{reviewId}")
 //    public BaseResponseDto<ReviewLikeResponse> likes(@PathVariable Long reviewId,
 //                                                     @AuthenticationPrincipal User user){
 //        return BaseResponseDto.ok(reviewLikeService.createLike(user.getId(), reviewId));
 //    }
 //
+//    @ApiOperation(value = "리뷰 공감 취소")
 //    @PostMapping("/cancel/{reviewId}")
 //    public BaseResponseDto<ReviewLikeResponse> cancellikes(@PathVariable Long reviewId,
 //                                                           @AuthenticationPrincipal User user){
 //        return BaseResponseDto.ok(reviewLikeService.cancelLike(user.getId(), reviewId));
 //    }
 
+    @ApiOperation(value = "리뷰 공감")
     @PostMapping("/{reviewId}")
     public BaseResponseDto<ReviewLikeResponse> likes(@PathVariable Long reviewId){
         Long userId = 1L;
         return BaseResponseDto.ok(reviewLikeService.createLike(userId, reviewId));
     }
 
+    @ApiOperation(value = "리뷰 공감 취소")
     @PostMapping("/cancel/{reviewId}")
     public BaseResponseDto<ReviewLikeResponse> cancellikes(@PathVariable Long reviewId){
         Long userId = 1L;
