@@ -1,12 +1,17 @@
 package com.ssafy.campfire.algorithm.service;
 
+import com.ssafy.campfire.algorithm.domain.AlgoFiftyRank;
+import com.ssafy.campfire.algorithm.domain.AlgoManyRank;
 import com.ssafy.campfire.algorithm.domain.Algorithm;
-import com.ssafy.campfire.algorithm.domain.AlgorithmResult;
+import com.ssafy.campfire.algorithm.domain.dto.AlgorithmResult;
 import com.ssafy.campfire.algorithm.dto.request.AlgorithmRequestDto;
 import com.ssafy.campfire.algorithm.dto.response.AlgorithmListResponseDto;
 import com.ssafy.campfire.algorithm.dto.response.AlgorithmResponseDto;
+import com.ssafy.campfire.algorithm.dto.response.AlgorithmResultResponseDto;
+import com.ssafy.campfire.algorithm.repository.AlgoFiftyRankRepository;
+import com.ssafy.campfire.algorithm.repository.AlgoManyRankRepository;
 import com.ssafy.campfire.algorithm.repository.AlgorithmRepository;
-import com.ssafy.campfire.bootcamp.dto.response.BootcampListResponseDto;
+import com.ssafy.campfire.bootcamp.domain.Bootcamp;
 import com.ssafy.campfire.global.login.PrincipalDetails;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.user.repository.UserRepository;
@@ -20,25 +25,27 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
-import javax.print.Doc;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
 @Transactional
 public class AlgorithmService {
+    private static String AlgorithmUrl ="https://www.acmicpc.net/problem/";
+    private static String Result_Url = "https://www.acmicpc.net/status?option-status-pid=on&problem_id=%ProblemId%&user_id=%UserId%&language_id=-1&result_id=-1&from_problem=1"; //크롤링할 url
+
+
     private final AlgorithmRepository algorithmRepository;
     private final UserRepository userRepository;
-    private static String AlgorithmUrl ="https://www.acmicpc.net/problem/";
+    private final AlgoManyRankRepository algoManyRankRepository;
+    private final AlgoFiftyRankRepository algoFiftyRankRepository;
 
-    private static String Result_Url = "https://www.acmicpc.net/status?option-status-pid=on&problem_id=%ProblemId%&user_id=%UserId%&language_id=-1&result_id=-1&from_problem=1"; //크롤링할 url
 
     public AlgorithmResponseDto save(AlgorithmRequestDto algorithmRequestDto) throws IOException {
         if(algorithmRepository.findAlgorithmByDate(algorithmRequestDto.date()).isPresent()){
@@ -96,34 +103,92 @@ public class AlgorithmService {
         return algorithmListResponseDtoList;
     }
 
+    public AlgorithmResultResponseDto checkAlgorithmResult(PrincipalDetails LoginUser, Long algorithmNum) throws IOException {
 
-    public List<AlgorithmResult> getAlgorithmResult(PrincipalDetails user, Long problemId) throws IOException{
-//        String bojId = userRepository.findUserById(user.getId()).getBojId();
-        Result_Url = Result_Url.replace("%ProblemId%", problemId.toString());
-        Result_Url = Result_Url.replace("%UserId%", userRepository.findUserById(1L).getBojId());
+//        Integer ranking = algoFiftyRankRepository.findFirstRankByOrderByCreatedDateDesc();
+//        System.out.println("ranking = " + ranking);
 
 
+//        User user = userRepository.findUserById(LoginUser.getId());
+        User user = userRepository.findUserById(3L);
+
+        String URL =  Result_Url.replace("%ProblemId%", algorithmNum.toString())
+                .replace("%UserId%", user.getBojId());
+
+        //오늘 시간내로 맞았습니다 가 있는지 확인
+        if(!isSolved(URL)) return new AlgorithmResultResponseDto(user.getId(), algorithmNum, false);
+
+        // 사용자의 최근 푼 문제 번호가 오늘 문제와 같은지 확인 같다면 갱신하지 않고 끝끝
+        if(user.getLatestAlgoNum().equals(algorithmNum)) return new AlgorithmResultResponseDto(user.getId(), algorithmNum, true);
+
+
+        // 같지 않다면 user 테이블의 오늘 문제 번호로 갱신
+        user.updateLatestAlgoNum(algorithmNum);
+
+        Bootcamp bootcamp = user.getBootcamp();
+        Algorithm algorithm = algorithmRepository.findAlgorithmByDate(LocalDate.now())
+                .orElseThrow(() -> new BusinessException(ErrorMessage.ALGORITHM_NOT_FOUND));
+
+        // 알고 매니 랭크 테이블에 사용자, 부트캠프, 알고리즘 해서 데이터 추가
+        algoManyRankRepository.save(new AlgoManyRank(user, bootcamp, algorithm));
+
+        // 부트캠프 테이블의 사용자가 소속한 알고리즘 cnt 증가
+        bootcamp.addAlgoCnt();
+
+        // 알고리즘 cnt가 50이라면 피프티 랭크 테이블에 생성일자가 오늘로 하는 가장 큰 수 rank를 가지고 와서 순위 증가하고 데이터 추가
+        if(bootcamp.getAlgoCnt() == 50){
+            //가장 최근에 저장된 데이터를 가지고 옴
+            AlgoFiftyRank algoFiftyRank = algoFiftyRankRepository.findFirstByOrderByCreatedDateDesc();
+
+            //50인 랭크가 비어있거나 가장 최근에 저장된 데이터가 어제 생성된거면 rank를 1로 지정함.
+            Integer ranking = 0;
+            if(algoFiftyRank == null || algoFiftyRank.createdDate.isBefore(LocalDate.now().atStartOfDay())){
+                ranking = 1;
+            }else{
+                ranking = algoFiftyRank.getRank()+1;
+            }
+
+            algoFiftyRankRepository.save(new AlgoFiftyRank(bootcamp, algorithm , ranking));
+
+        }
+
+        return new AlgorithmResultResponseDto(user.getId(), algorithmNum, true);
+    }
+
+    private boolean isSolved(String URL) throws IOException {
+        // 크롤링 한 결과 가지고 오기
+        List<AlgorithmResult> algoList = getAlgorithmResult(URL);
+        for (AlgorithmResult algorithmResult : algoList) {
+            LocalDate date = LocalDate.parse(algorithmResult.solveDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            //오늘 날짜인지 확인
+            if (date.isEqual(LocalDate.now())) {
+                //맞았습니다가 있는지 확인
+                if (algorithmResult.result().equals("맞았습니다!!")) return  true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+
+    }
+
+    private List<AlgorithmResult> getAlgorithmResult(String URL) throws IOException {
+
+        // 크롤링 --------------------
         List<AlgorithmResult> algoList = new ArrayList<>();
-        Document document = Jsoup.connect(Result_Url).get();
+
+        Document document = Jsoup.connect(URL).get();
         Elements contents = document.select("#status-table > tbody > tr");
+
         for(Element content : contents){
             AlgorithmResult algorithmResult = AlgorithmResult.builder()
-                    .userId(user.getId())
-                    .algorithmId(problemId)
-                    .problemId(content.select("td:nth-child(2) > a").text())
+                    .userBojId(content.select("td:nth-child(2) > a").text())
                     .result(content.select("td.result > span.result-text").text())
                     .solveDate(content.select("td:nth-child(9) > a").attr("title"))
-                            .build();
+                    .build();
             algoList.add(algorithmResult);
         }
-        //오늘 시간내로 맞았습니다 가 있는지 확인
-        //맞았습니다가 있다면 user 테이블의 사용자의 최근 푼 문제 번호가 오늘 문제와 같은지 확인
-        //같다면 갱신하지 않고 끝끝
-        // 같지 않다면 user 테이블의 오늘 문제 번호로 갱신
-        // 알고 매니 랭크 테이블에 사용자, 부트캠프, 알고리즘 해서 데이터 추가
-        // 부트캠프 테이블의 사용자가 소속한 알고리즘 cnt 증가
-        // 알고리즘 cnt가 50이라면 피프티 랭크 테이블에 생성일자가 오늘로 하는 가장 큰 순위를 가지고 와서 순위 증가하고 데이터 추가
-
+        //-----------------------------
 
         return algoList;
     }
@@ -174,6 +239,7 @@ public class AlgorithmService {
         ret = ret.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
         return ret;
     }
+
 
 
 }

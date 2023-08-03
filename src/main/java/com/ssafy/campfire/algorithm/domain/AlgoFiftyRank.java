@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @Entity
+@ToString
 @Table(name = "algo_fifty_rank")
 public class AlgoFiftyRank extends BaseEntity {
     /*
