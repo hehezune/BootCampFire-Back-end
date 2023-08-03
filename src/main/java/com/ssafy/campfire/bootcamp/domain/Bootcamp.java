@@ -65,17 +65,24 @@ public class Bootcamp extends BaseEntity {
     public void addTotalScore(double score){
         this.totalScore += score;
         this.reviewCnt++;
+        updatedDate = LocalDateTime.now();
     }
 
     public void subTotalScore(double score){
         this.totalScore -= score;
         this.reviewCnt--;
+        updatedDate = LocalDateTime.now();
     }
     @Builder
     public Bootcamp(String name){
         this.name = name;
         this.algoCnt = 0;
         this.reviewCnt = 0;
+    }
+
+    public void addAlgoCnt(){
+        algoCnt++;
+        updatedDate = LocalDateTime.now();
     }
 
     @Builder

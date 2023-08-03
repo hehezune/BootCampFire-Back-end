@@ -3,10 +3,12 @@ package com.ssafy.campfire.algorithm.domain;
 import com.ssafy.campfire.bootcamp.domain.Bootcamp;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.utils.domain.BaseEntity;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -34,4 +36,13 @@ public class AlgoManyRank extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "algorithm_id")
     Algorithm algorithm;
+
+
+    @Builder
+    public AlgoManyRank(User user, Bootcamp bootcamp, Algorithm algorithm){
+        this.user = user;
+        this.bootcamp = bootcamp;
+        this.algorithm = algorithm;
+        this.createdDate = LocalDateTime.now();
+    }
 }
