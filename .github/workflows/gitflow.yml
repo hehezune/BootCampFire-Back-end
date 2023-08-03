@@ -35,19 +35,19 @@ jobs:
         run: chmod +x gradlew
 
 
-      - name: Build with Gradle
-        run: ./gradlew build -x test
-
-
-      #      - uses: actions/upload-artifact@v3
-#        with:
-#          name: application.yml
-#          path: ./src/main/resources/application.yml
-#
-#
-#
 #      - name: Build with Gradle
-#        run: ./gradlew build
+#        run: ./gradlew build -x test
+
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: application.yml
+          path: ./src/main/resources/application.yml
+#
+#
+#
+      - name: Build with Gradle
+        run: ./gradlew build
 
 
       - name: Docker build
