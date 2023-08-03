@@ -27,7 +27,7 @@ jobs:
       - name: create application yaml
         run: |
           cd ./src/main/resources
-          touch ./resources/application.yml
+          touch ./application.yml
           echo "${{secrets.APPLICATION}}" > ./application.yml
 
 
