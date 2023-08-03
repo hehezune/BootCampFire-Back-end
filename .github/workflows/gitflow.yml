@@ -61,6 +61,6 @@ jobs:
           script: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/cicd:latest
             docker stop $(docker ps -a -q)
-            docker run -d --log-driver=syslog -p 22:22 ${{ secrets.DOCKER_USERNAME }}/cicd:latest
+            docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/cicd:latest
             docker rm $(docker ps --filter 'status=exited' -a -q)
             docker image prune -a -f
