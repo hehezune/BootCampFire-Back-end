@@ -22,32 +22,35 @@ public class LikesController {
     /**
      * @AuthenticationPrincipal 설정 후
      */
-//    @ApiOperation(value ="좋아요")
-//    @PostMapping("/{boardId}")
-//    public BaseResponseDto<LikesResponse> likes(@PathVariable Long boardId,
-//                                                @AuthenticationPrincipal User user) {
-//        return BaseResponseDto.ok(likesService.createLikes(user.getId(), boardId));
-//    }
-//
-//    @ApiOperation(value ="좋아요 취소")
-//    @PostMapping("/cancle/{boardId}")
-//    public BaseResponseDto<LikesResponse> cancelLikes(@PathVariable Long boardId,
-//                                                      @AuthenticationPrincipal User user) {
-//        return BaseResponseDto.ok(likesService.cancelLikes(user.getId(), boardId));
-//    }
-
     @ApiOperation(value ="좋아요")
     @PostMapping("/{boardId}")
     public BaseResponseDto<LikesResponse> likes(@PathVariable Long boardId,
-                                                Long userId) {
-        return BaseResponseDto.ok(likesService.createLikes(userId, boardId));
+                                                @AuthenticationPrincipal User user) {
+        return BaseResponseDto.ok(likesService.createLikes(user.getId(), boardId));
     }
 
-    @ApiOperation(value ="좋아요취소")
+    @ApiOperation(value ="좋아요 취소")
     @PostMapping("/cancle/{boardId}")
     public BaseResponseDto<LikesResponse> cancelLikes(@PathVariable Long boardId,
-                                                      Long userId) {
-        return BaseResponseDto.ok(likesService.cancelLikes(userId, boardId));
+                                                      @AuthenticationPrincipal User user) {
+        return BaseResponseDto.ok(likesService.cancelLikes(user.getId(), boardId));
     }
+
+    /**
+     * swagger test
+     */
+//    @ApiOperation(value ="좋아요")
+//    @PostMapping("/{boardId}")
+//    public BaseResponseDto<LikesResponse> likes(@PathVariable Long boardId,
+//                                                Long userId) {
+//        return BaseResponseDto.ok(likesService.createLikes(userId, boardId));
+//    }
+//
+//    @ApiOperation(value ="좋아요취소")
+//    @PostMapping("/cancle/{boardId}")
+//    public BaseResponseDto<LikesResponse> cancelLikes(@PathVariable Long boardId,
+//                                                      Long userId) {
+//        return BaseResponseDto.ok(likesService.cancelLikes(userId, boardId));
+//    }
 
 }
