@@ -2,8 +2,11 @@ on:
   push:
     branches:
       - 'main'
-      - 'develop'
       - 'cicd'
+  pull_request:
+    branches:
+      - "main"
+
 
 permissions:
   contents: read
@@ -56,7 +59,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ubuntu
+          username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/cicd:latest
