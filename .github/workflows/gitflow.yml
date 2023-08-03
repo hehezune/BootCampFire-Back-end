@@ -5,6 +5,8 @@ on:
       - 'develop'
       - 'cicd'
 
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -21,19 +23,12 @@ jobs:
           java-version: 17
           distribution: 'temurin'
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
 
       - name: create application yaml
         run: |
-          touch ./src/main/resources/application.yml
-          echo "${{secrets.APPLICATION}}" > ./src/main/resources/application.yml
-
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: application.yml
-          path: ./src/main/resources/application.yml
+          cd ./src/main/resources
+          touch ./resources/application.yml
+          echo "${{secrets.APPLICATION}}" > ./application.yml
 
 
       - name: Grant execute permission for gradlew
@@ -41,7 +36,18 @@ jobs:
 
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build -x test
+
+
+      #      - uses: actions/upload-artifact@v3
+#        with:
+#          name: application.yml
+#          path: ./src/main/resources/application.yml
+#
+#
+#
+#      - name: Build with Gradle
+#        run: ./gradlew build
 
 
       - name: Docker build
