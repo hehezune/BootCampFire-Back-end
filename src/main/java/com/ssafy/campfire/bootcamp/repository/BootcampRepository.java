@@ -16,5 +16,12 @@ public interface BootcampRepository extends JpaRepository<Bootcamp, Long> ,Custo
     //후기순으로 정렬
     List<Bootcamp> findAllByOrderByReviewCntDesc();
 
+    //algo_cnt 가 높은 순으로 10개 뽑기
+    List<Bootcamp> findTop10ByOrderByAlgoCntDesc();
+
+
+    List<Bootcamp> findByOrderByAlgoCntDesc();
+
+    Long countAllByAlgoCntGreaterThanEqual(Integer algoCnt);
 
 }

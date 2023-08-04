@@ -5,13 +5,12 @@ import com.ssafy.campfire.algorithm.domain.AlgoManyRank;
 import com.ssafy.campfire.algorithm.domain.Algorithm;
 import com.ssafy.campfire.algorithm.domain.dto.AlgorithmResult;
 import com.ssafy.campfire.algorithm.dto.request.AlgorithmRequestDto;
-import com.ssafy.campfire.algorithm.dto.response.AlgorithmListResponseDto;
-import com.ssafy.campfire.algorithm.dto.response.AlgorithmResponseDto;
-import com.ssafy.campfire.algorithm.dto.response.AlgorithmResultResponseDto;
+import com.ssafy.campfire.algorithm.dto.response.*;
 import com.ssafy.campfire.algorithm.repository.AlgoFiftyRankRepository;
 import com.ssafy.campfire.algorithm.repository.AlgoManyRankRepository;
 import com.ssafy.campfire.algorithm.repository.AlgorithmRepository;
 import com.ssafy.campfire.bootcamp.domain.Bootcamp;
+import com.ssafy.campfire.bootcamp.repository.BootcampRepository;
 import com.ssafy.campfire.global.login.PrincipalDetails;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.user.repository.UserRepository;
@@ -41,6 +40,7 @@ public class AlgorithmService {
     private static String Result_Url = "https://www.acmicpc.net/status?option-status-pid=on&problem_id=%ProblemId%&user_id=%UserId%&language_id=-1&result_id=-1&from_problem=1"; //크롤링할 url
 
 
+    private final BootcampRepository bootcampRepository;
     private final AlgorithmRepository algorithmRepository;
     private final UserRepository userRepository;
     private final AlgoManyRankRepository algoManyRankRepository;
@@ -104,11 +104,6 @@ public class AlgorithmService {
     }
 
     public AlgorithmResultResponseDto checkAlgorithmResult(PrincipalDetails LoginUser, Long algorithmNum) throws IOException {
-
-//        Integer ranking = algoFiftyRankRepository.findFirstRankByOrderByCreatedDateDesc();
-//        System.out.println("ranking = " + ranking);
-
-
 //        User user = userRepository.findUserById(LoginUser.getId());
         User user = userRepository.findUserById(3L);
 
@@ -154,6 +149,7 @@ public class AlgorithmService {
 
         return new AlgorithmResultResponseDto(user.getId(), algorithmNum, true);
     }
+
 
     private boolean isSolved(String URL) throws IOException {
         // 크롤링 한 결과 가지고 오기
@@ -241,7 +237,62 @@ public class AlgorithmService {
     }
 
 
+    public List<AlgoFiftyRankResponseDto> getAlgoFiftyRank() {
 
+        Algorithm algorithm = algorithmRepository.findAlgorithmByDate(LocalDate.now())
+                .orElseThrow(() -> new BusinessException(ErrorMessage.ALGORITHM_NOT_FOUND));
+
+        List<AlgoFiftyRankResponseDto> algoFiftyRankResponseDtoList =algoFiftyRankRepository
+                .findTop10ByAlgorithmOrderByRank(algorithm)
+                .stream()
+                .map(AlgoFiftyRankResponseDto::from).toList();
+
+        return algoFiftyRankResponseDtoList;
+    }
+
+
+    public AlgoFiftyRankResponseDto getAlgoFiftyMyRank(PrincipalDetails loginUser) {
+//        User user = userRepository.findUserById(loginUser.getId());
+        User user = userRepository.findUserById(1L);
+
+        Bootcamp bootcamp = user.getBootcamp();
+
+
+        Algorithm algorithm = algorithmRepository.findAlgorithmByDate(LocalDate.now())
+                .orElseThrow(() -> new BusinessException(ErrorMessage.ALGORITHM_NOT_FOUND));
+
+        AlgoFiftyRank algoFiftyRank = algoFiftyRankRepository.findByAlgorithmAndBootcamp(algorithm, bootcamp);
+
+
+        return AlgoFiftyRankResponseDto.from(algoFiftyRank);
+    }
+
+    public List<AlgoManyRankResponseDto>  getAlgoManyRank() {
+        List<AlgoManyRankResponseDto> algoManyRankResponseDtoList = new ArrayList<>();
+
+        List<Bootcamp> bootcampList = bootcampRepository.findTop10ByOrderByAlgoCntDesc();
+
+        Integer rank = 1;
+        for (Bootcamp bootcamp : bootcampList) {
+            algoManyRankResponseDtoList.add(AlgoManyRankResponseDto.of(bootcamp, rank));
+            rank +=1;
+        }
+
+        return algoManyRankResponseDtoList;
+    }
+
+    public AlgoManyRankResponseDto getAlgoManyMyRank(PrincipalDetails loginUser) {
+//        User user = userRepository.findUserById(loginUser.getId());
+        User user = userRepository.findUserById(1L);
+
+        Bootcamp bootcamp = user.getBootcamp();
+
+        Integer algoCnt = bootcamp.getAlgoCnt();
+
+        Long rank = bootcampRepository.countAllByAlgoCntGreaterThanEqual(algoCnt);
+
+        return AlgoManyRankResponseDto.of(bootcamp, Math.toIntExact(rank));
+    }
 }
 
 
