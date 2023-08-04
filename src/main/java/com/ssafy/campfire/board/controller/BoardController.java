@@ -43,47 +43,51 @@ public class BoardController {
     /**
      * @AuthenticationPrincipal 설정 후
      */
-//    @ApiOperation(value ="게시글 저장")
-//    @PostMapping
-//    public BaseResponseDto<BoardCreateResponse> createBoard(@RequestBody @Valid BoardCreateRequest request,
-//                                                           @AuthenticationPrincipal PrincipalDetails user) {
-//        return BaseResponseDto.ok(boardService.save(user.getId(), request));
-//    }
-//
-//    @ApiOperation(value ="게시글 상세조회")
-//    @GetMapping("/{boardId}")
-//    public BaseResponseDto<BoardReadResponse> getBoard(@PathVariable Long boardId,
-//                                                       @AuthenticationPrincipal PrincipalDetails user) {
-//        return BaseResponseDto.ok(boardService.getBoard(boardId, user.getId()));
-//    }
-//    @ApiOperation(value ="사용자 게시글 조회")
-//    @GetMapping("/users")
-//    public BaseResponseDto<GlobalPageResponseDto<UserBoardListResponse>> getUserBoard(Pageable pageable,
-//                                                                                  @AuthenticationPrincipal PrincipalDetails user) {
-//        return BaseResponseDto.ok(boardService.getUserBoard(user.getId(), pageable));
-//    }
-
-    /**
-     * swagger test
-     */
     @ApiOperation(value ="게시글 저장")
     @PostMapping
     public BaseResponseDto<BoardCreateResponse> createBoard(@RequestBody @Valid BoardCreateRequest request,
-                                                           Long userId) {
-        return BaseResponseDto.ok(boardService.save(userId, request));
+                                                           @AuthenticationPrincipal PrincipalDetails user) {
+        return BaseResponseDto.ok(boardService.save(user.getId(), request));
     }
 
     @ApiOperation(value ="게시글 상세조회")
     @GetMapping("/{boardId}")
     public BaseResponseDto<BoardReadResponse> getBoard(@PathVariable Long boardId,
-                                                       Long userId) {
-        return BaseResponseDto.ok(boardService.getBoard(boardId, userId));
+                                                       @AuthenticationPrincipal PrincipalDetails user) {
+        if(user==null){
+            return BaseResponseDto.ok(boardService.getBoard(boardId, null));
+        }
+        return BaseResponseDto.ok(boardService.getBoard(boardId, user.getId()));
     }
 
     @ApiOperation(value ="사용자 게시글 조회")
     @GetMapping("/users")
-    public BaseResponseDto<GlobalPageResponseDto<UserBoardListResponse>> getNewestList(Pageable pageable, Long userId) {
-        return BaseResponseDto.ok(boardService.getUserBoard(userId, pageable));
+    public BaseResponseDto<GlobalPageResponseDto<UserBoardListResponse>> getUserBoard(Pageable pageable,
+                                                                                  @AuthenticationPrincipal PrincipalDetails user) {
+        return BaseResponseDto.ok(boardService.getUserBoard(user.getId(), pageable));
     }
+
+    /**
+     * swagger test
+     */
+//    @ApiOperation(value ="게시글 저장")
+//    @PostMapping
+//    public BaseResponseDto<BoardCreateResponse> createBoard(@RequestBody @Valid BoardCreateRequest request,
+//                                                           Long userId) {
+//        return BaseResponseDto.ok(boardService.save(userId, request));
+//    }
+//
+//    @ApiOperation(value ="게시글 상세조회")
+//    @GetMapping("/{boardId}")
+//    public BaseResponseDto<BoardReadResponse> getBoard(@PathVariable Long boardId,
+//                                                       Long userId) {
+//        return BaseResponseDto.ok(boardService.getBoard(boardId, userId));
+//    }
+//
+//    @ApiOperation(value ="사용자 게시글 조회")
+//    @GetMapping("/users")
+//    public BaseResponseDto<GlobalPageResponseDto<UserBoardListResponse>> getNewestList(Pageable pageable, Long userId) {
+//        return BaseResponseDto.ok(boardService.getUserBoard(userId, pageable));
+//    }
 
 }

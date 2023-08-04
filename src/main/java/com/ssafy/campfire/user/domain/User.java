@@ -51,7 +51,7 @@ public class User extends BaseEntity {
 
     private String bojId;
 
-    private int latestAlgoNum;
+    private Long latestAlgoNum;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -109,6 +109,11 @@ public class User extends BaseEntity {
 
     public void updatePermision(boolean isPermision){
         this.isPermision = isPermision;
+        updatedUpdatedate();
+    }
+
+    public void updateLatestAlgoNum(Long algorithmNum){
+        this.latestAlgoNum = algorithmNum;
         updatedUpdatedate();
     }
 }

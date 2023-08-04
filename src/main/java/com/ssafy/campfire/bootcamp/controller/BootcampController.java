@@ -92,7 +92,7 @@ public class BootcampController {
 
     @ApiOperation("부트캠프 명으로 검색하기")
     @GetMapping("/search/{bootcampName}")
-    public BaseResponseDto<BootcampListResponseDto> searchByBootcampName(@PathVariable String bootcampName){
+    public BaseResponseDto<List<BootcampListResponseDto>> searchByBootcampName(@PathVariable String bootcampName){
         return BaseResponseDto.ok(bootcampService.getBootcampByBootcampName(bootcampName));
     }
 
