@@ -63,6 +63,11 @@ public class CategoryController {
     @GetMapping("/{categoryId}/keywords/{keyword}")
     public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getSearchTitleContentList(@PathVariable Long categoryId, @PathVariable String keyword, Pageable pageable,
                                                                                                @AuthenticationPrincipal PrincipalDetails user) {
+
+        if(user==null){
+            return BaseResponseDto.ok(categoryService.getSearchByTitleContent(null, categoryId, keyword, pageable));
+        }
+
         return BaseResponseDto.ok(categoryService.getSearchByTitleContent(user.getId(), categoryId, keyword, pageable));
     }
 
@@ -70,6 +75,11 @@ public class CategoryController {
     @GetMapping("/{categoryId}/nickname/{nickname}")
     public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getSearchNicknameList(@PathVariable Long categoryId, @PathVariable String nickname, Pageable pageable,
                                                                                            @AuthenticationPrincipal PrincipalDetails user) {
+
+        if(user==null){
+            return BaseResponseDto.ok(categoryService.getSearchByNickname(null, categoryId, nickname, pageable));
+        }
+
         return BaseResponseDto.ok(categoryService.getSearchByNickname(user.getId(), categoryId, nickname, pageable));
     }
 
@@ -77,6 +87,11 @@ public class CategoryController {
     @GetMapping("/{categoryId}")
     public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getNewestList(@PathVariable Long categoryId, Pageable pageable,
                                                                                    @AuthenticationPrincipal PrincipalDetails user) {
+
+        if(user==null){
+            return BaseResponseDto.ok(categoryService.getNewestList(null, categoryId, pageable));
+        }
+
         return BaseResponseDto.ok(categoryService.getNewestList(user.getId(), categoryId, pageable));
     }
 
@@ -84,6 +99,11 @@ public class CategoryController {
     @GetMapping("/{categoryId}/likes")
     public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getLikeOrderList(@PathVariable Long categoryId, Pageable pageable,
                                                                                       @AuthenticationPrincipal PrincipalDetails user) {
+
+        if(user==null){
+            return BaseResponseDto.ok(categoryService.getLikeOrderList(null, categoryId, pageable));
+        }
+
         return BaseResponseDto.ok(categoryService.getLikeOrderList(user.getId(), categoryId, pageable));
     }
 
@@ -91,6 +111,11 @@ public class CategoryController {
     @GetMapping("/{categoryId}/views")
     public BaseResponseDto<GlobalPageResponseDto<BoardListResponse>> getViewOrderList(@PathVariable Long categoryId, Pageable pageable,
                                                                                       @AuthenticationPrincipal PrincipalDetails user) {
+
+        if(user==null){
+            return BaseResponseDto.ok(categoryService.getViewOrderList(null, categoryId, pageable));
+        }
+
         return BaseResponseDto.ok(categoryService.getViewOrderList(user.getId(), categoryId, pageable));
     }
 
