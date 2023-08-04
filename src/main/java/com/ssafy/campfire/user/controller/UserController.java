@@ -1,27 +1,36 @@
 package com.ssafy.campfire.user.controller;
 
-import com.ssafy.campfire.user.dto.UserSignUpDto;
+import com.ssafy.campfire.global.jwt.service.JwtService;
+import com.ssafy.campfire.user.dto.response.UserReadResponse;
 import com.ssafy.campfire.user.service.UserService;
+import com.ssafy.campfire.utils.dto.response.BaseResponseDto;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
-
-    @PostMapping("/sign-up")
-    public String signUp(@RequestBody UserSignUpDto userSignUpDto) throws Exception {
-        userService.signUp(userSignUpDto);
-        return "회원가입 성공";
-    }
+    private final JwtService jwtService;
 
     @GetMapping("/jwt-test")
     public String jwtTest() {
-        return "jwtTest 요청 성공";
+        return "jwtTest success";
     }
+
+    @ApiOperation(value ="개인 정보 조회")
+    @GetMapping("/users/")
+    public BaseResponseDto<UserReadResponse> userInfo(@AuthenticationPrincipal UserDetails user) {
+        System.out.println(user.toString());
+        return BaseResponseDto.ok(userService.read(user.getUsername()));
+    }
+
+
 }

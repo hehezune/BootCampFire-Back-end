@@ -1,14 +1,17 @@
 package com.ssafy.campfire.user.domain;
 
 import com.ssafy.campfire.bootcamp.domain.Bootcamp;
+import com.ssafy.campfire.user.domain.dto.UserUpdate;
 import com.ssafy.campfire.utils.domain.BaseEntity;
 import javax.persistence.*;
 
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.time.LocalDateTime;
 
 @Getter
+@ToString
 @Entity
 @Builder
 @AllArgsConstructor
@@ -22,9 +25,8 @@ public class User extends BaseEntity {
      * bojId : 백준 아이디
      * latestAlgoNum : 마지막으로 푼 문제번호
      * role : user 인지 admin 인지 구분
-     * kakaoEmail : 카카오 소셜 api를 통해 가입한 이메일
-     * googleEmail : 구글 소셜 api를 통해 가입한 이메일
-     * naverEmail : 네이버 소셜 api를 통해 가입한 이메일
+     * email : 소셜 api를 통해 가입한 이메일
+     * provider : 가입 한 소셜 경로
      * imgUrl : 소속인증 용 사진
      * isPermision : 소속 인증 현황/ true : 인증 허가, false : 인증 미허가
      * refeshToken : refresh 토큰
@@ -33,56 +35,86 @@ public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String userId;
-    private String password;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "bootcamp_id")
     private Bootcamp bootcamp;
 
     private String nickname;
 
+    private String password;
+
     private String bojId;
 
-    private int latestAlgoNum;
+    private Long latestAlgoNum;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(nullable = false)
-    private String kakaoEmail;
+    private String email;
 
-    @Column(nullable = false)
-    private String googleEmail;
-
-    @Column(nullable = false)
-    private String naverEmail;
+    private String provider;
 
     private String imgUrl;
 
-    @ColumnDefault("false")
+    @ColumnDefault("true")
     private Boolean isPermision;
 
-    private String refreshToken; // 리프레시 토큰
+    private String refreshToken;
+
+    public User(String nickname, String email, String provider, Bootcamp bootcamp) {
+        this.bootcamp = bootcamp;
+        this.nickname = nickname;
+        this.email = email;
+        this.provider = provider;
+        this.role = Role.USER;
+        this.isPermision = true;
+        this.createdDate = LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now();
+        this.latestAlgoNum = 0L;
+    }
+
+    public User(Long id, Bootcamp bootcamp, String nickname, int latestAlgoNum, Role role, String email, String provider, String imgUrl, Boolean isPermision, String refreshToken) {
+        super();
+    }
+
 
     // 유저 권한 설정 메소드
     public void authorizeUser() {
         this.role = Role.USER;
     }
 
+    public void updatedUpdatedate(){this.updatedDate = LocalDateTime.now();}
+
     //== 유저 필드 업데이트 ==//
     public void updateNickname(String updateNickname) {
         this.nickname = updateNickname;
+        updatedUpdatedate();
+    }
+    public void updateBootcamp(Bootcamp bootcamp) {
+        this.bootcamp = bootcamp;
+        updatedUpdatedate();
+    }
+
+    public void update(UserUpdate userUpdate){
+        this.nickname = userUpdate.nickname();
+        this.imgUrl = userUpdate.imgUrl();
+        this.bojId = userUpdate.bojId();
+        updatedUpdatedate();
+    }
+
+    public void updatePermision(boolean isPermision){
+        this.isPermision = isPermision;
+        updatedUpdatedate();
+    }
+
+    public void updateLatestAlgoNum(Long algorithmNum){
+        this.latestAlgoNum = algorithmNum;
+        updatedUpdatedate();
     }
 
     public void updateRefreshToken(String updateRefreshToken) {
         this.refreshToken = updateRefreshToken;
-    }
-    // 비밀번호 암호화 메소드
-    public void passwordEncode(PasswordEncoder passwordEncoder) {
-        this.password = passwordEncoder.encode(this.password);
-    }
-    public void updatePassword(String updatePassword, PasswordEncoder passwordEncoder) {
-        this.password = passwordEncoder.encode(updatePassword);
+        updatedUpdatedate();
     }
 }

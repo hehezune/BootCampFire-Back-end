@@ -1,14 +1,23 @@
 package com.ssafy.campfire.user.service;
 
+import com.ssafy.campfire.bootcamp.domain.Bootcamp;
+import com.ssafy.campfire.bootcamp.repository.BootcampRepository;
 import com.ssafy.campfire.user.domain.User;
-import com.ssafy.campfire.user.domain.Role;
-import com.ssafy.campfire.user.dto.UserSignUpDto;
+import com.ssafy.campfire.user.dto.request.UserUpdateRequest;
+import com.ssafy.campfire.user.dto.response.UserConfirmResponse;
+import com.ssafy.campfire.user.dto.response.UserReadResponse;
+import com.ssafy.campfire.user.dto.response.UserUpdateResponse;
+import com.ssafy.campfire.user.repository.CustomUserRepository;
 import com.ssafy.campfire.user.repository.UserRepository;
+import com.ssafy.campfire.utils.error.enums.ErrorMessage;
+import com.ssafy.campfire.utils.error.exception.custom.BusinessException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -16,29 +25,119 @@ import javax.transaction.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    public void signUp(UserSignUpDto userSignUpDto) throws Exception {
+    private final CustomUserRepository customUserRepository;
+    private final BootcampRepository bootcampRepository;
 
-        if (userRepository.findByUserId(userSignUpDto.getUserId()).isPresent()) {
-            throw new Exception("이미 존재하는 아이디입니다.");
+    public User getLoginUserById(Long userId) {
+        if(userId == null) return null;
+
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(optionalUser.isEmpty()) return null;
+
+        return optionalUser.get();
+    }
+
+    public User getLoginUserByNickname(String nickname) {
+        Optional<User> optionalUser = userRepository.findByNickname(nickname);
+        if(optionalUser.isEmpty()) return null;
+
+        return optionalUser.get();
+    }
+    public UserReadResponse read(String nickname) {
+
+        User user = userRepository.findByNickname(nickname)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
+
+
+        return new UserReadResponse(
+                user.getId(),
+                user.getNickname(),
+                user.getBojId(),
+                user.getImgUrl(),
+                user.getBootcamp().getId(),
+                user.getBootcamp().getName(),
+                user.getEmail()
+        );
+    }
+    public UserUpdateResponse update(Long userId,
+                                     UserUpdateRequest request) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
+
+        user.update(request.toDto());
+
+        return new UserUpdateResponse(
+                user.getId(),
+                user.getNickname(),
+                user.getBojId(),
+                user.getBootcamp().getName(),
+                user.getImgUrl(),
+                user.getEmail()
+        );
+    }
+
+    public boolean nickanameDuplicationCheck(String nickname){
+        if(!userRepository.findByNickname(nickname).isEmpty()){
+            return false;
         }
-        if (userRepository.findByNickname(userSignUpDto.getNickname()).isPresent()) {
-            throw new Exception("이미 존재하는 닉네임입니다.");
+
+        return true;
+    }
+
+    // 소속 인증 요청하기
+    public boolean confirmRequest(Long userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
+        System.out.println("전 : "+user.toString());
+
+        if(user.getIsPermision()){
+            user.updatePermision(false);
+        }
+        System.out.println("후 : "+user.getIsPermision());
+        return true;
+    }
+
+    // 소속 인증을 요청한 사용자 목록 불러오기
+    public List<UserConfirmResponse> needPermissionUserList(){
+        Optional<List<User>> optionalUserList = customUserRepository.findNeedPermissionUserList();
+
+        if(optionalUserList.isEmpty()){
+            return null;
         }
 
-        User user = null;
+        List<User> userList = optionalUserList.get();
+        List<UserConfirmResponse> userConfirmResponseList = new ArrayList<>();
 
-        user = User.builder()
-                .userId(userSignUpDto.getUserId())
-                .password(userSignUpDto.getPassword())
-                .nickname(userSignUpDto.getNickname())
-                .role(Role.USER)
-                .build();
+        for (User user:userList) {
+            userConfirmResponseList.add(UserConfirmResponse.from(user.getId(), user.getNickname(), user.getImgUrl()));
+        }
 
 
-        user.passwordEncode(passwordEncoder);
-        userRepository.save(user);
+        return userConfirmResponseList;
+    }
+
+    // 소속 인증 허가
+    public User permission(Long userId, Long bootcampId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
+        Bootcamp bootcamp = bootcampRepository.findById(bootcampId)
+                .orElseThrow(()-> new BusinessException(ErrorMessage.BOOTCAMP_NOT_FOUND));
+
+        user.updateBootcamp(bootcamp);
+        return user;
+    }
+
+    // 소속 인증 반려
+    public String notPermission(Long userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
+
+        user.updatePermision(true);
+
+        return "소속 인증이 반려 되었습니다.";
     }
 }
+
 
 

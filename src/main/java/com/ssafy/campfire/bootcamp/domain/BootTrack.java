@@ -1,8 +1,10 @@
 package com.ssafy.campfire.bootcamp.domain;
 
-import javax.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
@@ -20,5 +22,12 @@ public class BootTrack {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "track_id")
     private Track track;
+
+    @Builder
+    public BootTrack(Bootcamp bootcamp, Track track){
+        this.bootcamp = bootcamp;
+        this.track = track;
+    }
 }

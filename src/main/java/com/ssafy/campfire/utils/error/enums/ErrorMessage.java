@@ -1,12 +1,10 @@
 package com.ssafy.campfire.utils.error.enums;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+
+import static org.springframework.http.HttpStatus.*;
 
 @Getter
 @RequiredArgsConstructor
@@ -16,6 +14,7 @@ public enum ErrorMessage {
     CATEGORY_NOT_FOUND(NOT_FOUND, "해당 카테고리를 찾을 수 없습니다."),
     BOARD_NOT_FOUND(NOT_FOUND, "해당 게시글 찾을 수 없습니다."),
     BOOTCAMP_NOT_FOUND(NOT_FOUND, "해당 부트캠프를 찾을 수 없습니다."),
+    REGION_NOT_FOUND(NOT_FOUND, "해당 지역을 찾을 수 없습니다."),
     REVIEW_NOT_FOUND(NOT_FOUND, "해당 리뷰 찾을 수 없습니다."),
     COMMENT_NOT_FOUND(NOT_FOUND, "해당 댓글 찾을 수 없습니다."),
     LIKE_NOT_FOUND(NOT_FOUND, "해당 좋아요를 찾을 수 없습니다."),
