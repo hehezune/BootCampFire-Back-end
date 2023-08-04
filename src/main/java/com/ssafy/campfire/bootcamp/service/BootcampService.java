@@ -139,8 +139,7 @@ public class BootcampService {
     @Transactional //트랜잭션 범위는 유지하되 기능을 조회로 제한함으로써 조회 속도가 개선
     public List<BootcampListResponseDto> getBootcampListOrderByReview() {
         //부트캠프를 이름 순으로 정렬
-        List<Bootcamp> bootcampList = bootcampRepository.findAllByOrderByReviewCntDesc
-                ();
+        List<Bootcamp> bootcampList = bootcampRepository.findAllByOrderByReviewCntDesc();
 
         //각 부트캠프엔티티마다 지역, 트랙을 찾아 responseDto의 리스트로 만들기
         List<BootcampListResponseDto> bootcampListResponseDtoList = new ArrayList<>();
@@ -159,13 +158,17 @@ public class BootcampService {
     }
 
     //부트캠프 이름으로 검색
-    public BootcampListResponseDto getBootcampByBootcampName(String bootcampName) {
+    @Transactional
+    public List<BootcampListResponseDto> getBootcampByBootcampName(String bootcampName) {
+        List<BootcampListResponseDto> bootcampListResponseDtoList =  new ArrayList<>();
+
         Optional<Bootcamp> optionalBootcamp = bootcampRepository.findByName(bootcampName);
         Bootcamp bootcamp = optionalBootcamp.get();
         Optional<List<Track>> trackList = bootTrackRepository.getBootTracksByBootcampId(bootcamp.getId());
         Optional<List<Region>> regionList = bootRegionRepository.getBootRegionsByBootcampId(bootcamp.getId());
 
-        return BootcampListResponseDto.of(optionalBootcamp, trackList, regionList);
+        bootcampListResponseDtoList.add(BootcampListResponseDto.of(optionalBootcamp, trackList, regionList));
+        return bootcampListResponseDtoList;
     }
 
     //부트캠프 이름 목록 가져오기
