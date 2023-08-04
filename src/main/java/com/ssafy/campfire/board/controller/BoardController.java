@@ -54,8 +54,12 @@ public class BoardController {
     @GetMapping("/{boardId}")
     public BaseResponseDto<BoardReadResponse> getBoard(@PathVariable Long boardId,
                                                        @AuthenticationPrincipal PrincipalDetails user) {
+        if(user==null){
+            return BaseResponseDto.ok(boardService.getBoard(boardId, null));
+        }
         return BaseResponseDto.ok(boardService.getBoard(boardId, user.getId()));
     }
+
     @ApiOperation(value ="사용자 게시글 조회")
     @GetMapping("/users")
     public BaseResponseDto<GlobalPageResponseDto<UserBoardListResponse>> getUserBoard(Pageable pageable,

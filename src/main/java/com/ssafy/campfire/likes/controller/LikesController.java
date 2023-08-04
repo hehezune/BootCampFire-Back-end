@@ -1,5 +1,6 @@
 package com.ssafy.campfire.likes.controller;
 
+import com.ssafy.campfire.global.login.PrincipalDetails;
 import com.ssafy.campfire.likes.dto.response.LikesResponse;
 import com.ssafy.campfire.likes.service.LikesService;
 import com.ssafy.campfire.user.domain.User;
@@ -25,14 +26,14 @@ public class LikesController {
     @ApiOperation(value ="좋아요")
     @PostMapping("/{boardId}")
     public BaseResponseDto<LikesResponse> likes(@PathVariable Long boardId,
-                                                @AuthenticationPrincipal User user) {
+                                                @AuthenticationPrincipal PrincipalDetails user) {
         return BaseResponseDto.ok(likesService.createLikes(user.getId(), boardId));
     }
 
     @ApiOperation(value ="좋아요 취소")
     @PostMapping("/cancle/{boardId}")
     public BaseResponseDto<LikesResponse> cancelLikes(@PathVariable Long boardId,
-                                                      @AuthenticationPrincipal User user) {
+                                                      @AuthenticationPrincipal PrincipalDetails user) {
         return BaseResponseDto.ok(likesService.cancelLikes(user.getId(), boardId));
     }
 
