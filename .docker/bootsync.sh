@@ -21,3 +21,5 @@ sed -i '/if \[ -n \"\$dns\" \]/a     dns=\"$dns 8.8.8.8\"' /usr/share/udhcpc/def
 ### cicd push를 위한 변화 주기 -> application database path
 
 ### cicd push를 위한 변화 주기 -> application database path - 스키마까지
+
+### cicd push를 위한 변화 주기 -> ec2 3306 port 추가
