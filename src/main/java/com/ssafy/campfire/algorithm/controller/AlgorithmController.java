@@ -2,9 +2,7 @@ package com.ssafy.campfire.algorithm.controller;
 
 import com.ssafy.campfire.algorithm.domain.dto.AlgorithmResult;
 import com.ssafy.campfire.algorithm.dto.request.AlgorithmRequestDto;
-import com.ssafy.campfire.algorithm.dto.response.AlgorithmListResponseDto;
-import com.ssafy.campfire.algorithm.dto.response.AlgorithmResponseDto;
-import com.ssafy.campfire.algorithm.dto.response.AlgorithmResultResponseDto;
+import com.ssafy.campfire.algorithm.dto.response.*;
 import com.ssafy.campfire.algorithm.service.AlgorithmService;
 import com.ssafy.campfire.global.login.PrincipalDetails;
 import com.ssafy.campfire.utils.dto.response.BaseResponseDto;
@@ -59,6 +57,30 @@ public class AlgorithmController {
     public BaseResponseDto<AlgorithmResultResponseDto> checkAlgoResult(@PathVariable Long algorithmNum,
                                                                        @AuthenticationPrincipal PrincipalDetails user) throws IOException {
         return BaseResponseDto.ok(algorithmService.checkAlgorithmResult(user, algorithmNum));
+    }
+
+    @ApiOperation(value ="50인 달성 순위 조회")
+    @GetMapping("/algo-fifty")
+    public BaseResponseDto<List<AlgoFiftyRankResponseDto>> getAlgoFiftyRank() {
+        return BaseResponseDto.ok(algorithmService.getAlgoFiftyRank());
+    }
+
+    @ApiOperation(value ="50인 달성 내 부트캠프 순위 조회")
+    @GetMapping("/algo-fifty/my-rank")
+    public BaseResponseDto<AlgoFiftyRankResponseDto> getAlgoFiftyMyRank(@AuthenticationPrincipal PrincipalDetails user) {
+        return BaseResponseDto.ok(algorithmService.getAlgoFiftyMyRank(user));
+    }
+
+    @ApiOperation(value ="알고리즘 많이 푼 부트캠프 순위 조회")
+    @GetMapping("/algo-many")
+    public BaseResponseDto<List<AlgoManyRankResponseDto>> getAlgoManyRank() {
+        return BaseResponseDto.ok(algorithmService.getAlgoManyRank());
+    }
+
+    @ApiOperation(value ="많이푼 부트캠프 순웅이 중 내 부트캠프 순위 조회")
+    @GetMapping("/algo-many/my-rank")
+    public BaseResponseDto<AlgoManyRankResponseDto> getAlgoManyMyRank(@AuthenticationPrincipal PrincipalDetails user) {
+        return BaseResponseDto.ok(algorithmService.getAlgoManyMyRank(user));
     }
 
 }
