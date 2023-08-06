@@ -31,7 +31,7 @@ public class LikesController {
     }
 
     @ApiOperation(value ="좋아요 취소")
-    @PostMapping("/cancle/{boardId}")
+    @PostMapping("/cancel/{boardId}")
     public BaseResponseDto<LikesResponse> cancelLikes(@PathVariable Long boardId,
                                                       @AuthenticationPrincipal PrincipalDetails user) {
         return BaseResponseDto.ok(likesService.cancelLikes(user.getId(), boardId));
