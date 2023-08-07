@@ -3,6 +3,7 @@ package com.ssafy.campfire.board.domain;
 import com.ssafy.campfire.board.domain.dto.BoardUpdate;
 import com.ssafy.campfire.bootcamp.domain.Bootcamp;
 import com.ssafy.campfire.category.domain.Category;
+import com.ssafy.campfire.comment.domain.Comment;
 import com.ssafy.campfire.likes.domain.Likes;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.utils.domain.BaseEntity;
@@ -59,6 +60,9 @@ public class Board extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bootcamp_id")
     private Bootcamp bootcamp;
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Comment> comments;
 
     @Column(nullable = false)
     private String title;
