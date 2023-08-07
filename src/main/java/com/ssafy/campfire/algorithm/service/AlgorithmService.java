@@ -55,7 +55,7 @@ public class AlgorithmService {
 
         algorithm = getAlgorithmFromBoj( algorithm ,algorithmRequestDto.num());
 
-        return AlgorithmResponseDto.from(algorithmRepository.save(algorithm));
+        return AlgorithmResponseDto.of(algorithmRepository.save(algorithm), false);
     }
 
     public AlgorithmResponseDto updateAlgorithm(AlgorithmRequestDto algorithmRequestDto, Long algorithmId) throws IOException {
@@ -74,7 +74,7 @@ public class AlgorithmService {
 
         algorithm.updateAlgorithm(algorithmRequestDto.num(), algorithmRequestDto.date());
 
-        return AlgorithmResponseDto.from(algorithm);
+        return AlgorithmResponseDto.of(algorithm, false);
     }
 
 
@@ -85,10 +85,12 @@ public class AlgorithmService {
         return algorithm.getId();
     }
 
-    public AlgorithmResponseDto getAlgorithm() {
+    public AlgorithmResponseDto getAlgorithm(PrincipalDetails LoginUser) {
+//        User user = userRepository.findUserById(LoginUser.getId());
+        User user = userRepository.findUserById(3L);
         Algorithm algorithm = algorithmRepository.findAlgorithmByDate(LocalDate.now())
                 .orElseThrow(() -> new BusinessException(ErrorMessage.ALGORITHM_NOT_FOUND));
-        return AlgorithmResponseDto.from(algorithm);
+        return AlgorithmResponseDto.of(algorithm, user.getLatestAlgoNum().equals(algorithm.getNum()));
     }
 
     public List<AlgorithmListResponseDto> getAlgorithmList() {
