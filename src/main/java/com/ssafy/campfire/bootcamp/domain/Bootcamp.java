@@ -16,6 +16,28 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "bootcamp") // DB 이름과 동일하게
 public class Bootcamp extends BaseEntity {
+
+     /*
+        id : pk
+        name : 부트캠프 이름
+        siteUrl : 사이트 주소
+        process : 모집 절차
+        schedule : 교육기간
+        description : 설명
+        cost : 수강료
+        card : 내일 배움카드 여부
+        support : 지원금 여부
+        hasCodingtest : 코딩테스트 여부
+        onOff : 온오프라인
+        startDate : 모집 시작일
+        endDate : 모집 마감일
+        imgUrl : 이미지 주소
+        reviewCnt : 리뷰 갯수
+        totalScore : 리뷰 총점
+        algoCnt : 알고리즘 푼 인원
+    */
+
+
     //field
     @Id //부트캠프 테이블의 PK
     @GeneratedValue(strategy = GenerationType.IDENTITY) //기본키 자동생성 - identity는 기본키 자동생성 방법을 데이터베이스에 위임함.

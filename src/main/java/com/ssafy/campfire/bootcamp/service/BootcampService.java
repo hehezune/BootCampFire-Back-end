@@ -1,6 +1,10 @@
 package com.ssafy.campfire.bootcamp.service;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.campfire.bootcamp.domain.*;
+import com.ssafy.campfire.bootcamp.domain.dto.Data;
+import com.ssafy.campfire.bootcamp.domain.dto.Script;
 import com.ssafy.campfire.bootcamp.dto.request.BootcampRequestDto;
 import com.ssafy.campfire.bootcamp.dto.response.BootcampListResponseDto;
 import com.ssafy.campfire.bootcamp.dto.response.BootcampNameListResponseDto;
@@ -11,9 +15,15 @@ import com.ssafy.campfire.category.repository.CategoryRepository;
 import com.ssafy.campfire.utils.error.enums.ErrorMessage;
 import com.ssafy.campfire.utils.error.exception.custom.BusinessException;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
+import javax.swing.event.CellEditorListener;
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,6 +48,8 @@ public class BootcampService {
     private final BootTrackRepository bootTrackRepository;
     private final BootRegionRepository bootRegionRepository;
 
+    private static String BoottentList_Url ="https://boottent.sayun.studio/camps";
+
     public BootcampResponseDto save(BootcampRequestDto bootcampRequestDto) {
         Bootcamp bootcamp = bootcampRepository.save(bootcampRequestDto.toBootcamp());
 
@@ -49,6 +61,54 @@ public class BootcampService {
         categoryRepository.save(new Category(BOOTCAMP, bootcamp));
 
         return BootcampResponseDto.of(Optional.ofNullable(bootcamp), Optional.ofNullable(trackList), Optional.ofNullable(languageList), Optional.ofNullable(regionList));
+    }
+
+
+    //부트텐트에서 부트캠프 크롤링하기
+    public List<BootcampResponseDto> saveFromBoottent() throws IOException {
+
+        Document document= Jsoup.connect(BoottentList_Url).get();
+
+        Elements elements = document.select("#__NEXT_DATA__");
+
+        String json = elements.get(0).data();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);   //선언한 필드만 매핑
+        Script script = objectMapper.readValue(json, Script.class);
+
+        List<Data> dataList = script.getProps().getPageProps().getData().stream().toList();
+
+
+
+
+        //------
+        Data data = dataList.get(0);
+        String detail_Url = BoottentList_Url + data.detailUrl();
+        document = Jsoup.connect(detail_Url).get();
+//        System.out.println("document = " + document);
+        elements = document.select("#__NEXT_DATA__");
+
+        String jjson = elements.get(0).data();
+        System.out.println("jjson = " + jjson);
+
+        script = objectMapper.readValue(jjson, Script.class);
+        System.out.println("script = " + script.getProps().getPageProps().getCamp());
+
+
+        System.out.println();
+
+//        for (Data data :dataList) {
+//            String detail_Url = BoottentList_Url + data.detailUrl();
+//            document = Jsoup.connect(detail_Url).get();
+//            String siteUrl = document.select("#__next > div > section > main > div.container.full-width > div:nth-child(1) > div.camp_layer1__y_wsY > div > div:nth-child(4) > div > a").attr("abs:href");
+//            System.out.println("siteUrl = " + siteUrl);
+//
+//        }
+        
+
+        return null;
+        
     }
 
     public BootcampResponseDto getBootcamp(Long bootcampId){
@@ -195,4 +255,6 @@ public class BootcampService {
         }
 
     }
+
+
 }

@@ -16,6 +16,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 @RestController
 @RequiredArgsConstructor
@@ -34,6 +35,15 @@ public class BootcampController {
     public BaseResponseDto<BootcampResponseDto> createBootcamp(@RequestBody BootcampRequestDto bootcampRequestDto ){
         return BaseResponseDto.ok(bootcampService.save(bootcampRequestDto));
     }
+
+    @ApiOperation(value ="부트캠프 크롤링 후 등록")
+    @GetMapping
+    public BaseResponseDto<List<BootcampResponseDto>> createBootcampFromBoottent() throws IOException {
+        return BaseResponseDto.ok(bootcampService.saveFromBoottent());
+    }
+
+
+
 
     @ApiOperation(value ="부트캠프 상세조회")
     @GetMapping("/{bootcampId}")
