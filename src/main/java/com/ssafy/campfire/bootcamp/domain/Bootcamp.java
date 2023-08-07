@@ -6,10 +6,12 @@ import javax.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @NoArgsConstructor //기본 생성자 생성
 @Entity
 @Table(name = "bootcamp") // DB 이름과 동일하게
