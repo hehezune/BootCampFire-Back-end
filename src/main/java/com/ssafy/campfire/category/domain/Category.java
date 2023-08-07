@@ -38,4 +38,9 @@ public class Category {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "bootcamp_id")
     private Bootcamp bootcamp;
+
+    public Category(CategoryType name, Bootcamp bootcamp){
+        this.name = name;
+        this.bootcamp = bootcamp;
+    }
 }

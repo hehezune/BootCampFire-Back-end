@@ -1,8 +1,6 @@
 package com.ssafy.campfire.bootcamp.service;
 
-import com.ssafy.campfire.bootcamp.domain.BootRegion;
-import com.ssafy.campfire.bootcamp.domain.Bootcamp;
-import com.ssafy.campfire.bootcamp.domain.Region;
+import com.ssafy.campfire.bootcamp.domain.*;
 import com.ssafy.campfire.bootcamp.dto.request.BootcampRequestDto;
 import com.ssafy.campfire.bootcamp.repository.BootRegionRepository;
 import com.ssafy.campfire.bootcamp.repository.RegionRepository;

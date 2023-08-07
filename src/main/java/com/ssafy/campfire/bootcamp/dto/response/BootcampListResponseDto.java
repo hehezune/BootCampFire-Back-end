@@ -1,11 +1,14 @@
 package com.ssafy.campfire.bootcamp.dto.response;
 
 import com.ssafy.campfire.bootcamp.domain.Bootcamp;
+import com.ssafy.campfire.bootcamp.domain.Language;
 import com.ssafy.campfire.bootcamp.domain.Region;
 import com.ssafy.campfire.bootcamp.domain.Track;
+import jdk.jshell.Snippet;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,8 +20,8 @@ public record BootcampListResponseDto(
          Boolean support, //지원금
          Boolean hasCodingtest, //코테 유무
          String onOff, //온/오프
-         LocalDateTime startDate,
-         LocalDateTime endDate,
+         String startDate,
+         String endDate,
          String imgUrl,
          Integer reviewCnt,
          Double score, //평점
@@ -33,8 +36,10 @@ public record BootcampListResponseDto(
                 .support(bootcamp.get().getSupport())
                 .hasCodingtest(bootcamp.get().getHasCodingtest())
                 .onOff(bootcamp.get().getOnOff())
-                .startDate(bootcamp.get().getStartDate())
-                .endDate(bootcamp.get().getEndDate())
+                .startDate(bootcamp.get().getStartDate()
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .endDate(bootcamp.get().getEndDate()
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .imgUrl(bootcamp.get().getImgUrl())
                 .reviewCnt(bootcamp.get().getReviewCnt())
                 .score(bootcamp.get().getTotalScore() / (double) bootcamp.get().getReviewCnt())

@@ -1,8 +1,10 @@
-package com.ssafy.campfire.category.dto;
+package com.ssafy.campfire.board.dto.response;
 
 import com.ssafy.campfire.board.domain.Board;
 
-public record BoardListResponse(
+import java.time.LocalDateTime;
+
+public record UserBoardListResponse(
         Long id,
         String title,
         String content,
@@ -11,10 +13,11 @@ public record BoardListResponse(
         String category,
         Integer commentCnt,
         Integer likeCnt,
-        Integer view
+        Integer view,
+        LocalDateTime createdDate
 ) {
-    public static BoardListResponse of(Board board) {
-        return new BoardListResponse(
+    public static UserBoardListResponse of(Board board) {
+        return new UserBoardListResponse(
                 board.getId(),
                 board.getTitle(),
                 board.getContent(),
@@ -23,7 +26,8 @@ public record BoardListResponse(
                 board.getCategory().getName().getMessage(),
                 board.getCommentCnt(),
                 board.getLikeCnt(),
-                board.getView()
+                board.getView(),
+                board.getCreatedDate()
         );
     }
 }

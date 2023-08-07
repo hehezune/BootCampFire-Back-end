@@ -1,14 +1,17 @@
 package com.ssafy.campfire.bootcamp.domain;
 
 import com.ssafy.campfire.utils.domain.BaseEntity;
+import javax.persistence.*;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @NoArgsConstructor //기본 생성자 생성
 @Entity
 @Table(name = "bootcamp") // DB 이름과 동일하게
@@ -61,16 +64,27 @@ public class Bootcamp extends BaseEntity {
     private Integer algoCnt;
 
 
-    public void updateTotalScore(double score){
+    public void addTotalScore(double score){
         this.totalScore += score;
         this.reviewCnt++;
+        updatedDate = LocalDateTime.now();
     }
 
+    public void subTotalScore(double score){
+        this.totalScore -= score;
+        this.reviewCnt--;
+        updatedDate = LocalDateTime.now();
+    }
     @Builder
     public Bootcamp(String name){
         this.name = name;
         this.algoCnt = 0;
         this.reviewCnt = 0;
+    }
+
+    public void addAlgoCnt(){
+        algoCnt++;
+        updatedDate = LocalDateTime.now();
     }
 
     @Builder
@@ -114,4 +128,5 @@ public class Bootcamp extends BaseEntity {
         this.imgUrl = bootcamp.getImgUrl();
         this.updatedDate = LocalDateTime.now();
     }
+
 }

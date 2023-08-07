@@ -1,10 +1,10 @@
 package com.ssafy.campfire.bootcamp.domain;
 
+import javax.persistence.*;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor

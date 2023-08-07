@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.ssafy.campfire.bootcamp.domain.QBootRegion.bootRegion;
+import static com.ssafy.campfire.bootcamp.domain.QBootTrack.bootTrack;
 import static com.ssafy.campfire.bootcamp.domain.QRegion.region;
 
 @Repository
