@@ -13,9 +13,10 @@ public record AlgorithmResponseDto(
         String link,
         String title,
         String description,
-        String date
+        String date,
+        Boolean isSolved
 ) {
-    public static AlgorithmResponseDto from(Algorithm algorithm){
+    public static AlgorithmResponseDto of(Algorithm algorithm, Boolean isSolved){
         return AlgorithmResponseDto.builder()
                 .id(algorithm.getId())
                 .num(algorithm.getNum())
@@ -23,6 +24,7 @@ public record AlgorithmResponseDto(
                 .title(algorithm.getTitle())
                 .description(algorithm.getDescription())
                 .date(algorithm.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                .isSolved(isSolved)
                 .build();
     }
 }

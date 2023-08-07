@@ -12,11 +12,14 @@ import com.ssafy.campfire.bootcamp.service.BootcampService;
 import com.ssafy.campfire.utils.dto.response.BaseResponseDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
 @RequiredArgsConstructor
+@EnableScheduling
 @RequestMapping("/bootcamps")
 public class BootcampController {
     private final BootcampService bootcampService;
@@ -92,7 +95,7 @@ public class BootcampController {
 
     @ApiOperation("부트캠프 명으로 검색하기")
     @GetMapping("/search/{bootcampName}")
-    public BaseResponseDto<BootcampListResponseDto> searchByBootcampName(@PathVariable String bootcampName){
+    public BaseResponseDto<List<BootcampListResponseDto>> searchByBootcampName(@PathVariable String bootcampName){
         return BaseResponseDto.ok(bootcampService.getBootcampByBootcampName(bootcampName));
     }
 
@@ -101,4 +104,11 @@ public class BootcampController {
     public BaseResponseDto<List<BootcampNameListResponseDto>> getBootcampNameList(){
         return BaseResponseDto.ok(bootcampService.getBootcampNameList());
     }
+
+    @ApiOperation(value = "매일 자정 부트캠프 algo_cnt 초기화")
+    @Scheduled(cron = "0 0 0 * * *")
+    public void bootcampAlgoCntInit(){
+        bootcampService.bootcampAlgoCntInit();
+    }
+
 }

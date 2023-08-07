@@ -14,7 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -139,8 +141,7 @@ public class BootcampService {
     @Transactional //트랜잭션 범위는 유지하되 기능을 조회로 제한함으로써 조회 속도가 개선
     public List<BootcampListResponseDto> getBootcampListOrderByReview() {
         //부트캠프를 이름 순으로 정렬
-        List<Bootcamp> bootcampList = bootcampRepository.findAllByOrderByReviewCntDesc
-                ();
+        List<Bootcamp> bootcampList = bootcampRepository.findAllByOrderByReviewCntDesc();
 
         //각 부트캠프엔티티마다 지역, 트랙을 찾아 responseDto의 리스트로 만들기
         List<BootcampListResponseDto> bootcampListResponseDtoList = new ArrayList<>();
@@ -159,13 +160,17 @@ public class BootcampService {
     }
 
     //부트캠프 이름으로 검색
-    public BootcampListResponseDto getBootcampByBootcampName(String bootcampName) {
+    @Transactional
+    public List<BootcampListResponseDto> getBootcampByBootcampName(String bootcampName) {
+        List<BootcampListResponseDto> bootcampListResponseDtoList =  new ArrayList<>();
+
         Optional<Bootcamp> optionalBootcamp = bootcampRepository.findByName(bootcampName);
         Bootcamp bootcamp = optionalBootcamp.get();
         Optional<List<Track>> trackList = bootTrackRepository.getBootTracksByBootcampId(bootcamp.getId());
         Optional<List<Region>> regionList = bootRegionRepository.getBootRegionsByBootcampId(bootcamp.getId());
 
-        return BootcampListResponseDto.of(optionalBootcamp, trackList, regionList);
+        bootcampListResponseDtoList.add(BootcampListResponseDto.of(optionalBootcamp, trackList, regionList));
+        return bootcampListResponseDtoList;
     }
 
     //부트캠프 이름 목록 가져오기
@@ -176,5 +181,18 @@ public class BootcampService {
             nameList.add(new BootcampNameListResponseDto(bootcamp.getId(), bootcamp.getName()));
         }
         return nameList;
+    }
+
+    //부트캠프 algo_cnt 초기화
+    public void bootcampAlgoCntInit() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        Date now = new Date();
+        String strDate = sdf.format(now);
+        System.out.println("Java cron job expression:: " + strDate);
+        List<Bootcamp> bootcampList = bootcampRepository.findAll();
+        for (Bootcamp bootcamp : bootcampList ){
+            bootcamp.setAlgoCnt(0);
+        }
+
     }
 }
