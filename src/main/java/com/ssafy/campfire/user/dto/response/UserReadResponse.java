@@ -1,5 +1,6 @@
 package com.ssafy.campfire.user.dto.response;
 
+import java.time.LocalDateTime;
 public record UserReadResponse(
         Long id,
         String nickname,

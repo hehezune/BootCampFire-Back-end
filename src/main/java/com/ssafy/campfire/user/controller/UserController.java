@@ -1,7 +1,6 @@
 package com.ssafy.campfire.user.controller;
 
 import com.ssafy.campfire.global.jwt.service.JwtService;
-import com.ssafy.campfire.global.oauth2.OAuthAttributes;
 import com.ssafy.campfire.global.oauth2.PrincipalDetails;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.user.dto.request.UserPermissionRequest;
@@ -27,7 +26,6 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final JwtService jwtService;
 
     @GetMapping("/jwt-test")
     public String jwtTest() {
@@ -36,11 +34,9 @@ public class UserController {
 
     @ApiOperation(value ="개인 정보 조회")
     @GetMapping("")
-    public BaseResponseDto<UserReadResponse> userInfo(@AuthenticationPrincipal UserDetails user, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        System.out.println("USER 정보 : "+principalDetails.getId());
-        return BaseResponseDto.ok(userService.read(user.getUsername()));
+    public BaseResponseDto<UserReadResponse> userInfo(@AuthenticationPrincipal PrincipalDetails user) {
+        return BaseResponseDto.ok(userService.read(user.getId()));
     }
-
     @ApiOperation(value = "개인 정보 수정")
     @PutMapping("")
     public BaseResponseDto<UserUpdateResponse> update(@AuthenticationPrincipal PrincipalDetails user, @RequestBody @Valid UserUpdateRequest request){

@@ -1,12 +1,19 @@
 package com.ssafy.campfire.user.domain;
 
+import com.querydsl.core.types.dsl.BooleanPath;
+import com.querydsl.core.types.dsl.EnumPath;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.StringPath;
 import com.ssafy.campfire.bootcamp.domain.Bootcamp;
 import com.ssafy.campfire.user.domain.dto.UserUpdate;
 import com.ssafy.campfire.utils.domain.BaseEntity;
 import javax.persistence.*;
 
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.ColumnDefault;
+
+import java.time.LocalDateTime;
 
 import java.time.LocalDateTime;
 
@@ -77,7 +84,6 @@ public class User extends BaseEntity {
     public User(Long id, Bootcamp bootcamp, String nickname, int latestAlgoNum, Role role, String email, String provider, String imgUrl, Boolean isPermision, String refreshToken) {
         super();
     }
-
 
     // 유저 권한 설정 메소드
     public void authorizeUser() {

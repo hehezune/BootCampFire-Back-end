@@ -43,9 +43,8 @@ public class UserService {
 
         return optionalUser.get();
     }
-    public UserReadResponse read(String nickname) {
-
-        User user = userRepository.findByNickname(nickname)
+    public UserReadResponse read(Long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
 
 
@@ -123,7 +122,6 @@ public class UserService {
                 .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
         Bootcamp bootcamp = bootcampRepository.findById(bootcampId)
                 .orElseThrow(()-> new BusinessException(ErrorMessage.BOOTCAMP_NOT_FOUND));
-
         user.updateBootcamp(bootcamp);
         return user;
     }
