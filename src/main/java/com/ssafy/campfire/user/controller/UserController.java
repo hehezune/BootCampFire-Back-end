@@ -1,6 +1,8 @@
 package com.ssafy.campfire.user.controller;
 
 import com.ssafy.campfire.global.jwt.service.JwtService;
+import com.ssafy.campfire.global.oauth2.OAuthAttributes;
+import com.ssafy.campfire.global.oauth2.PrincipalDetails;
 import com.ssafy.campfire.user.dto.response.UserReadResponse;
 import com.ssafy.campfire.user.service.UserService;
 import com.ssafy.campfire.utils.dto.response.BaseResponseDto;
@@ -26,9 +28,9 @@ public class UserController {
     }
 
     @ApiOperation(value ="개인 정보 조회")
-    @GetMapping("/users/")
-    public BaseResponseDto<UserReadResponse> userInfo(@AuthenticationPrincipal UserDetails user) {
-        System.out.println(user.toString());
+    @GetMapping("/users")
+    public BaseResponseDto<UserReadResponse> userInfo(@AuthenticationPrincipal UserDetails user, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        System.out.println("USER 정보 : "+principalDetails.getId());
         return BaseResponseDto.ok(userService.read(user.getUsername()));
     }
 

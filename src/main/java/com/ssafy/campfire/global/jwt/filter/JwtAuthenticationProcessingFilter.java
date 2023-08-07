@@ -2,6 +2,7 @@ package com.ssafy.campfire.global.jwt.filter;
 
 import com.ssafy.campfire.global.jwt.service.JwtService;
 import com.ssafy.campfire.global.jwt.util.PasswordUtil;
+import com.ssafy.campfire.global.oauth2.PrincipalDetails;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -144,15 +145,19 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
             password = PasswordUtil.generateRandomPassword();
         }
 
-        UserDetails userDetailsUser = org.springframework.security.core.userdetails.User.builder()
-                .username(myUser.getNickname())
-                .password(password)
-                .roles(myUser.getRole().name())
-                .build();
+//        UserDetails userDetailsUser = org.springframework.security.core.userdetails.User.builder()
+//                .username(myUser.getNickname())
+//                .password(password)
+//                .roles(myUser.getRole().name())
+//                .build();
+        PrincipalDetails principalDetails = new PrincipalDetails(myUser);
 
+//        Authentication authentication =
+//                new UsernamePasswordAuthenticationToken(userDetailsUser, null,
+//                authoritiesMapper.mapAuthorities(userDetailsUser.getAuthorities()));
         Authentication authentication =
-                new UsernamePasswordAuthenticationToken(userDetailsUser, null,
-                authoritiesMapper.mapAuthorities(userDetailsUser.getAuthorities()));
+                new UsernamePasswordAuthenticationToken(principalDetails, null,
+                authoritiesMapper.mapAuthorities(principalDetails.getAuthorities()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }

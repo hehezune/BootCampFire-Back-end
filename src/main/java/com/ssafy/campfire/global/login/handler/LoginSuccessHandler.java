@@ -25,7 +25,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) {
-        String nickname = extractUsername(authentication); // 인증 정보에서 Username(email) 추출
+        String nickname = extractUsername(authentication); // 인증 정보에서 Username(nickname) 추출
         String accessToken = jwtService.createAccessToken(nickname); // JwtService의 createAccessToken을 사용하여 AccessToken 발급
         String refreshToken = jwtService.createRefreshToken(); // JwtService의 createRefreshToken을 사용하여 RefreshToken 발급
 

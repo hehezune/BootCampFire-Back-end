@@ -31,10 +31,10 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     // TODO : 소셜 로그인 시에도 무조건 토큰 생성하지 말고 JWT 인증 필터처럼 RefreshToken 유/무에 따라 다르게 처리해보기
     private void loginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException {
-        String accessToken = "Bearaer "+jwtService.createAccessToken(oAuth2User.getNickname());
-        String refreshToken = "Bearaer "+jwtService.createRefreshToken();
-        //response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
-        //response.addHeader(jwtService.getRefreshHeader(), "Bearer " + refreshToken);
+        String accessToken = jwtService.createAccessToken(oAuth2User.getNickname());
+        String refreshToken = jwtService.createRefreshToken();
+        response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
+        response.addHeader(jwtService.getRefreshHeader(), "Bearer " + refreshToken);
 
         jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
         jwtService.updateRefreshToken(oAuth2User.getNickname(), refreshToken);
