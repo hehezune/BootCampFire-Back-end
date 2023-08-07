@@ -14,7 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -179,5 +181,18 @@ public class BootcampService {
             nameList.add(new BootcampNameListResponseDto(bootcamp.getId(), bootcamp.getName()));
         }
         return nameList;
+    }
+
+    //부트캠프 algo_cnt 초기화
+    public void bootcampAlgoCntInit() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        Date now = new Date();
+        String strDate = sdf.format(now);
+        System.out.println("Java cron job expression:: " + strDate);
+        List<Bootcamp> bootcampList = bootcampRepository.findAll();
+        for (Bootcamp bootcamp : bootcampList ){
+            bootcamp.setAlgoCnt(0);
+        }
+
     }
 }
