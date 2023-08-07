@@ -41,8 +41,8 @@ public class AlgorithmController {
 
     @ApiOperation(value ="오늘의 알고리즘 조회")
     @GetMapping
-    public BaseResponseDto<AlgorithmResponseDto> getAlgorithm() throws IOException {
-        return BaseResponseDto.ok(algorithmService.getAlgorithm());
+    public BaseResponseDto<AlgorithmResponseDto> getAlgorithm(@AuthenticationPrincipal PrincipalDetails user) throws IOException {
+        return BaseResponseDto.ok(algorithmService.getAlgorithm(user));
     }
 
     @ApiOperation(value ="알고리즘 목록 조회")
