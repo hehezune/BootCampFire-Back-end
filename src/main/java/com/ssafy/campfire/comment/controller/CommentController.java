@@ -6,7 +6,6 @@ import com.ssafy.campfire.comment.dto.response.CommentCreateResponse;
 import com.ssafy.campfire.comment.dto.response.CommentReadResponse;
 import com.ssafy.campfire.comment.dto.response.CommentUpdateResponse;
 import com.ssafy.campfire.comment.service.CommentService;
-import com.ssafy.campfire.global.login.PrincipalDetails;
 import com.ssafy.campfire.utils.dto.response.BaseResponseDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;

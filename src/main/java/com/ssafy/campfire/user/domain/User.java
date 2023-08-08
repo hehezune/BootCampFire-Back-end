@@ -5,7 +5,6 @@ import com.querydsl.core.types.dsl.EnumPath;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.StringPath;
 import com.ssafy.campfire.bootcamp.domain.Bootcamp;
-import com.ssafy.campfire.bootcamp.domain.QBootcamp;
 import com.ssafy.campfire.user.domain.dto.UserUpdate;
 import com.ssafy.campfire.utils.domain.BaseEntity;
 import javax.persistence.*;
@@ -13,7 +12,8 @@ import javax.persistence.*;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.time.LocalDateTime;
 
 import java.time.LocalDateTime;
 
@@ -49,6 +49,8 @@ public class User extends BaseEntity {
 
     private String nickname;
 
+    private String password;
+
     private String bojId;
 
     private Long latestAlgoNum;
@@ -65,7 +67,7 @@ public class User extends BaseEntity {
     @ColumnDefault("true")
     private Boolean isPermision;
 
-    private String refreshToken; // 리프레시 토큰
+    private String refreshToken;
 
     public User(String nickname, String email, String provider, Bootcamp bootcamp) {
         this.bootcamp = bootcamp;
@@ -76,12 +78,12 @@ public class User extends BaseEntity {
         this.isPermision = true;
         this.createdDate = LocalDateTime.now();
         this.updatedDate = LocalDateTime.now();
+        this.latestAlgoNum = 0L;
     }
 
     public User(Long id, Bootcamp bootcamp, String nickname, int latestAlgoNum, Role role, String email, String provider, String imgUrl, Boolean isPermision, String refreshToken) {
         super();
     }
-
 
     // 유저 권한 설정 메소드
     public void authorizeUser() {
@@ -114,6 +116,11 @@ public class User extends BaseEntity {
 
     public void updateLatestAlgoNum(Long algorithmNum){
         this.latestAlgoNum = algorithmNum;
+        updatedUpdatedate();
+    }
+
+    public void updateRefreshToken(String updateRefreshToken) {
+        this.refreshToken = updateRefreshToken;
         updatedUpdatedate();
     }
 }

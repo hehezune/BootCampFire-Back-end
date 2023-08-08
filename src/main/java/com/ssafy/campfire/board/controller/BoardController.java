@@ -8,7 +8,7 @@ import com.ssafy.campfire.board.dto.response.BoardReadResponse;
 import com.ssafy.campfire.board.dto.response.BoardUpdateResponse;
 import com.ssafy.campfire.board.dto.response.UserBoardListResponse;
 import com.ssafy.campfire.board.service.BoardService;
-import com.ssafy.campfire.global.login.PrincipalDetails;
+import com.ssafy.campfire.global.oauth2.PrincipalDetails;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.utils.dto.response.BaseResponseDto;
 import com.ssafy.campfire.utils.dto.response.GlobalPageResponseDto;

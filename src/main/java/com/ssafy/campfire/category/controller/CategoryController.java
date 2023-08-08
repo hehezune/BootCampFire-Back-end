@@ -4,7 +4,7 @@ import com.ssafy.campfire.category.dto.response.BoardHotResponse;
 import com.ssafy.campfire.category.dto.response.BoardListResponse;
 import com.ssafy.campfire.category.dto.response.BoardMainResponse;
 import com.ssafy.campfire.category.service.CategoryService;
-import com.ssafy.campfire.global.login.PrincipalDetails;
+import com.ssafy.campfire.global.oauth2.PrincipalDetails;
 import com.ssafy.campfire.utils.dto.response.BaseResponseDto;
 import com.ssafy.campfire.utils.dto.response.GlobalPageResponseDto;
 import io.swagger.annotations.ApiOperation;
