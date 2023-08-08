@@ -3,6 +3,7 @@ package com.ssafy.campfire.board.dto.response;
 import com.ssafy.campfire.board.domain.Board;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public record UserBoardListResponse(
 
@@ -28,7 +29,7 @@ public record UserBoardListResponse(
         Integer commentCnt,
         Integer likeCnt,
         Integer view,
-        LocalDateTime createdDate
+        String createdDate
 ) {
     public static UserBoardListResponse of(Board board) {
         return new UserBoardListResponse(
@@ -41,7 +42,7 @@ public record UserBoardListResponse(
                 board.getCommentCnt(),
                 board.getLikeCnt(),
                 board.getView(),
-                board.getCreatedDate()
+                board.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
         );
     }
 }
