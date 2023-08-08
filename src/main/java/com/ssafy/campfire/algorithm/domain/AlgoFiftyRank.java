@@ -28,13 +28,13 @@ public class AlgoFiftyRank extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bootcamp_id")
-    Bootcamp bootcamp;
+    private Bootcamp bootcamp;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "algorithm_id")
-    Algorithm algorithm;
+    private Algorithm algorithm;
 
-    Integer rank;
+    private Integer rank;
 
     @Builder
     public AlgoFiftyRank(Bootcamp bootcamp , Algorithm algorithm, Integer rank){

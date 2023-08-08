@@ -27,15 +27,15 @@ public class AlgoManyRank extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    User user;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bootcamp_id")
-    Bootcamp bootcamp;
+    private Bootcamp bootcamp;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "algorithm_id")
-    Algorithm algorithm;
+    private Algorithm algorithm;
 
 
     @Builder
