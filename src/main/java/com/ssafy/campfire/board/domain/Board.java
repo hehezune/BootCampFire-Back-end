@@ -33,16 +33,19 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Board extends BaseEntity {
 
-    /*
+    /**
      * id : pk
      * user : 글쓴이
      * category : 글 카테고리
+     * bootcamp : 글쓴이의 소속 부캠
+     * comments : 달린 댓글들
      * title : 글 제목
      * content : 글 내용
      * anonymous : 익명
      * commentCnt : 댓글 수
      * likeCnt : 좋아요 수
      * views : 조회수
+     * maxRef : 마지막 댓글 ref
      * */
 
     @Id

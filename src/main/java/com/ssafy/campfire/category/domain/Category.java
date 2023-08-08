@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Category {
 
-    /*
+    /**
      * id : pk
      * name : 카테고리 이름
      * bootcamp : 카테고리가 bootcamp 시에 부트캠프 id
