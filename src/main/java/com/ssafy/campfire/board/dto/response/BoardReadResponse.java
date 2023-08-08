@@ -1,6 +1,7 @@
 package com.ssafy.campfire.board.dto.response;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public record BoardReadResponse(
 
@@ -28,7 +29,7 @@ public record BoardReadResponse(
         Integer likeCnt,
         Integer view,
         Boolean isLike,
-        LocalDateTime createdDate
+        String createdDate
 ) {
     public static BoardReadResponse from(
             Long id,
@@ -54,7 +55,7 @@ public record BoardReadResponse(
                 likeCnt,
                 view,
                 isLike,
-                createdDate
+                createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
         );
     }
 }
