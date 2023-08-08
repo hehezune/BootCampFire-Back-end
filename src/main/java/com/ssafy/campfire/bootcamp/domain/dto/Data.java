@@ -39,25 +39,28 @@ public class Data {
     private String endDate;//종강일
     private Long tuition; // 수강료
     private Boolean nbcardRequired; //내일배움카드
-    private String passRequiredOption;
+    private String passRequiredOption; // 코딩 유뮤
     private String onoff;
     private String regDate; //모집 시작일
     private String regEndDate; // 모집 마감일
     private List<String> categories;
     private List<String> city;
     private List<String> keywords;
-
     private String campUrl;
-    private List<String> process;
-    private String description;
-    private Boolean support;
-    private String imgUrl;
+    private Object applicationProcess;
+    private Object explanations;
+    private String title;
 
+
+    private String etcSubsidyText;
+
+    private String imgUrl;
 
 
     public String detailUrl(){
         return "/"+campId+"_"+batchId;
     }
-
-
+    public void setPassRequiredOption(String passRequiredOption){
+        this.passRequiredOption = passRequiredOption;
+    }
 }

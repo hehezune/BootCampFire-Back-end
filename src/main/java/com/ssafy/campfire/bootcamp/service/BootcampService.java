@@ -82,29 +82,44 @@ public class BootcampService {
 
 
 
-        //------
-        Data data = dataList.get(0);
-        String detail_Url = BoottentList_Url + data.detailUrl();
-        document = Jsoup.connect(detail_Url).get();
-//        System.out.println("document = " + document);
-        elements = document.select("#__NEXT_DATA__");
-
-        String jjson = elements.get(0).data();
-        System.out.println("jjson = " + jjson);
-
-        script = objectMapper.readValue(jjson, Script.class);
-        System.out.println("script = " + script.getProps().getPageProps().getCamp());
-
-
-        System.out.println();
-
-//        for (Data data :dataList) {
-//            String detail_Url = BoottentList_Url + data.detailUrl();
-//            document = Jsoup.connect(detail_Url).get();
-//            String siteUrl = document.select("#__next > div > section > main > div.container.full-width > div:nth-child(1) > div.camp_layer1__y_wsY > div > div:nth-child(4) > div > a").attr("abs:href");
-//            System.out.println("siteUrl = " + siteUrl);
+        //------for문 돌리기
+//        Data data = dataList.get(1);
+//        String detail_Url = BoottentList_Url + data.detailUrl();
+//        document = Jsoup.connect(detail_Url).get();
+//        elements = document.select("#__NEXT_DATA__");
 //
-//        }
+//        String jjson = elements.get(0).data();
+////        System.out.println("jjson = " + jjson);
+//
+//        script = objectMapper.readValue(elements.get(0).data(), Script.class);
+//        data = script.getProps().getPageProps().getCamp();
+//        System.out.println("data = " + data);
+//
+//
+//        System.out.println();
+
+        int cnt = 0;
+
+        for (Data data :dataList) {
+//            if(cnt == 5) break;
+//            Data data = dataList.get(1);
+            String detail_Url = BoottentList_Url + data.detailUrl();
+            String passRequiredOption = data.getPassRequiredOption();
+            document = Jsoup.connect(detail_Url).get();
+            elements = document.select("#__NEXT_DATA__");
+
+            String jjson = elements.get(0).data();
+//        System.out.println("jjson = " + jjson);
+
+            script = objectMapper.readValue(elements.get(0).data(), Script.class);
+            data = script.getProps().getPageProps().getCamp();
+            data.setPassRequiredOption(passRequiredOption);
+//            System.out.println("data = " + data);
+            System.out.println("data = " + data.getEtcSubsidyText());
+
+            System.out.println();
+            cnt ++;
+        }
         
 
         return null;

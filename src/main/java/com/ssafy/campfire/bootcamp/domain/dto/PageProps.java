@@ -14,5 +14,5 @@ import java.util.List;
 @NoArgsConstructor
 public class PageProps {
     private List<Data> data;
-    private Object camp;
+    private Data camp;
 }
