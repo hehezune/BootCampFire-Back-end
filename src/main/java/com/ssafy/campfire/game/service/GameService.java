@@ -29,7 +29,7 @@ public class GameService {
         Game game = gameRepository.findByUser(user);
         Long rank;
         if(game == null){
-            game = new Game(user, 0);
+            game = new Game(user, -1);
             rank = 0L;
         }else {
              rank = gameRepository.countAllByBestScoreGreaterThanEqual(game.getBestScore());
@@ -55,25 +55,17 @@ public class GameService {
     public GameRankResponseDto saveScore(GameRequestDto gameRequestDto, PrincipalDetails loginUser) {
 //        User user = userRepository.findUserById(loginUser.getId());
         User user = userRepository.findUserById(1L);
-        Game game = gameRequestDto.toGame(user);
-        if(gameRepository.findByUser(user) != null){
-            throw  new BusinessException(ErrorMessage.INVALID_GAME_REQUEST);
-        }
-        gameRepository.save(game);
-        return getMyRank(loginUser);
-    }
-
-
-    public GameRankResponseDto updateScore(GameRequestDto gameRequestDto, PrincipalDetails loginUser) {
-//        User user = userRepository.findUserById(loginUser.getId());
-        User user = userRepository.findUserById(1L);
 
         Game game = gameRepository.findByUser(user);
-        if(game == null){
-            throw  new BusinessException(ErrorMessage.GAME_NOT_FOUND);
-        }
 
-        game.updateGameScore(gameRequestDto.bestScore());
+        if(game == null){ //사용자의 게임 점수가 없으면
+            //새로 만들어서 추가하고
+            game = gameRequestDto.toGame(user);
+            gameRepository.save(game);
+        }else{
+            //있으면 점수 수정만 한다.
+            game.updateGameScore(gameRequestDto.bestScore());
+        }
 
         return getMyRank(loginUser);
     }
