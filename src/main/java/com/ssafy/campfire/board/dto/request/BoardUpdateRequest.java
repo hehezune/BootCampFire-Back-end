@@ -7,6 +7,12 @@ import javax.validation.constraints.NotNull;
 
 public record BoardUpdateRequest(
 
+        /**
+         * title : 제목
+         * content : 내용
+         * anonymous : 익명여부
+         */
+
         @NotBlank(message = "제목은 필수입니다.")
         String title,
 

@@ -6,6 +6,15 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public record CommentCreateRequest(
+
+        /**
+         * boardId : 글 pk
+         * userId : 댓글 작성자 pk
+         * content : 댓글 내용
+         * anonymous : 익명여부
+         * preCommentId : 대댓일때 부모 ID
+         */
+
         @NotNull(message = "게시글  필수입니다.")
         Long boardId,
 

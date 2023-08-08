@@ -25,6 +25,17 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment extends BaseEntity {
 
+    /**
+     * id : 댓글 pk
+     * user : 댓글 작성자
+     * board : 게시글
+     * content : 댓글 내용
+     * anonymous : 익명여부
+     * ref : 몇번째댓글
+     * refOrder : 순서
+     * maxRefOrder : 마지막 대댓글
+     */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
