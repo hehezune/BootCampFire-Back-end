@@ -3,10 +3,7 @@ package com.ssafy.campfire.bootcamp.domain;
 import com.ssafy.campfire.utils.domain.BaseEntity;
 import javax.persistence.*;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor //기본 생성자 생성
 @Entity
+@ToString
 @Table(name = "bootcamp") // DB 이름과 동일하게
 public class Bootcamp extends BaseEntity {
 

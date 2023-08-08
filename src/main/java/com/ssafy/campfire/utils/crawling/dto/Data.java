@@ -1,10 +1,17 @@
-package com.ssafy.campfire.bootcamp.domain.dto;
+package com.ssafy.campfire.utils.crawling.dto;
 
+import com.ssafy.campfire.bootcamp.domain.Bootcamp;
+import com.ssafy.campfire.bootcamp.domain.Language;
+import com.ssafy.campfire.bootcamp.domain.Region;
+import com.ssafy.campfire.bootcamp.domain.Track;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Getter
@@ -48,7 +55,7 @@ public class Data {
     private List<String> keywords;
     private String campUrl;
     private Object applicationProcess;
-    private Object explanations;
+    private Explanation explanations;
     private String title;
 
 
@@ -62,5 +69,25 @@ public class Data {
     }
     public void setPassRequiredOption(String passRequiredOption){
         this.passRequiredOption = passRequiredOption;
+    }
+
+    public Bootcamp toBootcamp() throws ParseException {
+        String name = brandName;
+        String siteUrl = campUrl;
+        String process = applicationProcess.toString(); //데이터 처리 필요
+        String schedule = startDate+" ~ "+endDate;
+        String description = title + ((explanations != null && explanations.summary !=null ) ? ("\n"+explanations.summary) : "");
+        Double cost = tuition.doubleValue();
+        Boolean card = nbcardRequired;
+        Boolean support = etcSubsidyText != null && etcSubsidyText.contains("만원"); //"만원"이라는 글자가 있는지 확인
+        Boolean hasCodingtest = passRequiredOption.equals("passRequiredWithCoding");
+        String onOff = onoff.equals("mix") ? "온오프라인" : onoff.equals("online") ? "온라인" : "오프라인";
+        LocalDateTime startDate = LocalDateTime.parse(regDate, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        LocalDateTime endDate = LocalDateTime.parse(regEndDate, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        String imgUrl = null;
+        List<Track> tracks = null;
+        List<Language> languages = null;
+        List<Region> regions = null;
+        return new Bootcamp( name, siteUrl,  process, schedule, description,  cost,card,support,hasCodingtest,onOff,startDate,endDate, imgUrl);
     }
 }

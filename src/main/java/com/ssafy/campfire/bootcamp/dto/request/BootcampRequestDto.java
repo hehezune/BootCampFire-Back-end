@@ -1,11 +1,13 @@
 package com.ssafy.campfire.bootcamp.dto.request;
 
 import com.ssafy.campfire.bootcamp.domain.*;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
 public record BootcampRequestDto(
         String name,
         String siteUrl,

@@ -3,8 +3,9 @@ package com.ssafy.campfire.bootcamp.service;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.campfire.bootcamp.domain.*;
-import com.ssafy.campfire.bootcamp.domain.dto.Data;
-import com.ssafy.campfire.bootcamp.domain.dto.Script;
+import com.ssafy.campfire.utils.crawling.BootcampCrawling;
+import com.ssafy.campfire.utils.crawling.dto.Data;
+import com.ssafy.campfire.utils.crawling.dto.Script;
 import com.ssafy.campfire.bootcamp.dto.request.BootcampRequestDto;
 import com.ssafy.campfire.bootcamp.dto.response.BootcampListResponseDto;
 import com.ssafy.campfire.bootcamp.dto.response.BootcampNameListResponseDto;
@@ -17,13 +18,12 @@ import com.ssafy.campfire.utils.error.exception.custom.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
-import javax.swing.event.CellEditorListener;
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,64 +65,16 @@ public class BootcampService {
 
 
     //부트텐트에서 부트캠프 크롤링하기
-    public List<BootcampResponseDto> saveFromBoottent() throws IOException {
+    @Transactional
+    public List<BootcampListResponseDto> saveByCrawling() throws IOException, ParseException {
 
-        Document document= Jsoup.connect(BoottentList_Url).get();
-
-        Elements elements = document.select("#__NEXT_DATA__");
-
-        String json = elements.get(0).data();
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);   //선언한 필드만 매핑
-        Script script = objectMapper.readValue(json, Script.class);
-
-        List<Data> dataList = script.getProps().getPageProps().getData().stream().toList();
-
-
-
-
-        //------for문 돌리기
-//        Data data = dataList.get(1);
-//        String detail_Url = BoottentList_Url + data.detailUrl();
-//        document = Jsoup.connect(detail_Url).get();
-//        elements = document.select("#__NEXT_DATA__");
-//
-//        String jjson = elements.get(0).data();
-////        System.out.println("jjson = " + jjson);
-//
-//        script = objectMapper.readValue(elements.get(0).data(), Script.class);
-//        data = script.getProps().getPageProps().getCamp();
-//        System.out.println("data = " + data);
-//
-//
-//        System.out.println();
-
-        int cnt = 0;
-
-        for (Data data :dataList) {
-//            if(cnt == 5) break;
-//            Data data = dataList.get(1);
-            String detail_Url = BoottentList_Url + data.detailUrl();
-            String passRequiredOption = data.getPassRequiredOption();
-            document = Jsoup.connect(detail_Url).get();
-            elements = document.select("#__NEXT_DATA__");
-
-            String jjson = elements.get(0).data();
-//        System.out.println("jjson = " + jjson);
-
-            script = objectMapper.readValue(elements.get(0).data(), Script.class);
-            data = script.getProps().getPageProps().getCamp();
-            data.setPassRequiredOption(passRequiredOption);
-//            System.out.println("data = " + data);
-            System.out.println("data = " + data.getEtcSubsidyText());
-
-            System.out.println();
-            cnt ++;
+        List<Bootcamp> bootcampList = BootcampCrawling.crawlingBootcamp();
+        if(bootcampList == null) return null;
+        for (Bootcamp bootcamp : bootcampList){
+            bootcampRepository.save(bootcamp);
         }
-        
 
-        return null;
+        return getBootcampListOrderByName();
         
     }
 

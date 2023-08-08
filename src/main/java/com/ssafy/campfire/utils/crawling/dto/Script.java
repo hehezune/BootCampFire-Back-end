@@ -1,11 +1,9 @@
-package com.ssafy.campfire.bootcamp.domain.dto;
+package com.ssafy.campfire.utils.crawling.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-import java.util.List;
 
 @Getter
 @ToString

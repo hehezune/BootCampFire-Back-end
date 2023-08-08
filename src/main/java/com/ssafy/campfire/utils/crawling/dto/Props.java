@@ -1,4 +1,4 @@
-package com.ssafy.campfire.bootcamp.domain.dto;
+package com.ssafy.campfire.utils.crawling.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
