@@ -1,7 +1,6 @@
 package com.ssafy.campfire.review.controller;
 
-
-import com.ssafy.campfire.global.login.PrincipalDetails;
+import com.ssafy.campfire.global.oauth2.PrincipalDetails;
 import com.ssafy.campfire.review.domain.Review;
 import com.ssafy.campfire.review.dto.request.ReviewRequestDto;
 import com.ssafy.campfire.review.dto.response.ReviewReponseDto;

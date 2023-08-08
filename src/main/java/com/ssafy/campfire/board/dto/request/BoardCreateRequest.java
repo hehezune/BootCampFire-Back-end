@@ -7,6 +7,14 @@ import javax.validation.constraints.NotNull;
 
 public record BoardCreateRequest(
 
+        /**
+         * categoryId : 글에 해당하는 카테고리
+         * userId : 글쓴이(로그인한 유저)
+         * title : 제목
+         * content : 내용
+         * anonymous : 익명여부
+         */
+
         @NotNull(message = "카테고리는 필수입니다.")
         Long categoryId,
 

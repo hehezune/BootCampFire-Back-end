@@ -22,6 +22,12 @@ import lombok.EqualsAndHashCode;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Likes {
 
+    /**
+     * id : pk
+     * user : 좋아요 누른사람
+     * board : 게시글
+     */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

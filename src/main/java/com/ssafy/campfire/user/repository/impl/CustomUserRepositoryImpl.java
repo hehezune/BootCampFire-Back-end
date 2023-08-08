@@ -1,15 +1,10 @@
 package com.ssafy.campfire.user.repository.impl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.campfire.bootcamp.domain.Bootcamp;
-import com.ssafy.campfire.user.domain.Role;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.user.repository.CustomUserRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 import org.springframework.stereotype.Repository;
-
-import javax.persistence.*;
 import java.util.List;
 import java.util.Optional;
 

@@ -1,6 +1,6 @@
 package com.ssafy.campfire.likes.controller;
 
-import com.ssafy.campfire.global.login.PrincipalDetails;
+import com.ssafy.campfire.global.oauth2.PrincipalDetails;
 import com.ssafy.campfire.likes.dto.response.LikesResponse;
 import com.ssafy.campfire.likes.service.LikesService;
 import com.ssafy.campfire.user.domain.User;

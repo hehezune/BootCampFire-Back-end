@@ -44,7 +44,6 @@ public class UserService {
         return optionalUser.get();
     }
     public UserReadResponse read(Long userId) {
-
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
 
@@ -123,7 +122,6 @@ public class UserService {
                 .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
         Bootcamp bootcamp = bootcampRepository.findById(bootcampId)
                 .orElseThrow(()-> new BusinessException(ErrorMessage.BOOTCAMP_NOT_FOUND));
-        
         user.updateBootcamp(bootcamp);
         return user;
     }
@@ -138,5 +136,6 @@ public class UserService {
         return "소속 인증이 반려 되었습니다.";
     }
 }
+
 
 

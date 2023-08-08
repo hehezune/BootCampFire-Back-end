@@ -19,12 +19,14 @@ public enum ErrorMessage {
     COMMENT_NOT_FOUND(NOT_FOUND, "해당 댓글 찾을 수 없습니다."),
     LIKE_NOT_FOUND(NOT_FOUND, "해당 좋아요를 찾을 수 없습니다."),
     ALGORITHM_NOT_FOUND(NOT_FOUND, "해당 알고리즘을 찾을 수 없습니다."),
+    GAME_NOT_FOUND(NOT_FOUND, "해당 게임 사용자를 찾을 수 없습니다."),
     INVALID_BOARD_REQUEST(BAD_REQUEST, "해당 게시물 요청이 적절하지 않습니다."),
     INVALID_CATEGORY_REQUEST(BAD_REQUEST, "해당 카테고리 요청이 적절하지 않습니다."),
     INVALID_BOOTCAMP_REQUEST(BAD_REQUEST, "해당 부트캠프 요청이 적절하지 않습니다."),
     INVALID_REVIEW_REQUEST(BAD_REQUEST, "해당 리뷰 요청이 적절하지 않습니다."),
     INVALID_COMMENT_REQUEST(BAD_REQUEST, "해당 댓글 요청이 적절하지 않습니다."),
     INVALID_ALGORITHM_REQUEST(NOT_FOUND, "해당 알고리즘 요청이 적절하지 않습니다."),
+    INVALID_GAME_REQUEST(NOT_FOUND, "해당 게임 점수 등록 요청이 적절하지 않습니다."),
     DUPLICATE_ALGORITHM_REQUEST(CONFLICT, "해당 날짜에 이미 알고리즘이 존재합니다."),
     INVALID_FILE_UPLOAD(BAD_REQUEST, "유효하지 않은 파일 업로드입니다.");
 
