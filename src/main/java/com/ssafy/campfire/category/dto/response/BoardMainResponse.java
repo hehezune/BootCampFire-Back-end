@@ -3,6 +3,12 @@ package com.ssafy.campfire.category.dto.response;
 import com.ssafy.campfire.board.domain.Board;
 
 public record BoardMainResponse(
+
+        /**
+         * id : 게시글 pk
+         * title : 제목
+         */
+
         Long id,
         String title
 ) {

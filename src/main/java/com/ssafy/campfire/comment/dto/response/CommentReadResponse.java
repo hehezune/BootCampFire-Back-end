@@ -5,6 +5,18 @@ import com.ssafy.campfire.comment.domain.Comment;
 import java.time.LocalDateTime;
 
 public record CommentReadResponse(
+
+        /**
+         * id : 댓글 pk
+         * user : 댓글 작성자
+         * bootcamp : 작성자 부캠
+         * content : 댓글 내용
+         * ref : 댓글 number
+         * refOrder : 댓글 순서
+         * isWriter : 작성자인지 여부
+         * createdDate : 작성일
+         */
+
         Long id,
         String user,
         String bootcamp,

@@ -45,6 +45,9 @@ public class CategoryController {
         return BaseResponseDto.ok(categoryService.getMainList(categoryId));
     }
 
+    /**
+     * Slice - 무한 스크롤을 위함
+     */
     @ApiOperation(value ="메인화면 : 내용 + 제목 검색 결과")
     @GetMapping("/keywords/{keyword}")
     public BaseResponseDto<Slice<BoardListResponse>> getMainSearchTitleContentList(@PathVariable String keyword, Pageable pageable) {
@@ -120,6 +123,7 @@ public class CategoryController {
 
         return BaseResponseDto.ok(categoryService.getViewOrderList(user.getId(), categoryId, pageable));
     }
+
     /**
      * page
      */
