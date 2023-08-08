@@ -46,7 +46,7 @@ public class BootcampCrawling {
         //크롤링한 데이터 리스트들을 한개씩 뽑아서 상세페이지를 알아냄
         //json 파일을 가지고 와서 원하는 데이터로 가공함.
         for (Data data :dataList) {
-            if(cnt == 20) break;
+//            if(cnt == 20) break;
             //부트캠프 상세 페이지 주소 알아냄
             String detail_Url = BoottentList_Url + data.detailUrl();
 
@@ -61,9 +61,15 @@ public class BootcampCrawling {
 
             data.setPassRequiredOption(passRequiredOption);
 
-            System.out.println("data.detailUrl() = " + detail_Url);
-            System.out.println("getApplicationProcess() = " + data.getApplicationProcess().toString());
-            
+            String str = data.getApplicationProcess().toString();
+            if(str.contains("AIInterview") || str.contains("physicalExamination") || str.contains("jobTest")){
+                System.out.println("data.detailUrl() = " + detail_Url);
+                System.out.println("getApplicationProcess() = " + data.getApplicationProcess().toString());
+
+            }
+//            System.out.println("data.detailUrl() = " + detail_Url);
+//            System.out.println("getApplicationProcess() = " + data.getApplicationProcess().toString().contains("GroupInterview"));
+//
             
             //data를 부트캠프 객체로 바꿈
             Bootcamp bootcamp = data.toBootcamp();
@@ -72,10 +78,7 @@ public class BootcampCrawling {
             System.out.println();
             cnt ++;
         }
-
-
         return null;
-
     }
 
 }
