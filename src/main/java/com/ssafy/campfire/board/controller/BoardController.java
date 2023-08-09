@@ -15,6 +15,7 @@ import com.ssafy.campfire.utils.dto.response.GlobalPageResponseDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,12 +61,25 @@ public class BoardController {
         return BaseResponseDto.ok(boardService.getBoard(boardId, user.getId()));
     }
 
+    /**
+     * slice
+     */
     @ApiOperation(value ="사용자 게시글 조회")
     @GetMapping("/users")
-    public BaseResponseDto<GlobalPageResponseDto<UserBoardListResponse>> getUserBoard(Pageable pageable,
-                                                                                  @AuthenticationPrincipal PrincipalDetails user) {
+    public BaseResponseDto<Slice<UserBoardListResponse>> getUserBoard(Pageable pageable,
+                                                                      @AuthenticationPrincipal PrincipalDetails user) {
         return BaseResponseDto.ok(boardService.getUserBoard(user.getId(), pageable));
     }
+
+    /**
+     * page
+     */
+//    @ApiOperation(value ="사용자 게시글 조회")
+//    @GetMapping("/users")
+//    public BaseResponseDto<GlobalPageResponseDto<UserBoardListResponse>> getUserBoard(Pageable pageable,
+//                                                                                  @AuthenticationPrincipal PrincipalDetails user) {
+//        return BaseResponseDto.ok(boardService.getUserBoard(user.getId(), pageable));
+//    }
 
     /**
      * swagger test
