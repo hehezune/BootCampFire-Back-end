@@ -36,14 +36,4 @@ public class GameController {
                                                             @AuthenticationPrincipal PrincipalDetails user){
         return BaseResponseDto.ok(gameService.saveScore(gameRequestDto, user));
     }
-
-    @ApiOperation(value ="내 점수 갱신")
-    @PutMapping
-    public BaseResponseDto<GameRankResponseDto> updateScore(@RequestBody GameRequestDto gameRequestDto,
-                                                            @AuthenticationPrincipal PrincipalDetails user){
-        return BaseResponseDto.ok( gameService.updateScore(gameRequestDto, user));
-    }
-
-
-
 }
