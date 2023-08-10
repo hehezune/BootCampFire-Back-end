@@ -9,4 +9,5 @@ import java.util.Optional;
 
 public interface LanguageRepository extends JpaRepository<Language, Long> {
 
+    Language findByName(String keyword);
 }

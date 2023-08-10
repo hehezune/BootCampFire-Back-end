@@ -1,11 +1,8 @@
 package com.ssafy.campfire.bootcamp.service;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.ssafy.campfire.bootcamp.domain.*;
 import com.ssafy.campfire.utils.crawling.BootcampCrawling;
-import com.ssafy.campfire.utils.crawling.dto.Data;
-import com.ssafy.campfire.utils.crawling.dto.Script;
 import com.ssafy.campfire.bootcamp.dto.request.BootcampRequestDto;
 import com.ssafy.campfire.bootcamp.dto.response.BootcampListResponseDto;
 import com.ssafy.campfire.bootcamp.dto.response.BootcampNameListResponseDto;
@@ -13,12 +10,11 @@ import com.ssafy.campfire.bootcamp.dto.response.BootcampResponseDto;
 import com.ssafy.campfire.bootcamp.repository.*;
 import com.ssafy.campfire.category.domain.Category;
 import com.ssafy.campfire.category.repository.CategoryRepository;
+import com.ssafy.campfire.utils.crawling.dto.Data;
 import com.ssafy.campfire.utils.error.enums.ErrorMessage;
 import com.ssafy.campfire.utils.error.exception.custom.BusinessException;
 import lombok.RequiredArgsConstructor;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
+
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -44,18 +40,16 @@ public class BootcampService {
 
     private final BootcampRepository bootcampRepository;
     private  final CategoryRepository categoryRepository;
-    private  final BootLanguageRepository bootLanguageRepository;
+
     private final BootTrackRepository bootTrackRepository;
     private final BootRegionRepository bootRegionRepository;
-
-    private static String BoottentList_Url ="https://boottent.sayun.studio/camps";
 
     public BootcampResponseDto save(BootcampRequestDto bootcampRequestDto) {
         Bootcamp bootcamp = bootcampRepository.save(bootcampRequestDto.toBootcamp());
 
-        List<Track> trackList = bootTrackService.save(bootcamp, bootcampRequestDto);
-        List<Language> languageList = bootLanguageServie.save(bootcamp, bootcampRequestDto);
-        List<Region> regionList = bootRegionService.save(bootcamp, bootcampRequestDto);
+        List<Track> trackList = bootTrackService.save(bootcampRequestDto.toBootTrackList(bootcamp));
+        List<Language> languageList = bootLanguageServie.save(bootcampRequestDto.toBootLanguageList(bootcamp));
+        List<Region> regionList = bootRegionService.save(bootcampRequestDto.toBootRegionList(bootcamp));
 
         //부트캠프 등록시 카테고리 테이블에도 추가 되도록 하기
         categoryRepository.save(new Category(BOOTCAMP, bootcamp));
@@ -68,10 +62,23 @@ public class BootcampService {
     @Transactional
     public List<BootcampListResponseDto> saveByCrawling() throws IOException, ParseException {
 
-        List<Bootcamp> bootcampList = BootcampCrawling.crawlingBootcamp();
-        if(bootcampList == null) return null;
-        for (Bootcamp bootcamp : bootcampList){
-            bootcampRepository.save(bootcamp);
+        List<Data> dataList = BootcampCrawling.crawlingBootcamp();
+
+        if(dataList == null) return null;
+        for (Data crawlingData : dataList){
+            Bootcamp bootcamp = crawlingData.toBootcamp();
+            if(bootcampRepository.findByName(bootcamp.getName()).isPresent()) {
+                //이미 부트캠프가 DB에 존재한다면 description, 트랙, 언어 추가
+
+            }else{
+                bootcampRepository.save(bootcamp);
+
+                List<Track> trackList = bootTrackService.saveByCrawling(crawlingData, bootcamp);
+                List<Language> languageList = bootLanguageServie.saveByCrawling(crawlingData, bootcamp);
+                List<Region> regionList = bootRegionService.saveByCrawling(crawlingData, bootcamp);
+
+                categoryRepository.save(new Category(BOOTCAMP, bootcamp));
+            }
         }
 
         return getBootcampListOrderByName();
@@ -99,9 +106,9 @@ public class BootcampService {
         bootRegionService.deleteBootRegion(bootcampId);
 
         //RequestDto에 있는 부트트랙, 부트언어, 부트지역 다시 재저장
-        List<Track> trackList = bootTrackService.save(bootcamp, bootcampRequestDto);
-        List<Language> languageList = bootLanguageServie.save(bootcamp, bootcampRequestDto);
-        List<Region> regionList = bootRegionService.save(bootcamp, bootcampRequestDto);
+        List<Track> trackList = bootTrackService.save(bootcampRequestDto.toBootTrackList(bootcamp));
+        List<Language> languageList = bootLanguageServie.save(bootcampRequestDto.toBootLanguageList(bootcamp));
+        List<Region> regionList = bootRegionService.save(bootcampRequestDto.toBootRegionList(bootcamp));
 
         return BootcampResponseDto.of(Optional.ofNullable(bootcamp), Optional.ofNullable(trackList), Optional.ofNullable(languageList), Optional.ofNullable(regionList));
     }

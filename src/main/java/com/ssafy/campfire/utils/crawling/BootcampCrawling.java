@@ -7,6 +7,7 @@ import com.ssafy.campfire.bootcamp.dto.response.BootcampResponseDto;
 import com.ssafy.campfire.bootcamp.repository.BootcampRepository;
 import com.ssafy.campfire.utils.crawling.dto.Data;
 import com.ssafy.campfire.utils.crawling.dto.Script;
+import com.ssafy.campfire.utils.crawling.enums.ApplicationProcessType;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,16 +21,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BootcampCrawling {
 
-    private static String BoottentList_Url ="https://boottent.sayun.studio/camps";
+    private static String BoottentList_URl ="https://boottent.sayun.studio/camps";
 
 
-    public static List<Bootcamp> crawlingBootcamp() throws IOException, ParseException {
+    public static List<Data> crawlingBootcamp() throws IOException, ParseException {
 
         //부트캠프 목록에서 각 부트캠프 상세페이지 url을 알기위한 정보(brandName, batchId) 얻어옴
         //부트캠프 상세페이지 url = BoottentList_Url + "/"+brandName+"_"+batchId
-        Document document= Jsoup.connect(BoottentList_Url).get();
+        Document document= Jsoup.connect(BoottentList_URl).get();
         Elements elements = document.select("#__NEXT_DATA__");
         String json = elements.get(0).data();
+        System.out.println("json = " + json);
 
         //json 을 객체와 매핑시키는 객체
         ObjectMapper objectMapper = new ObjectMapper();
@@ -41,44 +43,23 @@ public class BootcampCrawling {
 
 
 
-        List<Bootcamp> bootcampList = new ArrayList<>();
-        int cnt = 0;
-        //크롤링한 데이터 리스트들을 한개씩 뽑아서 상세페이지를 알아냄
-        //json 파일을 가지고 와서 원하는 데이터로 가공함.
-        for (Data data :dataList) {
-//            if(cnt == 20) break;
-            //부트캠프 상세 페이지 주소 알아냄
-            String detail_Url = BoottentList_Url + data.detailUrl();
+        //크롤링한 데이터 리스트들을 한개씩 뽑아서 상세페이지를 알아낸 후 부트캠프 홈페이지 주소를 알아냄
+//        for (Data data :dataList) {
+//            System.out.println("data = " + data);
 
-            //코딩유무는 부트캠프 목록페이지에 존재해서 받아왔던 데이터를 저장했다가 넘겨줌
-            String passRequiredOption = data.getPassRequiredOption();
-            //상세페이지 크롤링
-            document = Jsoup.connect(detail_Url).get();
-            elements = document.select("#__NEXT_DATA__");
-            script = objectMapper.readValue(elements.get(0).data(), Script.class);
-            //크롤링한 json을 data로 만든다.
-            data = script.getProps().getPageProps().getCamp();
-
-            data.setPassRequiredOption(passRequiredOption);
-
-            String str = data.getApplicationProcess().toString();
-            if(str.contains("AIInterview") || str.contains("physicalExamination") || str.contains("jobTest")){
-                System.out.println("data.detailUrl() = " + detail_Url);
-                System.out.println("getApplicationProcess() = " + data.getApplicationProcess().toString());
-
-            }
-//            System.out.println("data.detailUrl() = " + detail_Url);
-//            System.out.println("getApplicationProcess() = " + data.getApplicationProcess().toString().contains("GroupInterview"));
+//            //부트캠프 상세 페이지 주소 알아냄
+//            String detail_URL = BoottentList_URl + data.detailUrl();
 //
-            
-            //data를 부트캠프 객체로 바꿈
-            Bootcamp bootcamp = data.toBootcamp();
-
-            bootcampList.add(bootcamp);
-            System.out.println();
-            cnt ++;
-        }
-        return null;
+//            //상세페이지 크롤링
+//            Document detailDocument = Jsoup.connect(detail_URL).get();
+//            Elements detailElements = detailDocument.select("#__next > div > section > main > div.container.full-width > div:nth-child(1) > div.camp_layer1__y_wsY > div > div:nth-child(3) > div > a");
+//
+//            data.setCampUrl(detailElements.attr("abs:href"));
+//        }
+        return dataList;
+//        return null;
     }
+
+
 
 }

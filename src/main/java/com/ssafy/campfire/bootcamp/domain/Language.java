@@ -1,6 +1,8 @@
 package com.ssafy.campfire.bootcamp.domain;
 
 import javax.persistence.*;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,4 +17,9 @@ public class Language {
 
     @Column(nullable = false)
     private String name;
+
+    @Builder
+    public Language(String  name){
+        this.name = name;
+    }
 }

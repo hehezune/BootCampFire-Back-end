@@ -11,4 +11,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BootLanguageRepository extends JpaRepository<BootLanguage, Long> , CustomBootLanguageRepository {
+
 }
