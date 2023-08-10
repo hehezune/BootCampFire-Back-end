@@ -20,6 +20,7 @@ import com.ssafy.campfire.utils.error.exception.custom.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,15 +56,30 @@ public class BoardService {
         return BoardCreateResponse.from(savedPost);
     }
 
+    /**
+     * slice
+     */
     @Transactional(readOnly = true)
-    public GlobalPageResponseDto<UserBoardListResponse> getUserBoard(Long userId, Pageable pageable){
+    public Slice<UserBoardListResponse> getUserBoard(Long userId, Pageable pageable){
 
-        Page<UserBoardListResponse> page = boardRepository
-                .getUserBoard(userId, pageable)
-                .map(UserBoardListResponse::of);
+        Slice<UserBoardListResponse> slice = boardRepository
+                .getUserBoard(userId, pageable);
 
-        return GlobalPageResponseDto.of(page);
+        return slice;
     }
+
+    /**
+     * page
+     */
+//    @Transactional(readOnly = true)
+//    public GlobalPageResponseDto<UserBoardListResponse> getUserBoard(Long userId, Pageable pageable){
+//
+//        Page<UserBoardListResponse> page = boardRepository
+//                .getUserBoard(userId, pageable)
+//                .map(UserBoardListResponse::of);
+//
+//        return GlobalPageResponseDto.of(page);
+//    }
 
     @Transactional(readOnly = true)
     public BoardReadResponse getBoard(Long boardId, Long userId){
