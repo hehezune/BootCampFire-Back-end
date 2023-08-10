@@ -6,6 +6,8 @@ import com.ssafy.campfire.bootcamp.domain.Track;
 import com.ssafy.campfire.bootcamp.dto.request.BootcampRequestDto;
 import com.ssafy.campfire.bootcamp.repository.BootTrackRepository;
 import com.ssafy.campfire.bootcamp.repository.TrackRepository;
+import com.ssafy.campfire.utils.crawling.dto.Data;
+import com.ssafy.campfire.utils.crawling.enums.CategoryType;
 import com.ssafy.campfire.utils.error.enums.ErrorMessage;
 import com.ssafy.campfire.utils.error.exception.custom.BusinessException;
 import lombok.RequiredArgsConstructor;
@@ -23,15 +25,25 @@ public class BootTrackService {
     private final BootTrackRepository bootTrackRepository;
     private final TrackRepository trackRepository;
 
-    public  List<Track> save(Bootcamp bootcamp, BootcampRequestDto bootcampRequestDto){
-        List<BootTrack> bootTrackList = bootcampRequestDto.toBootTrackList(bootcamp);
-
+    public  List<Track> save(List<BootTrack> bootTrackList){
         List<Track> trackList = new ArrayList<>();
+        if(bootTrackList == null) return trackList;
         for (BootTrack bootTrack: bootTrackList) {
             trackList.add(bootTrackRepository.save(bootTrack).getTrack());
-
         }
         return trackList;
+    }
+
+    public List<Track> saveByCrawling(Data crawlingData, Bootcamp bootcamp) {
+        List<String> categories = crawlingData.getCategories();
+
+        List<BootTrack> bootTrackList = new ArrayList<>();
+        for(String category : categories) {
+            Track t = trackRepository.findByName(CategoryType.valueOf(category).getMessage());
+            bootTrackList.add(new BootTrack(bootcamp, t));
+        }
+        return save(bootTrackList);
+//        return  null;
     }
 
     public Optional<List<Track>> getTrackListByBootcampId(Long bootcampId) {
@@ -48,6 +60,4 @@ public class BootTrackService {
                 .orElseThrow(() -> new BusinessException(ErrorMessage.REGION_NOT_FOUND));
         return trackList;
     }
-
-
 }

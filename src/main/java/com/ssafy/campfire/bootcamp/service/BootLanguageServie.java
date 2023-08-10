@@ -4,6 +4,7 @@ import com.ssafy.campfire.bootcamp.domain.*;
 import com.ssafy.campfire.bootcamp.dto.request.BootcampRequestDto;
 import com.ssafy.campfire.bootcamp.repository.BootLanguageRepository;
 import com.ssafy.campfire.bootcamp.repository.LanguageRepository;
+import com.ssafy.campfire.utils.crawling.dto.Data;
 import com.ssafy.campfire.utils.dto.response.BaseResponseDto;
 import com.ssafy.campfire.utils.error.enums.ErrorMessage;
 import com.ssafy.campfire.utils.error.exception.custom.BusinessException;
@@ -22,16 +23,30 @@ import java.util.Optional;
 @Transactional
 public class BootLanguageServie {
     private  final BootLanguageRepository bootLanguageRepository;
-    private  final LanguageRepository LanguageRepository;
+    private  final LanguageRepository languageRepository;
 
-    public List<Language> save(Bootcamp bootcamp, BootcampRequestDto bootcampRegisterRequestDto){
-        List<BootLanguage> bootLanguageList = bootcampRegisterRequestDto.toBootLanguageList(bootcamp);
-
+    public List<Language> save(List<BootLanguage> bootLanguageList){
         List<Language> languageList = new ArrayList<>();
+        if(bootLanguageList == null) return languageList;
         for (BootLanguage bootLanguage: bootLanguageList) {
             languageList.add(bootLanguageRepository.save(bootLanguage).getLanguage());
         }
         return languageList;
+    }
+
+    public List<Language> saveByCrawling(Data crawlingData, Bootcamp bootcamp) {
+        List<String> keywords = crawlingData.getKeywords();
+
+        List<BootLanguage> bootLanguageList = new ArrayList<>();
+        for (String keyword : keywords) {
+            Language language  = languageRepository.findByName(keyword);
+            if(language == null){
+                language  = languageRepository.save(new Language(keyword));
+            }
+            bootLanguageList.add(new BootLanguage(bootcamp, language));
+
+        }
+        return save(bootLanguageList);
     }
 
 
@@ -43,11 +58,10 @@ public class BootLanguageServie {
         bootLanguageRepository.deleteByBootcampId(bootcampId);
     }
     public List<Language> getLanguageList(){
-        List<Language> languageList = Optional.of(LanguageRepository.findAll())
+        List<Language> languageList = Optional.of(languageRepository.findAll())
                 .orElseThrow(() -> new BusinessException(ErrorMessage.REGION_NOT_FOUND));
 
         return languageList;
     }
-
 
 }

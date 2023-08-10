@@ -1,11 +1,13 @@
 package com.ssafy.campfire.bootcamp.dto.request;
 
 import com.ssafy.campfire.bootcamp.domain.*;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
 public record BootcampRequestDto(
         String name,
         String siteUrl,
@@ -24,10 +26,12 @@ public record BootcampRequestDto(
         List<Language> languages,
         List<Region> regions
 ) {
+
     public Bootcamp toBootcamp(){
         return new Bootcamp( name, siteUrl,  process, schedule, description,  cost,card,support,hasCodingtest,onOff,startDate,endDate, imgUrl);
     }
     public List<BootTrack> toBootTrackList(Bootcamp bootcamp){
+        if(tracks == null ) return null;
         List<BootTrack> bootTrackList = new ArrayList<>();
         for (Track t:tracks) {
             bootTrackList.add(new BootTrack(bootcamp, t));
@@ -36,6 +40,7 @@ public record BootcampRequestDto(
     }
 
     public List<BootLanguage> toBootLanguageList(Bootcamp bootcamp){
+        if(languages == null) return null;
         List<BootLanguage> bootLanguageList = new ArrayList<>();
         for (Language l:languages) {
             bootLanguageList.add(new BootLanguage(bootcamp, l));
@@ -44,6 +49,7 @@ public record BootcampRequestDto(
     }
 
     public List<BootRegion> toBootRegionList(Bootcamp bootcamp){
+        if(regions == null) return  null;
         List<BootRegion> bootRegionList = new ArrayList<>();
         for (Region r:regions) {
             bootRegionList.add(new BootRegion(bootcamp, r));
