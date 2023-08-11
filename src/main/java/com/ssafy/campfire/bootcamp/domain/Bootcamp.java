@@ -51,6 +51,7 @@ public class Bootcamp extends BaseEntity {
 
     private String schedule;
 
+    @Column(length = 5000)
     private String description;
 
     private Double cost;
@@ -149,4 +150,8 @@ public class Bootcamp extends BaseEntity {
         this.updatedDate = LocalDateTime.now();
     }
 
+    public void updateDescription(String description) {
+        this.description += "\n" + description;
+        this.updatedDate = LocalDateTime.now();
+    }
 }

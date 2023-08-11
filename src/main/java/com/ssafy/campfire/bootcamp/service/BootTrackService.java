@@ -46,6 +46,19 @@ public class BootTrackService {
 //        return  null;
     }
 
+    public List<Track> updateByCrawling(Bootcamp originBootcamp,  List<String> categories) {
+        List<BootTrack> bootTrackList = new ArrayList<>();
+        for(String category : categories) {
+            Track t = trackRepository.findByName(CategoryType.valueOf(category).getMessage());
+            if(!bootTrackRepository.existsBootTrackByBootcampAndTrack(originBootcamp.getId(), t.getId())){
+                bootTrackList.add(new BootTrack(originBootcamp, t));
+            }
+        }
+        return save(bootTrackList);
+
+
+    }
+
     public Optional<List<Track>> getTrackListByBootcampId(Long bootcampId) {
         Optional<List<Track>> trackList = bootTrackRepository.getBootTracksByBootcampId(bootcampId);
         return trackList;
@@ -60,4 +73,6 @@ public class BootTrackService {
                 .orElseThrow(() -> new BusinessException(ErrorMessage.REGION_NOT_FOUND));
         return trackList;
     }
+
+
 }

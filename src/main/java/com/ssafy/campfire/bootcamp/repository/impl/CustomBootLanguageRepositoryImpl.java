@@ -32,4 +32,18 @@ public class CustomBootLanguageRepositoryImpl implements CustomBootLanguageRepos
                 .where(bootLanguage.bootcamp.id.eq(bootcampId))
                 .execute();
     }
+
+    @Override
+    public Boolean existsBootLanguageByBootcampAndLanguage(Long bootcampId, Long languageId) {
+        Integer fetchOne = queryFactory
+                .selectOne()
+                .from(bootLanguage)
+                .where(
+                        bootLanguage.bootcamp.id.eq(bootcampId),
+                        bootLanguage.language.id.eq(languageId)
+                )
+                .fetchOne();
+        return fetchOne != null;
+    }
+
 }

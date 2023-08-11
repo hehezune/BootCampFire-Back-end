@@ -35,7 +35,7 @@ public class BootcampService {
 
 
     private final BootTrackService bootTrackService;
-    private final BootLanguageServie bootLanguageServie;
+    private final BootLanguageServie bootLanguageService;
     private final BootRegionService bootRegionService;
 
     private final BootcampRepository bootcampRepository;
@@ -48,7 +48,7 @@ public class BootcampService {
         Bootcamp bootcamp = bootcampRepository.save(bootcampRequestDto.toBootcamp());
 
         List<Track> trackList = bootTrackService.save(bootcampRequestDto.toBootTrackList(bootcamp));
-        List<Language> languageList = bootLanguageServie.save(bootcampRequestDto.toBootLanguageList(bootcamp));
+        List<Language> languageList = bootLanguageService.save(bootcampRequestDto.toBootLanguageList(bootcamp));
         List<Region> regionList = bootRegionService.save(bootcampRequestDto.toBootRegionList(bootcamp));
 
         //부트캠프 등록시 카테고리 테이블에도 추가 되도록 하기
@@ -67,14 +67,21 @@ public class BootcampService {
         if(dataList == null) return null;
         for (Data crawlingData : dataList){
             Bootcamp bootcamp = crawlingData.toBootcamp();
-            if(bootcampRepository.findByName(bootcamp.getName()).isPresent()) {
+            if(bootcampRepository.existsBootcampByName(bootcamp.getName())) {
                 //이미 부트캠프가 DB에 존재한다면 description, 트랙, 언어 추가
+                System.out.println("bootcamp.getName(이미존재) = " + bootcamp.getName());
+                Optional<Bootcamp> optionalBootcamp = bootcampRepository.findByName(bootcamp.getName());
+                Bootcamp originBootcamp = optionalBootcamp.get();
 
+                originBootcamp.updateDescription(bootcamp.getDescription());
+
+                List<Track> trackList = bootTrackService.updateByCrawling(originBootcamp, crawlingData.getCategories());
+                List<Language> languageList = bootLanguageService.updateByCrawling(originBootcamp, crawlingData.getKeywords());
             }else{
                 bootcampRepository.save(bootcamp);
 
                 List<Track> trackList = bootTrackService.saveByCrawling(crawlingData, bootcamp);
-                List<Language> languageList = bootLanguageServie.saveByCrawling(crawlingData, bootcamp);
+                List<Language> languageList = bootLanguageService.saveByCrawling(crawlingData, bootcamp);
                 List<Region> regionList = bootRegionService.saveByCrawling(crawlingData, bootcamp);
 
                 categoryRepository.save(new Category(BOOTCAMP, bootcamp));
@@ -82,13 +89,13 @@ public class BootcampService {
         }
 
         return getBootcampListOrderByName();
-        
+
     }
 
     public BootcampResponseDto getBootcamp(Long bootcampId){
         Optional<Bootcamp> bootcamp = bootcampRepository.findById(bootcampId);
         Optional<List<Track>> trackList = bootTrackService.getTrackListByBootcampId(bootcampId);
-        Optional<List<Language>>languageList = bootLanguageServie.getLanguageListByBootcampId(bootcampId);
+        Optional<List<Language>>languageList = bootLanguageService.getLanguageListByBootcampId(bootcampId);
         Optional<List<Region>> regionList = bootRegionService.getRegionListByBootcampId(bootcampId);
         return BootcampResponseDto.of(bootcamp, trackList,languageList, regionList);
     }
@@ -102,12 +109,12 @@ public class BootcampService {
 
         //해당 부트캠프에 해당하는 부트트랙, 부트언어, 부트지역 삭제
         bootTrackService.deleteBootTrack(bootcampId);
-        bootLanguageServie.deleteBootLanguage(bootcampId);
+        bootLanguageService.deleteBootLanguage(bootcampId);
         bootRegionService.deleteBootRegion(bootcampId);
 
         //RequestDto에 있는 부트트랙, 부트언어, 부트지역 다시 재저장
         List<Track> trackList = bootTrackService.save(bootcampRequestDto.toBootTrackList(bootcamp));
-        List<Language> languageList = bootLanguageServie.save(bootcampRequestDto.toBootLanguageList(bootcamp));
+        List<Language> languageList = bootLanguageService.save(bootcampRequestDto.toBootLanguageList(bootcamp));
         List<Region> regionList = bootRegionService.save(bootcampRequestDto.toBootRegionList(bootcamp));
 
         return BootcampResponseDto.of(Optional.ofNullable(bootcamp), Optional.ofNullable(trackList), Optional.ofNullable(languageList), Optional.ofNullable(regionList));
@@ -122,7 +129,7 @@ public class BootcampService {
         categoryRepository.delete(category);
 
         bootTrackService.deleteBootTrack(bootcamp.getId());
-        bootLanguageServie.deleteBootLanguage(bootcamp.getId());
+        bootLanguageService.deleteBootLanguage(bootcamp.getId());
         bootRegionService.deleteBootRegion(bootcamp.getId());
 
         bootcampRepository.delete(bootcamp);
@@ -139,6 +146,7 @@ public class BootcampService {
         List<BootcampListResponseDto> bootcampListResponseDtoList = new ArrayList<>();
 
         for (Bootcamp bootcamp: bootcampList) {
+            if(bootcamp.getId() == 1L) continue;
             Optional<List<Track>> trackList = bootTrackService.getTrackListByBootcampId(bootcamp.getId());
             Optional<List<Region>> regionList = bootRegionService.getRegionListByBootcampId(bootcamp.getId());
 
@@ -163,6 +171,7 @@ public class BootcampService {
 
         }
         for (Bootcamp bootcamp: bootcampList) {
+            if(bootcamp.getId() == 1L) continue;
             Optional<List<Track>> trackList = bootTrackService.getTrackListByBootcampId(bootcamp.getId());
             Optional<List<Region>> regionList = bootRegionService.getRegionListByBootcampId(bootcamp.getId());
 
@@ -179,11 +188,9 @@ public class BootcampService {
 
         //각 부트캠프엔티티마다 지역, 트랙을 찾아 responseDto의 리스트로 만들기
         List<BootcampListResponseDto> bootcampListResponseDtoList = new ArrayList<>();
-        for (Bootcamp bc : bootcampList) {
-            System.out.println("bc.getName() = " + bc.getName() +" // bc."+bc.getReviewCnt());
 
-        }
         for (Bootcamp bootcamp: bootcampList) {
+            if(bootcamp.getId() == 1L) continue;
             Optional<List<Track>> trackList = bootTrackService.getTrackListByBootcampId(bootcamp.getId());
             Optional<List<Region>> regionList = bootRegionService.getRegionListByBootcampId(bootcamp.getId());
 

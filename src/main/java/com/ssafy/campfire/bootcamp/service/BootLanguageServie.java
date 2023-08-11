@@ -44,11 +44,27 @@ public class BootLanguageServie {
                 language  = languageRepository.save(new Language(keyword));
             }
             bootLanguageList.add(new BootLanguage(bootcamp, language));
-
         }
         return save(bootLanguageList);
     }
 
+
+    public List<Language> updateByCrawling(Bootcamp originBootcamp, List<String> keywords) {
+        List<BootLanguage> bootLanguageList = new ArrayList<>();
+        for (String keyword : keywords) {
+            Language language  = languageRepository.findByName(keyword);
+            if(language == null){
+                language  = languageRepository.save(new Language(keyword));
+            }
+
+            if(!bootLanguageRepository.existsBootLanguageByBootcampAndLanguage(originBootcamp.getId(), language.getId())){
+                bootLanguageList.add(new BootLanguage(originBootcamp, language));
+            }
+            bootLanguageList.add(new BootLanguage(originBootcamp, language));
+
+        }
+        return save(bootLanguageList);
+    }
 
     public Optional<List<Language>> getLanguageListByBootcampId(Long bootcampId) {
         Optional<List<Language>> languageList = bootLanguageRepository.getBootLanguagesByBootcampId(bootcampId);
@@ -63,5 +79,4 @@ public class BootLanguageServie {
 
         return languageList;
     }
-
 }
