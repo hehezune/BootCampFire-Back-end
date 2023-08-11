@@ -24,4 +24,16 @@ public class CustomBootcampRepositoryImpl implements CustomBootcampRepository {
                 .fetch();
         return bootcampList;
     }
+
+    @Override
+    public Boolean existsBootcampByName(String name) {
+        Integer fetchOne = queryFactory
+                .selectOne()
+                .from(bootcamp)
+                .where(
+                        bootcamp.name.eq(name)
+                )
+                .fetchOne();
+        return fetchOne != null;
+    }
 }

@@ -10,5 +10,5 @@ public interface CustomBootcampRepository {
 
     // 부트캠프 리스트를 평점 순으로 보기
     List<Bootcamp> findAllByOrderByScoreDesc();
-
+    Boolean existsBootcampByName(String name);
 }

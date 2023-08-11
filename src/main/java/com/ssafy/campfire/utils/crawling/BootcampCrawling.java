@@ -27,12 +27,9 @@ public class BootcampCrawling {
     public static List<Data> crawlingBootcamp() throws IOException, ParseException {
 
         //부트캠프 목록에서 각 부트캠프 상세페이지 url을 알기위한 정보(brandName, batchId) 얻어옴
-        //부트캠프 상세페이지 url = BoottentList_Url + "/"+brandName+"_"+batchId
         Document document= Jsoup.connect(BoottentList_URl).get();
         Elements elements = document.select("#__NEXT_DATA__");
         String json = elements.get(0).data();
-        System.out.println("json = " + json);
-
         //json 을 객체와 매핑시키는 객체
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);   //선언한 필드만 매핑

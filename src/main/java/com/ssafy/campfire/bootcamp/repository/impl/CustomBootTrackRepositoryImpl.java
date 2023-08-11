@@ -1,10 +1,13 @@
 package com.ssafy.campfire.bootcamp.repository.impl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.campfire.bootcamp.domain.Bootcamp;
 import com.ssafy.campfire.bootcamp.domain.Track;
 import com.ssafy.campfire.bootcamp.repository.CustomBootTrackRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+
+import javax.transaction.Transactional;
 
 import static com.ssafy.campfire.bootcamp.domain.QBootTrack.bootTrack;
 import static com.ssafy.campfire.bootcamp.domain.QTrack.track;
@@ -31,5 +34,18 @@ public class CustomBootTrackRepositoryImpl implements CustomBootTrackRepository 
         queryFactory.delete(bootTrack)
                 .where(bootTrack.bootcamp.id.eq(bootcampId))
                 .execute();
+    }
+
+    @Override
+    public Boolean existsBootTrackByBootcampAndTrack(Long bootcampId, Long trackId) {
+        Integer fetchOne = queryFactory
+                .selectOne()
+                .from(bootTrack)
+                .where(
+                        bootTrack.bootcamp.id.eq(bootcampId),
+                        bootTrack.track.id.eq(trackId)
+                )
+                .fetchFirst();
+        return fetchOne != null;
     }
 }
