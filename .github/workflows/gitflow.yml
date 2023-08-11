@@ -63,7 +63,5 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/cicd:latest
-            docker stop $(docker ps -a -q)
-            docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/cicd:latest
-            docker rm $(docker ps --filter 'status=exited' -a -q)
-            docker image prune -a -f
+            docker stop Backend && docker rm Backend && docker rmi ${{ secrets.DOCKER_USERNAME }}/cicd:latest
+            docker run -d -p 8080:8080 --name Backend --restart always ${{ secrets.DOCKER_USERNAME }}/cicd:latest
