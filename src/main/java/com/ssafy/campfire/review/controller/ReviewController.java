@@ -81,8 +81,8 @@ public class ReviewController {
 
     @ApiOperation(value = "부트캠프 소속 검사, 작성 이력 검사")
     @GetMapping("/{bootcampId}/vaildation")
-    public BaseResponseDto<ReviewReponseDto> validation(@PathVariable Long bootcampId, @RequestBody @Valid User user){
-        return BaseResponseDto.ok(reviewService.vaildationCheck(bootcampId, user.getId()));
+    public BaseResponseDto<ReviewReponseDto> validation(@PathVariable Long bootcampId){
+        return BaseResponseDto.ok(reviewService.vaildationCheck(bootcampId, 1L));
     }
     
 
