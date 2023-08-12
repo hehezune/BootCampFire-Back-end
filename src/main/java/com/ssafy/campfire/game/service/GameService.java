@@ -4,7 +4,7 @@ import com.ssafy.campfire.game.domain.Game;
 import com.ssafy.campfire.game.dto.request.GameRequestDto;
 import com.ssafy.campfire.game.dto.response.GameRankResponseDto;
 import com.ssafy.campfire.game.repository.GameRepository;
-import com.ssafy.campfire.global.login.PrincipalDetails;
+import com.ssafy.campfire.global.oauth2.PrincipalDetails;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.user.repository.UserRepository;
 import com.ssafy.campfire.utils.error.enums.ErrorMessage;
