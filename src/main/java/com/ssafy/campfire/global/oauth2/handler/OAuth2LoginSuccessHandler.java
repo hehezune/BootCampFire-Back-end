@@ -42,7 +42,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         jwtService.updateRefreshToken(oAuth2User.getNickname(), refreshToken);
 
         // redirectStrategy.sendRedirect(request, response,"localhost:3000/login/info");
-        redirectStrategy.sendRedirect(request, response,"http://localhost:3000/loginInfo?token="+accessToken+"refresh="+refreshToken);
+        redirectStrategy.sendRedirect(request, response,"http://i9a408.p.ssafy.io/loginInfo?token="+accessToken+"refresh="+refreshToken);
         
 
     }
