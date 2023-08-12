@@ -1,7 +1,7 @@
 package com.ssafy.campfire.global.login.service;
 
-//import com.ssafy.campfire.global.login.PrincipalDetails;
-import com.ssafy.campfire.global.oauth2.PrincipalDetails;
+import com.ssafy.campfire.global.login.PrincipalDetails;
+//import com.ssafy.campfire.global.oauth2.PrincipalDetails;
 
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.user.repository.UserRepository;
