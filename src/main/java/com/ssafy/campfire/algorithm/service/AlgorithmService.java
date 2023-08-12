@@ -11,7 +11,9 @@ import com.ssafy.campfire.algorithm.repository.AlgoManyRankRepository;
 import com.ssafy.campfire.algorithm.repository.AlgorithmRepository;
 import com.ssafy.campfire.bootcamp.domain.Bootcamp;
 import com.ssafy.campfire.bootcamp.repository.BootcampRepository;
-import com.ssafy.campfire.global.login.PrincipalDetails;
+//import com.ssafy.campfire.global.login.PrincipalDetails;
+import com.ssafy.campfire.global.oauth2.PrincipalDetails;
+
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.user.repository.UserRepository;
 import com.ssafy.campfire.utils.error.enums.ErrorMessage;

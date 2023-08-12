@@ -3,7 +3,9 @@ package com.ssafy.campfire.global.oauth2.service;
 import com.ssafy.campfire.board.repository.BoardRepository;
 import com.ssafy.campfire.bootcamp.domain.Bootcamp;
 import com.ssafy.campfire.bootcamp.repository.BootcampRepository;
-import com.ssafy.campfire.global.login.PrincipalDetails;
+//import com.ssafy.campfire.global.login.PrincipalDetails;
+import com.ssafy.campfire.global.oauth2.PrincipalDetails;
+
 import com.ssafy.campfire.global.oauth2.GoogleUserInfo;
 import com.ssafy.campfire.global.oauth2.KakaoUserInfo;
 import com.ssafy.campfire.global.oauth2.NaverUserInfo;

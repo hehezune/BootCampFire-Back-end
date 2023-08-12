@@ -44,12 +44,13 @@ public class ReviewController {
 //        return BaseResponseDto.ok(reviewService.getReviewList(bootcampId, user));
 //    }
 //
-//    @ApiOperation(value = "부트캠프 소속 검사, 작성 이력 검사")
-//    @GetMapping("/{bootcampId}/vaildation")
-//    public BaseResponseDto<ReviewReponseDto> validation(@PathVariable Long bootcampId,
-//                                                        @AuthenticationPrincipal PrincipalDetails user){
-//        return BaseResponseDto.ok(reviewService.vaildationCheck(bootcampId, user.getId()));
-//    }
+    @ApiOperation(value = "부트캠프 소속 검사, 작성 이력 검사")
+    @GetMapping("/{bootcampId}/vaildation")
+    public BaseResponseDto<ReviewReponseDto> validation(@PathVariable Long bootcampId,
+                                                        @AuthenticationPrincipal PrincipalDetails user){
+        System.out.println("-----------" + user.getId());
+        return BaseResponseDto.ok(reviewService.vaildationCheck(bootcampId, user.getId()));
+    }
 
 
     @ApiOperation(value = "리뷰 등록")
@@ -79,11 +80,11 @@ public class ReviewController {
         return BaseResponseDto.ok(reviewService.delete(bootcampId, reviewId));
     }
 
-    @ApiOperation(value = "부트캠프 소속 검사, 작성 이력 검사")
-    @GetMapping("/{bootcampId}/vaildation")
-    public BaseResponseDto<ReviewReponseDto> validation(@PathVariable Long bootcampId){
-        return BaseResponseDto.ok(reviewService.vaildationCheck(bootcampId, 1L));
-    }
-    
+//    @ApiOperation(value = "부트캠프 소속 검사, 작성 이력 검사")
+//    @GetMapping("/{bootcampId}/vaildation")
+//    public BaseResponseDto<ReviewReponseDto> validation(@PathVariable Long bootcampId){
+//        return BaseResponseDto.ok(reviewService.vaildationCheck(bootcampId, 1L));
+//    }
+//
 
 }
