@@ -3,7 +3,7 @@ package com.ssafy.campfire.game.controller;
 import com.ssafy.campfire.game.dto.request.GameRequestDto;
 import com.ssafy.campfire.game.dto.response.GameRankResponseDto;
 import com.ssafy.campfire.game.service.GameService;
-import com.ssafy.campfire.global.login.PrincipalDetails;
+import com.ssafy.campfire.global.oauth2.PrincipalDetails;
 import com.ssafy.campfire.utils.dto.response.BaseResponseDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
