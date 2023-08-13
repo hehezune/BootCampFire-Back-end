@@ -121,7 +121,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 )
                 .orderBy(board.createdDate.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .limit(pageable.getPageSize() + 1)
                 .fetch();
 
         List<BoardListResponse> content = new ArrayList<>();
@@ -152,7 +152,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .where(board.category.id.eq(categoryId))
                 .orderBy(board.likeCnt.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .limit(pageable.getPageSize()+1)
                 .fetch();
 
         List<BoardListResponse> content = new ArrayList<>();
@@ -186,7 +186,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 )
                 .orderBy(board.likeCnt.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .limit(pageable.getPageSize()+1)
                 .fetch();
 
         List<BoardListResponse> content = new ArrayList<>();
@@ -217,7 +217,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .where(board.category.id.eq(categoryId))
                 .orderBy(board.view.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .limit(pageable.getPageSize()+1)
                 .fetch();
 
         List<BoardListResponse> content = new ArrayList<>();
@@ -251,7 +251,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 )
                 .orderBy(board.view.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .limit(pageable.getPageSize()+1)
                 .fetch();
 
         List<BoardListResponse> content = new ArrayList<>();
@@ -285,7 +285,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 )
                 .orderBy(board.createdDate.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .limit(pageable.getPageSize()+1)
                 .fetch();
 
         List<BoardListResponse> content = new ArrayList<>();
@@ -318,7 +318,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 )
                 .orderBy(board.createdDate.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .limit(pageable.getPageSize()+1)
                 .fetch();
 
         List<BoardListResponse> content = new ArrayList<>();
@@ -351,7 +351,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 )
                 .orderBy(board.createdDate.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .limit(pageable.getPageSize()+1)
                 .fetch();
 
         List<BoardListResponse> content = new ArrayList<>();
@@ -385,7 +385,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 )
                 .orderBy(board.createdDate.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .limit(pageable.getPageSize()+1)
                 .fetch();
 
         List<BoardListResponse> content = new ArrayList<>();
@@ -419,7 +419,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 )
                 .orderBy(board.createdDate.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .limit(pageable.getPageSize()+1)
                 .fetch();
 
         List<BoardListResponse> content = new ArrayList<>();
@@ -454,7 +454,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 )
                 .orderBy(board.createdDate.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .limit(pageable.getPageSize()+1)
                 .fetch();
 
         List<BoardListResponse> content = new ArrayList<>();
