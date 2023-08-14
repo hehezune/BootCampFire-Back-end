@@ -25,7 +25,6 @@ public class GameService {
 
     public GameRankResponseDto getMyRank(PrincipalDetails loginUser) {
        User user = userRepository.findUserById(loginUser.getId());
-        // User user = userRepository.findUserById(1L);
         Game game = gameRepository.findByUser(user);
         Long rank;
         if(game == null){
@@ -54,7 +53,6 @@ public class GameService {
 
     public GameRankResponseDto saveScore(GameRequestDto gameRequestDto, PrincipalDetails loginUser) {
        User user = userRepository.findUserById(loginUser.getId());
-        // User user = userRepository.findUserById(1L);
 
         Game game = gameRepository.findByUser(user);
 
