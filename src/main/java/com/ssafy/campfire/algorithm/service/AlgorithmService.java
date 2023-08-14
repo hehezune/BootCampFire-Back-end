@@ -11,7 +11,6 @@ import com.ssafy.campfire.algorithm.repository.AlgoManyRankRepository;
 import com.ssafy.campfire.algorithm.repository.AlgorithmRepository;
 import com.ssafy.campfire.bootcamp.domain.Bootcamp;
 import com.ssafy.campfire.bootcamp.repository.BootcampRepository;
-//import com.ssafy.campfire.global.login.PrincipalDetails;
 import com.ssafy.campfire.global.oauth2.PrincipalDetails;
 
 import com.ssafy.campfire.user.domain.User;
@@ -88,8 +87,7 @@ public class AlgorithmService {
     }
 
     public AlgorithmResponseDto getAlgorithm(PrincipalDetails LoginUser) {
-//        User user = userRepository.findUserById(LoginUser.getId());
-        User user = userRepository.findUserById(3L);
+        User user = userRepository.findUserById(LoginUser.getId());
         Algorithm algorithm = algorithmRepository.findAlgorithmByDate(LocalDate.now())
                 .orElseThrow(() -> new BusinessException(ErrorMessage.ALGORITHM_NOT_FOUND));
         return AlgorithmResponseDto.of(algorithm, user.getLatestAlgoNum().equals(algorithm.getNum()));
@@ -108,8 +106,7 @@ public class AlgorithmService {
     }
 
     public AlgorithmResultResponseDto checkAlgorithmResult(PrincipalDetails LoginUser, Long algorithmNum) throws IOException {
-//        User user = userRepository.findUserById(LoginUser.getId());
-        User user = userRepository.findUserById(3L);
+        User user = userRepository.findUserById(LoginUser.getId());
 
         String URL =  Result_Url.replace("%ProblemId%", algorithmNum.toString())
                 .replace("%UserId%", user.getBojId());
@@ -256,8 +253,7 @@ public class AlgorithmService {
 
 
     public AlgoFiftyRankResponseDto getAlgoFiftyMyRank(PrincipalDetails loginUser) {
-//        User user = userRepository.findUserById(loginUser.getId());
-        User user = userRepository.findUserById(1L);
+        User user = userRepository.findUserById(loginUser.getId());
 
         Bootcamp bootcamp = user.getBootcamp();
 
@@ -286,8 +282,7 @@ public class AlgorithmService {
     }
 
     public AlgoManyRankResponseDto getAlgoManyMyRank(PrincipalDetails loginUser) {
-//        User user = userRepository.findUserById(loginUser.getId());
-        User user = userRepository.findUserById(1L);
+        User user = userRepository.findUserById(loginUser.getId());
 
         Bootcamp bootcamp = user.getBootcamp();
 

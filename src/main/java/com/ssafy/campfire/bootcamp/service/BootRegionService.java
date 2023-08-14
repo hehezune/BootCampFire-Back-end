@@ -46,7 +46,6 @@ public class BootRegionService {
             bootRegionList.add(new BootRegion(bootcamp, r));
         }
         return save(bootRegionList);
-//        return  null;
     }
 
     public Optional<List<Region>> getRegionListByBootcampId(Long bootcampId) {
