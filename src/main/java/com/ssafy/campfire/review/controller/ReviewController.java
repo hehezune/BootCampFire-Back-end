@@ -36,8 +36,10 @@ public class ReviewController {
     public BaseResponseDto<List<ReviewReponseDto>> getReviewList(@PathVariable Long bootcampId,
                                                                  @AuthenticationPrincipal PrincipalDetails user){
         if(user == null){
+            System.out.println("없어 user  ") ;
             return BaseResponseDto.ok(reviewService.getReviewList(bootcampId, null));
         }
+        System.out.println("리뷰가 있습니다. user : " + user.getId());
         return BaseResponseDto.ok(reviewService.getReviewList(bootcampId, user.getId()));
     }
 
