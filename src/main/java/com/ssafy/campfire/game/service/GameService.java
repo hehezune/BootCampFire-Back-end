@@ -4,7 +4,7 @@ import com.ssafy.campfire.game.domain.Game;
 import com.ssafy.campfire.game.dto.request.GameRequestDto;
 import com.ssafy.campfire.game.dto.response.GameRankResponseDto;
 import com.ssafy.campfire.game.repository.GameRepository;
-import com.ssafy.campfire.global.login.PrincipalDetails;
+import com.ssafy.campfire.global.oauth2.PrincipalDetails;
 import com.ssafy.campfire.user.domain.User;
 import com.ssafy.campfire.user.repository.UserRepository;
 import com.ssafy.campfire.utils.error.enums.ErrorMessage;
@@ -24,8 +24,8 @@ public class GameService {
     private final UserRepository userRepository;
 
     public GameRankResponseDto getMyRank(PrincipalDetails loginUser) {
-//        User user = userRepository.findUserById(loginUser.getId());
-        User user = userRepository.findUserById(1L);
+       User user = userRepository.findUserById(loginUser.getId());
+        // User user = userRepository.findUserById(1L);
         Game game = gameRepository.findByUser(user);
         Long rank;
         if(game == null){
@@ -53,8 +53,8 @@ public class GameService {
     }
 
     public GameRankResponseDto saveScore(GameRequestDto gameRequestDto, PrincipalDetails loginUser) {
-//        User user = userRepository.findUserById(loginUser.getId());
-        User user = userRepository.findUserById(1L);
+       User user = userRepository.findUserById(loginUser.getId());
+        // User user = userRepository.findUserById(1L);
 
         Game game = gameRepository.findByUser(user);
 

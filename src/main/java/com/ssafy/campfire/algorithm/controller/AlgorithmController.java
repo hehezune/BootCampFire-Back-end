@@ -4,7 +4,8 @@ import com.ssafy.campfire.algorithm.domain.dto.AlgorithmResult;
 import com.ssafy.campfire.algorithm.dto.request.AlgorithmRequestDto;
 import com.ssafy.campfire.algorithm.dto.response.*;
 import com.ssafy.campfire.algorithm.service.AlgorithmService;
-import com.ssafy.campfire.global.login.PrincipalDetails;
+import com.ssafy.campfire.global.oauth2.PrincipalDetails;
+
 import com.ssafy.campfire.utils.dto.response.BaseResponseDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
