@@ -6,6 +6,7 @@ import com.ssafy.campfire.comment.dto.response.CommentCreateResponse;
 import com.ssafy.campfire.comment.dto.response.CommentReadResponse;
 import com.ssafy.campfire.comment.dto.response.CommentUpdateResponse;
 import com.ssafy.campfire.comment.service.CommentService;
+import com.ssafy.campfire.global.oauth2.PrincipalDetails;
 import com.ssafy.campfire.utils.dto.response.BaseResponseDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -44,20 +45,20 @@ public class CommentController {
     /**
      * @AuthenticationPrincipal 설정 후
      */
-//    @ApiOperation(value ="댓글 저장")
-//    @PostMapping
-//    public BaseResponseDto<CommentCreateResponse> createBoard(@RequestBody @Valid CommentCreateRequest request,
-//                                                              @AuthenticationPrincipal PrincipalDetails user) {
-//        return BaseResponseDto.ok(commentService.save(user.getId(), request));
-//    }
+    @ApiOperation(value ="댓글 작성")
+    @PostMapping
+    public BaseResponseDto<CommentCreateResponse> createBoard(@RequestBody @Valid CommentCreateRequest request,
+                                                              @AuthenticationPrincipal PrincipalDetails user) {
+        return BaseResponseDto.ok(commentService.save(user.getId(), request));
+    }
 
     /**
      * swagger test
      */
-    @ApiOperation(value ="댓글 작성")
-    @PostMapping
-    public BaseResponseDto<CommentCreateResponse> createBoard(@RequestBody @Valid CommentCreateRequest request,
-                                                              Long userId) {
-        return BaseResponseDto.ok(commentService.save(userId, request));
-    }
+//    @ApiOperation(value ="댓글 작성")
+//    @PostMapping
+//    public BaseResponseDto<CommentCreateResponse> createBoard(@RequestBody @Valid CommentCreateRequest request,
+//                                                              Long userId) {
+//        return BaseResponseDto.ok(commentService.save(userId, request));
+//    }
 }
