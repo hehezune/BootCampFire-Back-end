@@ -95,7 +95,7 @@ public class Board extends BaseEntity {
         this.likeCnt = 0;
         this.view = 0;
         this.maxRef = 0;
-        this.createdDate = LocalDateTime.now();
+        this.createdDate = LocalDateTime.now().plusHours(9);;
     }
 
     public void setCategory(User user, Category category) {
@@ -139,6 +139,6 @@ public class Board extends BaseEntity {
         this.title = boardUpdate.title();
         this.content = boardUpdate.content();
         this.anonymous = boardUpdate.anonymous();
-        this.updatedDate = LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now().plusHours(9);;
     }
 }
