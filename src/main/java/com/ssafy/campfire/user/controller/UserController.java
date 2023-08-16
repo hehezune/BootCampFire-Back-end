@@ -40,9 +40,7 @@ public class UserController {
     @ApiOperation(value = "개인 정보 수정")
     @PutMapping("")
     public BaseResponseDto<UserUpdateResponse> update(@AuthenticationPrincipal PrincipalDetails user, @RequestBody @Valid UserUpdateRequest request){
-        // 현재 postman으로 로그인이 안돼서 임의로 고정값을 뒀습니다.
-        //return BaseResponseDto.ok(userService.update(user.getId(), request));
-        return BaseResponseDto.ok(userService.update(1L, request));
+        return BaseResponseDto.ok(userService.update(user.getId(), request));
     }
 
     @ApiOperation("닉네임 중복 검사")
@@ -58,8 +56,7 @@ public class UserController {
     @ApiOperation("소속 인증 요청하기")
     @PostMapping("/confirm")
     public BaseResponseDto<Boolean> confirmRequest(@AuthenticationPrincipal PrincipalDetails user){
-        // 현재 postman으로 로그인이 안돼서 임의로 고정값을 뒀습니다.
-        boolean state = userService.confirmRequest(2L);
+        boolean state = userService.confirmRequest(user.getId());
         return BaseResponseDto.ok(state);
     }
 
