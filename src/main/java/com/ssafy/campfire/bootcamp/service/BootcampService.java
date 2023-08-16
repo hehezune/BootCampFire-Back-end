@@ -200,19 +200,6 @@ public class BootcampService {
         return bootcampListResponseDtoList;
     }
 
-    //부트캠프 이름으로 검색
-    @Transactional
-    public List<BootcampListResponseDto> getBootcampByBootcampName(String bootcampName) {
-        List<BootcampListResponseDto> bootcampListResponseDtoList =  new ArrayList<>();
-
-        Optional<Bootcamp> optionalBootcamp = bootcampRepository.findByName(bootcampName);
-        Bootcamp bootcamp = optionalBootcamp.get();
-        Optional<List<Track>> trackList = bootTrackRepository.getBootTracksByBootcampId(bootcamp.getId());
-        Optional<List<Region>> regionList = bootRegionRepository.getBootRegionsByBootcampId(bootcamp.getId());
-
-        bootcampListResponseDtoList.add(BootcampListResponseDto.of(optionalBootcamp, trackList, regionList));
-        return bootcampListResponseDtoList;
-    }
 
     //부트캠프 이름 목록 가져오기
     public List<BootcampNameListResponseDto> getBootcampNameList(){

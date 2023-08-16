@@ -101,12 +101,6 @@ public class BootcampController {
         return BaseResponseDto.ok(bootLanguageServie.getLanguageList());
     }
 
-    @ApiOperation("부트캠프 명으로 검색하기")
-    @GetMapping("/search/{bootcampName}")
-    public BaseResponseDto<List<BootcampListResponseDto>> searchByBootcampName(@PathVariable String bootcampName){
-        return BaseResponseDto.ok(bootcampService.getBootcampByBootcampName(bootcampName));
-    }
-
     @ApiOperation("부트캠프 이름 목록가져오기")
     @GetMapping("/names")
     public BaseResponseDto<List<BootcampNameListResponseDto>> getBootcampNameList(){
