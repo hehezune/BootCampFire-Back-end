@@ -102,7 +102,7 @@ public class ReviewService {
                 .orElseThrow(() -> new BusinessException(ErrorMessage.BOARD_NOT_FOUND));
 
         bootcamp.subTotalScore(review.getScore());
-
+        reviewLikeRepository.deleteByReview(reviewId);
         reviewRepository.delete(review);
         return review.getId();
     }
