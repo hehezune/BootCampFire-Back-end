@@ -98,7 +98,6 @@ public class AlgorithmService {
 
         List<AlgorithmListResponseDto> algorithmListResponseDtoList = new ArrayList<>();
         for (Algorithm algorithm : algorithmList) {
-            System.out.println("algorithm.toString() = " + algorithm.toString());
             algorithmListResponseDtoList.add(AlgorithmListResponseDto.from(algorithm));
 
         }
@@ -208,7 +207,7 @@ public class AlgorithmService {
                 .select("div:nth-child(1)")
                 .select("section#description")
                 .select("div#problem_description > p");
-        System.out.println("descriptionElements = " + descriptionElements);
+
         String description  = iterElement(descriptionElements);
         description = replaceTag(description);
 
