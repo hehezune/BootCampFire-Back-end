@@ -88,18 +88,31 @@ public class BoardService {
 
         board.addView();
         Boolean hasLike = false;
+        Boolean isWriter = false;
 
         if(userId != null){
             hasLike = likesRepository.hasLikeByUserId(boardId, userId);
+
+            if(userId == board.getUser().getId()) {
+                isWriter = true;
+            }
+        }
+
+        String bootCampName = board.getBootcamp().getName();
+        String userNickName = board.getUser().getNickname();
+
+        if(board.getAnonymous()){
+            bootCampName = "익명의 캠프";
+            userNickName = "익명";
         }
 
         return BoardReadResponse.from(
                 board.getId(),
                 board.getTitle(),
                 board.getContent(),
-                board.getBootcamp().getName(),
-                board.getUser().getNickname(),
-                board.getAnonymous(),
+                bootCampName,
+                userNickName,
+                isWriter,
                 board.getCommentCnt(),
                 board.getLikeCnt(),
                 board.getView(),
