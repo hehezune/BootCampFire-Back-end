@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.ErrorManager;
 
@@ -55,13 +56,24 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public List<ReviewReponseDto> getReviewList(Long bootcampId, User user){
-        List<ReviewReponseDto> reviewResponses = (List<ReviewReponseDto>) reviewRepository
-                .getReviewList(bootcampId)
-                .stream()
-                .map((Review review) -> ReviewReponseDto.of(review, isAlreadyReviewLike(review, user))).toList();
+    public List<ReviewReponseDto> getReviewList(Long bootcampId, Long userId){
+        List<ReviewReponseDto> reviewResponses = null;
+        if(userId == null){
+            reviewResponses = new ArrayList<>();
+            for (int i = 0; i < 4; i++) {
+                reviewResponses.add(ReviewReponseDto.nullReview());
+            }
+        }else{
+            User user = userRepository.findById(userId)
+                    .orElseThrow(()->new BusinessException(ErrorMessage.USER_NOT_FOUND));
+            reviewResponses = (List<ReviewReponseDto>) reviewRepository
+                    .getReviewList(bootcampId)
+                    .stream()
+                    .map((Review review) -> ReviewReponseDto.of(review, isAlreadyReviewLike(review, user))).toList();
+        }
         return reviewResponses;
     }
+
 
     private Boolean isAlreadyReviewLike(Review review, User user) {
         return reviewLikeRepository.findByUserAndReview(user, review).isPresent();
@@ -95,28 +107,11 @@ public class ReviewService {
         return review.getId();
     }
 
-    public boolean bootcampCheck(Long bootcampId, Long userId){
-        User user = userRepository.findUserById(userId);
-
-        if(user.getBootcamp().getId() != bootcampId){
-            return false;
-        }
-        return true;
-    }
-
-    public ReviewReponseDto historyCheck(Long bootcampId, Long userId){
+    public ReviewReponseDto vaildationCheck(Long bootcampId, Long userId){
         Review review = reviewRepository.findByBootcampIdAndUserId(bootcampId, userId);
         if(review == null){
             return ReviewReponseDto.nullReview();
         }
         return ReviewReponseDto.of(review, isAlreadyReviewLike(review, review.getUser()));
-    }
-
-    public ReviewReponseDto vaildationCheck(Long bootcampId, Long userId){
-//        Review review = new Review();
-        if(!bootcampCheck(bootcampId, userId)){
-            return ReviewReponseDto.nullReview();
-        }
-        return historyCheck(bootcampId, userId);
     }
 }
