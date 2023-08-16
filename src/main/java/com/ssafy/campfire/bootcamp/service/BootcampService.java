@@ -69,7 +69,6 @@ public class BootcampService {
             Bootcamp bootcamp = crawlingData.toBootcamp();
             if(bootcampRepository.existsBootcampByName(bootcamp.getName())) {
                 //이미 부트캠프가 DB에 존재한다면 description, 트랙, 언어 추가
-                System.out.println("bootcamp.getName(이미존재) = " + bootcamp.getName());
                 Optional<Bootcamp> optionalBootcamp = bootcampRepository.findByName(bootcamp.getName());
                 Bootcamp originBootcamp = optionalBootcamp.get();
 
@@ -162,14 +161,10 @@ public class BootcampService {
     public List<BootcampListResponseDto> getBootcampListOrderByScore() {
         //부트캠프를 이름 순으로 정렬
         List<Bootcamp> bootcampList = bootcampRepository.findAllByOrderByScoreDesc();
-        System.out.println("사이즈 : " + bootcampList.size());
 
         //각 부트캠프엔티티마다 지역, 트랙을 찾아 responseDto의 리스트로 만들기
         List<BootcampListResponseDto> bootcampListResponseDtoList = new ArrayList<>();
-        for (Bootcamp bc : bootcampList) {
-            System.out.println("bc.getName() = " + bc.getName() +" // bc.getTotalScore"+bc.getTotalScore());
 
-        }
         for (Bootcamp bootcamp: bootcampList) {
             if(bootcamp.getId() == 1L) continue;
             Optional<List<Track>> trackList = bootTrackService.getTrackListByBootcampId(bootcamp.getId());
