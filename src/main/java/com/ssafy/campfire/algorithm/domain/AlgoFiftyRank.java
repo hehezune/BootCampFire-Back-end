@@ -41,7 +41,7 @@ public class AlgoFiftyRank extends BaseEntity {
         this.bootcamp = bootcamp;
         this.algorithm = algorithm;
         this.rank = rank;
-        this.createdDate = LocalDateTime.now();
+        this.createdDate = LocalDateTime.now().plusHours(9);
     }
 
 }

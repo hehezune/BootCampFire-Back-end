@@ -94,7 +94,7 @@ public class Review extends BaseEntity {
         this.mood =mood;
         this.score = (curriculum+potential+backUp+management+mood)/5.0;
         this.likeCnt = 0;
-        this.createdDate = LocalDateTime.now();
+        this.createdDate = LocalDateTime.now().plusHours(9);
 
     }
 
@@ -120,7 +120,7 @@ public class Review extends BaseEntity {
         this.management = reviewUpdate.management();
         this.mood = reviewUpdate.mood();
         this.score = (curriculum+potential+backUp+management+mood)/5.0;
-        this.updatedDate = LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now().plusHours(9);
     }
 
 }

@@ -139,6 +139,6 @@ public class Board extends BaseEntity {
         this.title = boardUpdate.title();
         this.content = boardUpdate.content();
         this.anonymous = boardUpdate.anonymous();
-        this.updatedDate = LocalDateTime.now().plusHours(9);;
+        this.updatedDate = LocalDateTime.now().plusHours(9);
     }
 }

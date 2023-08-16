@@ -37,12 +37,12 @@ public class Game extends BaseEntity {
     public Game(User user, Integer bestScore){
         this.user = user;
         this.bestScore = bestScore;
-        this.createdDate = LocalDateTime.now();
+        this.createdDate = LocalDateTime.now().plusHours(9);
     }
 
     public void updateGameScore(Integer bestScore){
         this.bestScore = bestScore;
-        this.updatedDate = LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now().plusHours(9);
 
     }
 
