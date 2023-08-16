@@ -18,4 +18,11 @@ public class CustomReviewLikeRepositoryImpl implements CustomReviewLikeRepositor
                 .where(reviewLike.user.id.eq(userId), reviewLike.review.id.eq(reviewId))
                 .fetchOne() != null;
     }
+
+    @Override
+    public Long deleteByReview(Long reviewId) {
+        return jpaQueryFactory.delete(reviewLike)
+                .where(reviewLike.review.id.eq(reviewId))
+                .execute();
+    }
 }
