@@ -42,7 +42,7 @@ public class Algorithm extends BaseEntity {
     public Algorithm(Long num,LocalDate date){
         this.num = num;
         this.date = date;
-        this.createdDate = LocalDateTime.now();
+        this.createdDate = LocalDateTime.now().plusHours(9);
     }
 
     public void setAlgorithmContents(String link, String title, String description){
@@ -54,7 +54,7 @@ public class Algorithm extends BaseEntity {
     public void updateAlgorithm(Long num,LocalDate date){
         this.num = num;
         this.date = date;
-        this.updatedDate = LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now().plusHours(9);
     }
 
 

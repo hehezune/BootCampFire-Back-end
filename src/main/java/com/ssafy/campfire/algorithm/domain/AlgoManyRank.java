@@ -43,6 +43,6 @@ public class AlgoManyRank extends BaseEntity {
         this.user = user;
         this.bootcamp = bootcamp;
         this.algorithm = algorithm;
-        this.createdDate = LocalDateTime.now();
+        this.createdDate = LocalDateTime.now().plusHours(9);
     }
 }

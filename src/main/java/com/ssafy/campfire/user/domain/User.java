@@ -76,8 +76,8 @@ public class User extends BaseEntity {
         this.provider = provider;
         this.role = Role.USER;
         this.isPermision = true;
-        this.createdDate = LocalDateTime.now();
-        this.updatedDate = LocalDateTime.now();
+        this.createdDate = LocalDateTime.now().plusHours(9);
+        this.updatedDate = LocalDateTime.now().plusHours(9);
         this.latestAlgoNum = 0L;
     }
 

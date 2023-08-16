@@ -70,7 +70,7 @@ public class Comment extends BaseEntity {
         this.content = content;
         this.anonymous = anonymous;
         this.maxRefOrder = 0;
-        this.createdDate = LocalDateTime.now();
+        this.createdDate = LocalDateTime.now().plusHours(9);
     }
 
     public void writeBy(User user, Board board){
@@ -86,7 +86,7 @@ public class Comment extends BaseEntity {
     public void update(CommentUpdate commentUpdate) {
         this.content = commentUpdate.content();
         this.anonymous = commentUpdate.anonymous();
-        this.updatedDate = LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now().plusHours(9);
     }
 
 }
