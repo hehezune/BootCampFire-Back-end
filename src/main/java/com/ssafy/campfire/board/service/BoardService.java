@@ -117,7 +117,7 @@ public class BoardService {
                 isWriter,
                 board.getCommentCnt(),
                 board.getLikeCnt(),
-                board.getView()+1,
+                board.getView(),
                 hasLike,
                 board.getCreatedDate()
         );
