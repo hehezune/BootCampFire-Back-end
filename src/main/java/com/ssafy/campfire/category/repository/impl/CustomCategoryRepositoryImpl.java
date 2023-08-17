@@ -151,6 +151,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .leftJoin(board.category.bootcamp, bootcamp)
                 .where(board.category.id.eq(categoryId))
                 .orderBy(board.likeCnt.desc())
+                .orderBy(board.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize()+1)
                 .fetch();
@@ -185,6 +186,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                         board.category.id.eq(categoryId)
                 )
                 .orderBy(board.likeCnt.desc())
+                .orderBy(board.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize()+1)
                 .fetch();
@@ -216,6 +218,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .leftJoin(board.category.bootcamp, bootcamp)
                 .where(board.category.id.eq(categoryId))
                 .orderBy(board.view.desc())
+                .orderBy(board.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize()+1)
                 .fetch();
@@ -250,6 +253,7 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                         board.category.id.eq(categoryId)
                 )
                 .orderBy(board.view.desc())
+                .orderBy(board.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize()+1)
                 .fetch();
