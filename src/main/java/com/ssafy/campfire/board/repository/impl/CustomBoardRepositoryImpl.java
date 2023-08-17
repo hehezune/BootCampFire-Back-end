@@ -30,6 +30,16 @@ public class CustomBoardRepositoryImpl implements CustomBoardRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
+    public void updateView(Long boardId) {
+         queryFactory
+                .update(board)
+                .set(board.view, board.view.add(1))
+                .where(board.id.eq(boardId))
+                .execute();
+    }
+
+
+    @Override
     public Optional<Board> getByIdFetchJoin(Long boardId) {
         return Optional.ofNullable(
                 queryFactory

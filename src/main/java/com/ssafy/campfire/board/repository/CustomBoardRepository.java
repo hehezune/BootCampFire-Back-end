@@ -19,5 +19,9 @@ public interface CustomBoardRepository {
      * page
      */
 //    Page<Board> getUserBoard(Long userId, Pageable pageable);
+
+
     Optional<Board> getByIdFetchJoin(Long boardId);
+    void updateView(Long boardId);
+
 }
