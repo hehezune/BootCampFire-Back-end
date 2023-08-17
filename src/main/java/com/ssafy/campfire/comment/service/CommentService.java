@@ -109,9 +109,38 @@ public class CommentService {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.BOARD_NOT_FOUND));
 
-        board.minusCommentCnt();
-        commentRepository.delete(comment);
+        int refOrder = comment.getRefOrder();
+        if(refOrder==0) {
+            int ref = comment.getRef();
+            deleteRef(ref, board);
+        } else{
+            deleteComment(commentId);
+        }
 
         return comment.getId();
+    }
+
+    public void deleteComment(Long commentId){
+
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.COMMENT_NOT_FOUND));
+
+        Long boardId = comment.getBoard().getId();
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.BOARD_NOT_FOUND));
+        board.minusCommentCnt();
+        commentRepository.delete(comment);
+    }
+
+    public void deleteRef(int ref, Board board){
+        List<Long> commentIds = commentRepository
+                .getCommentsByRefAndBoard(ref, board)
+                .stream()
+                .map(Comment::getId)
+                .toList();
+
+        for(Long commentId : commentIds){
+            deleteComment(commentId);
+        }
     }
 }
