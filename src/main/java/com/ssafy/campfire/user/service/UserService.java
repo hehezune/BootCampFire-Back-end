@@ -55,7 +55,8 @@ public class UserService {
                 user.getImgUrl(),
                 user.getBootcamp().getId(),
                 user.getBootcamp().getName(),
-                user.getEmail()
+                user.getEmail(),
+                user.getRole()
         );
     }
     public UserUpdateResponse update(Long userId,

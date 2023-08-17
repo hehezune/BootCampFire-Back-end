@@ -1,5 +1,7 @@
 package com.ssafy.campfire.user.dto.response;
 
+import com.ssafy.campfire.user.domain.Role;
+
 import java.time.LocalDateTime;
 public record UserReadResponse(
         Long id,
@@ -8,7 +10,9 @@ public record UserReadResponse(
         String imgUrl,
         Long bootcampId,
         String bootcampName,
-        String email
+        String email,
+
+        Role role
 ) {
     public static UserReadResponse from(
             Long id,
@@ -17,7 +21,8 @@ public record UserReadResponse(
             String imgUrl,
             Long bootcampId,
             String bootcampName,
-            String email
+            String email,
+            Role role
     ){
         return new UserReadResponse(
                 id,
@@ -26,7 +31,8 @@ public record UserReadResponse(
                 imgUrl,
                 bootcampId,
                 bootcampName,
-                email
+                email,
+                role
         );
     }
 }
