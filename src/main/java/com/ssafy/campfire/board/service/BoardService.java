@@ -83,10 +83,12 @@ public class BoardService {
 
     @Transactional(readOnly = true)
     public BoardReadResponse getBoard(Long boardId, Long userId){
+
         Board board = boardRepository.getByIdFetchJoin(boardId)
                 .orElseThrow(() -> new BusinessException((ErrorMessage.BOARD_NOT_FOUND)));
 
-        board.addView();
+        boardRepository.updateView(boardId);
+
         Boolean hasLike = false;
         Boolean isWriter = false;
 
@@ -115,7 +117,7 @@ public class BoardService {
                 isWriter,
                 board.getCommentCnt(),
                 board.getLikeCnt(),
-                board.getView(),
+                board.getView()+1,
                 hasLike,
                 board.getCreatedDate()
         );
