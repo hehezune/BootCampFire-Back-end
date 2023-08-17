@@ -3,7 +3,7 @@ package com.ssafy.campfire.category.domain.enums;
 public enum CategoryType {
     FREE("자유"),
     LOVE("썸/연애"),
-    HEALTH("헬스/다이어트"),
+    HEALTH("헬스/스포츠"),
     STUDY("스터디"),
     PROJECT("프로젝트"),
     IT("IT"),

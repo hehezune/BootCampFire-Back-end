@@ -3,6 +3,7 @@ package com.ssafy.campfire.comment.dto.response;
 import com.ssafy.campfire.comment.domain.Comment;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public record CommentCreateResponse(
 
@@ -22,7 +23,7 @@ public record CommentCreateResponse(
         String user,
         String content,
         Boolean anonymous,
-        LocalDateTime createdDate,
+        String createdDate,
         int ref,
         int refOrder
 ) {
@@ -33,7 +34,7 @@ public record CommentCreateResponse(
                 comment.getUser().getNickname(),
                 comment.getContent(),
                 comment.getAnonymous(),
-                comment.getCreatedDate(),
+                comment.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
                 comment.getRef(),
                 comment.getRefOrder()
         );
