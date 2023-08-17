@@ -32,8 +32,13 @@ public class CommentController {
 
     @ApiOperation(value ="댓글 조회")
     @GetMapping("/list/{boardId}")
-    public BaseResponseDto<List<CommentReadResponse>> getMainList(@PathVariable Long boardId) {
-        return BaseResponseDto.ok(commentService.getCommentList(boardId));
+    public BaseResponseDto<List<CommentReadResponse>> getMainList(@PathVariable Long boardId,
+                                                                  @AuthenticationPrincipal PrincipalDetails user) {
+        if(user==null){
+            return BaseResponseDto.ok(commentService.getCommentList(boardId, null));
+        }
+
+        return BaseResponseDto.ok(commentService.getCommentList(boardId, user.getId()));
     }
 
     @ApiOperation(value ="댓글 삭제")

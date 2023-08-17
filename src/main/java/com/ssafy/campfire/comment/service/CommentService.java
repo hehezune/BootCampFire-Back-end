@@ -57,12 +57,25 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public List<CommentReadResponse> getCommentList(Long commentId){
+    public List<CommentReadResponse> getCommentList(Long commentId, Long userId){
+
+        if(userId==null){
+            List<CommentReadResponse> commentReadResponses = commentRepository
+                    .getCommentList(commentId)
+                    .stream()
+                    .map(CommentReadResponse::of)
+                    .toList();
+
+            return commentReadResponses;
+        }
+
+        User loginUser = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
 
         List<CommentReadResponse> commentReadResponses = commentRepository
                 .getCommentList(commentId)
                 .stream()
-                .map(CommentReadResponse::of)
+                .map((Comment comment) -> CommentReadResponse.of(comment, loginUser))
                 .toList();
 
         return commentReadResponses;
