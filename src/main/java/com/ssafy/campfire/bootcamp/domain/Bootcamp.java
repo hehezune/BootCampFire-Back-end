@@ -72,7 +72,7 @@ public class Bootcamp extends BaseEntity {
     @Column(name = "end_date")
     private LocalDateTime endDate;
 
-    @Column(name = "img_url")
+    @Column(name = "img_url", length = 2000)
     private String imgUrl;
 
     @Column(name ="review_cnt", nullable = false)
