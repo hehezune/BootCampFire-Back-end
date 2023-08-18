@@ -69,6 +69,11 @@ public class BootcampController {
     public BaseResponseDto<List<BootcampListResponseDto>> getBootcampListOrderByName(){
         return BaseResponseDto.ok(bootcampService.getBootcampListOrderByName());
     }
+    @ApiOperation(value ="부트캠프 리스트를 이름순으로 ID와 NAME만 반환 - 관리자페이지 : 소속인증")
+    @GetMapping("/lists/onlyNames")
+    public BaseResponseDto<List<BootcampNameListResponseDto>> getBootcampIdAndNameListOrderByName(){
+        return BaseResponseDto.ok(bootcampService.getBootcampIdAndNameListOrderByName());
+    }
 
     @ApiOperation(value ="부트캠프 리스트를 평점 순으로 조회")
     @GetMapping("/lists/scores")

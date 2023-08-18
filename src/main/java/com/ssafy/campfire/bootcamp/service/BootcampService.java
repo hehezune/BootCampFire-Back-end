@@ -154,7 +154,23 @@ public class BootcampService {
 
         return bootcampListResponseDtoList;
     }
+    //부트캠프를 이름 순으로 정렬해서 아이디와 이름만 반환
+    @Transactional //트랜잭션 범위는 유지하되 기능을 조회로 제한함으로써 조회 속도가 개선
+    public List<BootcampNameListResponseDto> getBootcampIdAndNameListOrderByName() {
+        //부트캠프를 이름 순으로 정렬
+        List<Bootcamp> bootcampList = bootcampRepository.findAllByOrderByName();
 
+        //각 부트캠프엔티티마다 지역, 트랙을 찾아 responseDto의 리스트로 만들기
+        List<BootcampNameListResponseDto> bootcampListResponseDtoList = new ArrayList<>();
+
+        for (Bootcamp bootcamp: bootcampList) {
+            if(bootcamp.getId() == 1L) continue;
+
+            bootcampListResponseDtoList.add(BootcampNameListResponseDto.of(Optional.of(bootcamp)));
+        }
+
+        return bootcampListResponseDtoList;
+    }
 
     // 부트캠프 리스트를 평점 순으로 보기
     @Transactional //트랜잭션 범위는 유지하되 기능을 조회로 제한함으로써 조회 속도가 개선
