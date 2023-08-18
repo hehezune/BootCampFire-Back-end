@@ -251,18 +251,17 @@ public class AlgorithmService {
     }
 
 
-    public AlgoFiftyRankResponseDto getAlgoFiftyMyRank(PrincipalDetails loginUser) {
+   public AlgoFiftyRankResponseDto getAlgoFiftyMyRank(PrincipalDetails loginUser) {
         User user = userRepository.findUserById(loginUser.getId());
 
         Bootcamp bootcamp = user.getBootcamp();
 
-
         Algorithm algorithm = algorithmRepository.findAlgorithmByDate(LocalDate.now())
                 .orElseThrow(() -> new BusinessException(ErrorMessage.ALGORITHM_NOT_FOUND));
-
         AlgoFiftyRank algoFiftyRank = algoFiftyRankRepository.findByAlgorithmAndBootcamp(algorithm, bootcamp);
-
-
+        if(algoFiftyRank == null) {
+            return AlgoFiftyRankResponseDto.from(new AlgoFiftyRank(bootcamp, algorithm, -1));
+        }
         return AlgoFiftyRankResponseDto.from(algoFiftyRank);
     }
 
