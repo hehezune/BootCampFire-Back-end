@@ -99,6 +99,7 @@ public class User extends BaseEntity {
     }
     public void updateBootcamp(Bootcamp bootcamp) {
         this.bootcamp = bootcamp;
+        this.isPermision = true;
         updatedUpdatedate();
     }
 
