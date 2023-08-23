@@ -43,8 +43,8 @@ public class CustomCategoryRepositoryImpl implements CustomCategoryRepository {
                 .leftJoin(board.category.bootcamp, bootcamp)
                 .where(
                         board.category.name.ne(BOOTCAMP),
-                        board.likeCnt.ne(0),
-                        board.createdDate.between(LocalDateTime.now().plusHours(9).minusDays(3), LocalDateTime.now().plusHours(9))
+                        board.likeCnt.ne(0)
+//                        board.createdDate.between(LocalDateTime.now().plusHours(9).minusDays(3), LocalDateTime.now().plusHours(9))
                         )
                 .orderBy(board.likeCnt.desc())
                 .orderBy(board.createdDate.desc())
