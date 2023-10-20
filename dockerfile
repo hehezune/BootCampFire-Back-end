@@ -1,7 +1,16 @@
-FROM openjdk:17-alpine
+FROM gradle:latest as builder
 
-ARG JAR_FILE=/build/libs/campfire-0.0.1-SNAPSHOT.jar
+WORKDIR /app
 
-COPY ${JAR_FILE} /campfire.jar
+COPY . /app
+RUN ./gradlew --version
+RUN ./gradlew build --no-daemon
+RUN cp ./build/libs/`ls ./build/libs | grep SNAPSHOT.jar` /app/app.jar
 
-ENTRYPOINT ["java","-jar","-Dspring.profiles.active=prod","/campfire.jar"]
+FROM openjdk:17-jdk-slim
+
+COPY --from=builder /app/app.jar /app.jar
+
+EXPOSE 8080
+
+CMD ["java", "-jar", "/app.jar"]

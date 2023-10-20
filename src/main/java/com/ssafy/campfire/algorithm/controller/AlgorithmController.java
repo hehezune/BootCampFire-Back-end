@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/algorithms")
+@RequestMapping("/api/algorithms")
 public class AlgorithmController {
     private final AlgorithmService algorithmService;
 

@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @EnableScheduling
-@RequestMapping("/bootcamps")
+@RequestMapping("/api/bootcamps")
 public class BootcampController {
     private final BootcampService bootcampService;
 

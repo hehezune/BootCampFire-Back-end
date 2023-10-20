@@ -23,7 +23,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/boards")
+@RequestMapping("/api/boards")
 public class BoardController {
 
     private final BoardService boardService;
